@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from "@/components/home/home"
-import List from "@/components/list/list"
-import Rigth from "@/components/rigth/rigth"
+import Custom from "@/components/custom/custom"
+import homeRigth from "@/components/homeRigth/homeRigth"
 
 Vue.use(Router)
 
@@ -18,12 +18,13 @@ export default new Router({
       component: Home,
       children:[
         {
-          path : "rigth",
-          component:Rigth,
+          path : "homeRigth",
+          component:homeRigth,
+          meta: { keepAlive: true } //缓存当前页面信息
         },
         {
-          path: 'list',
-          component: List
+          path: 'custom',
+          component: Custom
         },
       ]
     }

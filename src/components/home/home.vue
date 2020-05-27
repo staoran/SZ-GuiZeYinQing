@@ -1,12 +1,14 @@
 <template>
   <el-container>
-    <el-header class="title">规则管理系统</el-header>
+    <el-header class="title">
+      规则管理系统
+    </el-header>
     <el-container>
       <el-aside class="left">
         <el-row class="tac" style="height :100%">
           <el-col style="height :100%">
             <el-menu
-              default-active="rigth"
+              default-active="homeRigth"
               class="el-menu-vertical-demo"
               @open="handleOpen"
               @close="handleClose"
@@ -17,8 +19,7 @@
               :unique-opened="true"
               :router="true"
             >
-            
-              <el-menu-item index="rigth">
+              <el-menu-item index="homeRigth">
                 <i class="el-icon-menu"></i>
                 <span slot="title">主页</span>
               </el-menu-item>
@@ -52,8 +53,12 @@
           </el-col>
         </el-row>
       </el-aside>
-      <el-main>
-        <router-view/>
+      <el-main class="rigth">
+        <!-- 当前页面信息是否需要被缓存 -->
+        <keep-alive>
+          <router-view v-if="$route.meta.keepAlive"></router-view>>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -102,7 +107,7 @@ export default {
 }
 .title {
   width: 100%;
-  height: 50px;
+  height: 50px !important;
   background-color: rgb(58, 136, 253);
   color: #fff;
   line-height: 50px;
@@ -115,12 +120,11 @@ export default {
   height: 100%;
 }
 .left {
-  width: 300px;
+  width: 250px !important;
   height: 100%;
   float: left;
 }
 .rigth {
-  flex: 1;
-  background-color: rgb(242, 242, 242);
+  margin-bottom: 50px;
 }
 </style>
