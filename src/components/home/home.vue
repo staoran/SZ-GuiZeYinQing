@@ -1,11 +1,12 @@
 <template>
-  <div style="height : 100%">
-    <div class="title">规则管理系统</div>
-    <div class="content">
-      <div class="left">
+  <el-container>
+    <el-header class="title">规则管理系统</el-header>
+    <el-container>
+      <el-aside class="left">
         <el-row class="tac" style="height :100%">
           <el-col style="height :100%">
             <el-menu
+              default-active="rigth"
               class="el-menu-vertical-demo"
               @open="handleOpen"
               @close="handleClose"
@@ -14,8 +15,10 @@
               active-text-color="#ffd04b"
               style="height :100%"
               :unique-opened="true"
+              :router="true"
             >
-              <el-menu-item index="1">
+            
+              <el-menu-item index="rigth">
                 <i class="el-icon-menu"></i>
                 <span slot="title">主页</span>
               </el-menu-item>
@@ -27,7 +30,7 @@
                 <el-menu-item
                   v-for="(item,k) in NoCarInsurance"
                   :key="k"
-                  :index="(2-k).toString()"
+                  :index="(2+k*10).toString()"
                 >{{item}}</el-menu-item>
               </el-submenu>
               <el-submenu index="3">
@@ -38,7 +41,7 @@
                 <el-menu-item
                   v-for="(item,k) in CarInsurance"
                   :key="k"
-                  :index="(3-k).toString()"
+                  :index="(3-k*100).toString()"
                 >{{item}}</el-menu-item>
               </el-submenu>
               <el-menu-item index="4">
@@ -48,23 +51,12 @@
             </el-menu>
           </el-col>
         </el-row>
-      </div>
-      <div class="rigth">
-        <div class="Step1">
-          <span>第一步--> </span>
-            请选择直属机构
-          <el-cascader class="directly" :options="options" clearable v-model="Step"></el-cascader>
-          <el-button type="primary" round @click="Step1()" >下一步</el-button>
-        </div>
-        <div class="Step2" v-show="Step2">
-          <span>第二步--> </span>
-            请选择直属机构
-          <el-cascader class="directly" :options="options" clearable v-model="Step"></el-cascader>
-          <el-button type="primary" round @click="Step1()" >下一步</el-button>
-        </div>
-      </div>
-    </div>
-  </div>
+      </el-aside>
+      <el-main>
+        <router-view/>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 
 <script>
@@ -88,106 +80,6 @@ export default {
         "核赔"
       ],
       NoCarInsurance: ["核保规则", "计价规则", "其他规则"],
-      options: [{
-        value: 'shanghai',
-        label: '上海分公司',
-          children: [{
-            value: 'shanghaishi',
-            label: '上海市',
-            children: [{
-              value: 'pudongxinqu',
-              label: '浦东新区'
-            }, {
-              value: 'minhang',
-              label: '闵行'
-            }, {
-              value: 'huangpu',
-              label: '黄浦'
-            }, {
-              value: 'xuhui',
-              label: '徐汇'
-            }]
-          }]
-        },{
-          value: 'beijing',
-          label: '北京分公司',
-          children: [{
-            value: 'beijingshi',
-            label: '北京市',
-            children: [{
-              value: 'chaoyang',
-              label: '朝阳区'
-            }, {
-              value: 'shunyi',
-              label: '顺义区'
-            }]
-          }]
-          },{
-          value: 'hebei',
-          label: '河北分公司',
-          children: [{
-            value: 'shijiazhuang',
-            label: '石家庄市',
-            children: [{
-              value: 'changan',
-              label: '长安区'
-            }, {
-              value: 'yuhua',
-              label: '裕华区'
-            }, {
-              value: 'luancheng',
-              label: '栾城县'
-            }]
-          }, {
-            value: 'tangshan',
-            label: '唐山市',
-            children: [{
-              value: 'caofeidian',
-              label: '曹妃甸区'
-            }, {
-              value: 'qianxi',
-              label: '迁西县'
-            }]
-          }, {
-            value: 'qinhuangdao',
-            label: '秦皇岛市',
-            children: [{
-              value: 'beidaihe',
-              label: '北戴河区'
-            }, {
-              value: 'shanhaiguan',
-              label: '山海关区'
-            }]
-          }]
-        },{
-          value: 'shanxi',
-          label: '山西分公司',
-          children: [{
-            value: 'changzhi',
-            label: '长治市',
-            children: [{
-              value: 'shangdang',
-              label: '上党区'
-            }, {
-              value: 'luzhou',
-              label: '潞州区'
-            }]
-          }, {
-            value: 'datong',
-            label: '大同市',
-            children: [{
-              value: 'caofeidian',
-              label: '曹妃甸区'
-            }, {
-              value: 'qianxi',
-              label: '迁西县'
-            }]
-          }, {
-            value: 'datong',
-            label: '大同市',
-            children: []
-          }]
-        }]
     };
   },
   methods: {
@@ -197,25 +89,17 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
-    // 第一步下一步按钮
-    Step1(){
-      console.log(!this.Step)
-      if(!this.Step){
-        this.$message({
-          message: '请选择直属机构',
-          type: 'error',
-          center : true,
-          duration: 2000
-        });
-      }else{
-        this.Step2 = true
-      }
-    }
   }
 };
 </script>
 
 <style scoped>
+.el-container{
+  height :100%
+}
+.el-main{
+  padding: 0 ;
+}
 .title {
   width: 100%;
   height: 50px;
@@ -238,14 +122,5 @@ export default {
 .rigth {
   flex: 1;
   background-color: rgb(242, 242, 242);
-}
-.Step1,
-.Step2{
-  padding:20px;
-  border-bottom : 1px dashed #000
-}
-.directly{
-  width: 280px;
-  text-align: center !important;
 }
 </style>
