@@ -66,7 +66,7 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "home",
   data() {
     return {
       Step: "",
@@ -112,8 +112,9 @@ export default {
   color: #fff;
   line-height: 50px;
   padding-left: 20px;
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 800;
+  text-align: center;
 }
 .content {
   display: flex;

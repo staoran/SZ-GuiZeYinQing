@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from "@/components/home/home"
-import Custom from "@/components/custom/custom"
 import homeRigth from "@/components/homeRigth/homeRigth"
+import Custom from "@/components/custom/custom"
+import Fixed from "@/components/fixed/fixed"
 
 Vue.use(Router)
 
@@ -10,7 +11,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: "/home"
+      redirect: "/home/homeRigth"
     },
     {
       path: '/home',
@@ -19,12 +20,19 @@ export default new Router({
       children:[
         {
           path : "homeRigth",
+          name : "homeRigth",
           component:homeRigth,
           meta: { keepAlive: true } //缓存当前页面信息
         },
         {
           path: 'custom',
+          name : "custom",
           component: Custom
+        },
+        {
+          path: 'fixed',
+          name : "fixed",
+          component: Fixed
         },
       ]
     }

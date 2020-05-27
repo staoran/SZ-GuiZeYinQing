@@ -47,28 +47,49 @@
         </el-select>
       </div>
     </div>
-    <el-table :data="tableData" border stripe class="elTable">
-      <el-table-column fixed prop="name" label="核赔规则名称" width="150"></el-table-column>
-      <el-table-column prop="remarks" label="规则备注" width="200"></el-table-column>
-      <el-table-column prop="cVersion" label="当前上架版本" width="110"></el-table-column>
-      <el-table-column prop="date" label="上架时间" width="200"></el-table-column>
-      <el-table-column prop="lVersion" label="最新产品版本" width="110"></el-table-column>
-      <el-table-column prop="state" label="版本状态" width="100"></el-table-column>
-      <el-table-column prop="Operator" label="操作人" width="100"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="100">
-      <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-        <el-button type="text" size="small">编辑</el-button>
-        <el-button type="text" size="small">失效</el-button>
-      </template>
-      </el-table-column>
-    </el-table>
+    <!-- 筛选 -->
+    <div>
+      <div class="elTable">
+        <el-button size="small" type="primary" plain>生效</el-button>
+        <el-button size="small" type="primary" plain>失效</el-button>
+        <el-button size="small" type="primary" plain>复制</el-button>
+        <el-button size="small" type="primary" plain>删除</el-button>
+      </div>
+      <el-table :data="tableData" border stripe>
+        <el-table-column type="selection" width="55"> </el-table-column>
+        <el-table-column fixed prop="code" label="规则编码" width="150"></el-table-column>
+        <el-table-column prop="type" label="规则类型" width="100"></el-table-column>
+        <el-table-column prop="name" label="规则名称" width="200"></el-table-column>
+        <el-table-column prop="startdate" label="有效起期" width="150"></el-table-column>
+        <el-table-column prop="enddate" label="有效止期" width="150"></el-table-column>
+        <el-table-column prop="state" label="状态" width="100"></el-table-column>
+        <el-table-column fixed="right" label="操作" >
+        <template slot-scope="scope">
+          <el-button @click="handleClick(scope.row)" type="text" size="small">详情</el-button>
+          <el-button @click="handleClick(scope.row)" type="text" size="small">修改</el-button>
+          <!-- <el-button type="text" size="small">详情</el-button>
+          <el-button type="text" size="small">修改</el-button> -->
+        </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+      class="paging"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage4"
+      :page-sizes="[10, 20, 30, 40]"
+      :page-size="10"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="109">
+    </el-pagination>
+
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "homeRigth",
   data() {
     return {
       Step2: false,//第二步
@@ -83,6 +104,8 @@ export default {
       ruleCode:"", // 规则编码
       startDate:"", // 生效日期
       endDate:"", // 失效日期
+      
+        currentPage4: 4,
       options: [ // 直属机构信息
         {
           value: "shanghai",
@@ -226,31 +249,28 @@ export default {
       ],
       tableData: [ // 表格数据
         {
-          name: "调度规则003",
-          remarks: "Driver's Liability Insurance",
-          cVersion: "V01",
-          date: "2020-01-29 12:21:00",
-          lVersion: "V03",
-          state: "配置中",
-          Operator:"张三"
+          code: "R0000001",
+          type: "渠道",
+          name: "佣金费用规则001",
+          startdate: "2020-01-29",
+          enddate: "2020-02-20",
+          state: "有效"
         },
         {
-          name: "自动理算规则002",
-          remarks: "Third-party Liability Insurance",
-          cVersion: "V01",
-          date: "2020-01-29 12:21:00",
-          lVersion: "V03",
-          state: "配置中",
-          Operator:"张三"
+          code: "R0000002",
+          type: "计价",
+          name: "计价规则002",
+          startdate: "2020-02-22",
+          enddate: "2020-03-29",
+          state: "草稿"
         },
         {
-          name: "自动核赔规则003",
-          remarks: "Vehicle Damage Insurance",
-          cVersion: "V01",
-          date: "2020-01-29 12:21:00",
-          lVersion: "V03",
-          state: "配置中",
-          Operator:"张三"
+          code: "R0000003",
+          type: "核保",
+          name: "核保规则003",
+          startdate: "2020-01-29",
+          enddate: "2024-02-19",
+          state: "无效"
         }
       ],
       opt: [{ // 下一步操作数据
@@ -264,6 +284,9 @@ export default {
         label: '新增固定规则'
       }],
       rule:[{ // 规则状态数据
+        value: '0',
+        label: '草稿'
+        },{ // 规则状态数据
         value: '1',
         label: '生效'
         }, {
@@ -318,7 +341,6 @@ export default {
     },
     //下一步 用来判断是跳转还是筛选
     StepDown(){
-      // console.log(this.cscs)
       if (!this.Under) {
         this.$message({
           message: "请输入承保地",
@@ -352,7 +374,7 @@ export default {
       }else if(this.NextStep == 2){
         this.$router.push('custom')
       }else if(this.NextStep == 3){
-        alert("跳转固定规则")
+        this.$router.push('fixed')
       }
     },
     query(){ //查询
@@ -364,17 +386,25 @@ export default {
           duration: 2000
         });
       }else{
-        alert(";adgf")
+        // alert(";adgf")
       }
     },
     Reset(){ //重置
-      
       this.ruleState= "", //规则状态绑定值
       this.ruleName="", //规则名称
       this.ruleCode="", // 规则编码
       this.startDate="", // 生效日期
       this.endDate="" // 失效日期
-    }
+    },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
+      handleClick(row) {
+        console.log(row);
+      }
   }
 };
 </script>
@@ -397,14 +427,16 @@ export default {
   margin: 20px 0;
 }
 .elTable{
-  width: 100%; 
-  margin: 20px 0;
-}
-.floatRight{
   float: right;
+  margin: 20px;
 }
 .Query{
   float: right;
   margin-left: 10px;
+}
+.paging{
+  float: right;
+  margin-top: 20px;
+  margin-right: 30px;
 }
 </style>
