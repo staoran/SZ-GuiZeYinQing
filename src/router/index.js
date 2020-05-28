@@ -27,7 +27,8 @@ export default new Router({
         {
           path: 'custom',
           name : "custom",
-          component: Custom
+          component: Custom,
+          meta: { keepAlive: true } //缓存当前页面信息
         },
         {
           path: 'fixed',

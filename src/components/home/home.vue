@@ -45,7 +45,7 @@
                   :index="(3-k*100).toString()"
                 >{{item}}</el-menu-item>
               </el-submenu>
-              <el-menu-item index="4">
+              <el-menu-item index="custom">
                 <i class="el-icon-menu"></i>
                 <span slot="title">费用规则管理</span>
               </el-menu-item>

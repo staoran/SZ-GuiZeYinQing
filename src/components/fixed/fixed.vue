@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- title -->
     <div class="fixedTitle">
       核赔规则编辑（固定式规则）
       <div class="floatRight">
@@ -9,13 +10,10 @@
         <el-button size="mini" type="primary">审批详情</el-button>
       </div>
     </div>
+    <!-- 基础信息 -->
     <div>
       <p class="basic">基础信息</p>
       <div class="">
-        <!-- <div>
-          规则编码
-          <el-input size="small " v-model="bianma" placeholder="请输入规则编码"></el-input>
-        </div> -->
         <ul class="condition">
           <li>
             <p>规则编码</p>
@@ -72,6 +70,10 @@
           </li>
         </ul>
       </div>
+    </div>
+    <!-- 规则配置表 -->
+    <div>
+      <p class="basic">规则配置表</p>
     </div>
   </div>
 </template>
@@ -154,6 +156,7 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   background-color: #f2f2f2;
+  font-size: 14px;
 }
 .condition li{
   width: 23%;

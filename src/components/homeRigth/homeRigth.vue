@@ -3,16 +3,25 @@
     <div class="Step1">
       <span>第一步--></span>
       请选择直属机构
-      <el-cascader class="directly" :options="options" clearable v-model="Step"></el-cascader>
+      <el-cascader class="directly" :options="options" :clearable="true" v-model="Step"></el-cascader>
       <el-button class="floatRight" type="primary" size="small" round @click="Step1()">下一步</el-button>
     </div>
     <div class="Step2" v-show="Step2">
       <div>第二步--></div>
-      <div class="Input">
-        <el-input style="flex:1"  placeholder="请输入承保地" v-model="Under" clearable></el-input>
-        <el-input style="flex:1; margin: 0 20px;" placeholder="请输入出险地" v-model="region" clearable></el-input>
-        <el-input style="flex:1" placeholder="请输入人员所属机构" v-model="personnel" clearable></el-input>
-      </div>
+        <ul class="Inputtwo"> 
+          <li>
+            <p>请输入承保地</p>
+            <el-input  placeholder="请输入承保地" v-model="Under" clearable></el-input>
+          </li>
+          <li>
+            <p>请输入出险地</p>
+            <el-input placeholder="请输入出险地" v-model="region" clearable></el-input>
+          </li>
+          <li>
+            <p>请输入人员所属机构</p>
+            <el-input placeholder="请输入人员所属机构" v-model="personnel" clearable></el-input>
+          </li>
+        </ul>
       <div  style="float: right;">
         <el-button type="primary" size="small" round @click="StepUp()">上一步</el-button>
         <el-select v-model="NextStep" placeholder="请选择下一步操作">
@@ -29,15 +38,27 @@
     <div class="Step2" v-show="Step3">
       
       <div>筛选-->
-        <el-button class="Query" type="primary" size="small" round @click="query()">查 询</el-button>
-        <el-button class="floatRight" type="primary" size="small" round @click="Reset()">重 置</el-button>
       </div>
-      <div class="Input">
-        <el-input style="flex:1"  placeholder="请输入规则名称" v-model="ruleName" clearable></el-input>
-        <el-input style="flex:1; margin: 0 20px;" placeholder="请输入规则编码" v-model="ruleCode" clearable></el-input>
-        <el-date-picker style="flex:1" v-model="startDate" type="date" placeholder="请选择生效日期"> </el-date-picker>
-        <el-date-picker style="flex:1; margin: 0 20px;" v-model="endDate" type="date" placeholder="请选择失效日期"> </el-date-picker>
-        <el-select style="flex:1" v-model="ruleState" placeholder="请选择规则状态">
+      <ul class="Input">
+        <li>
+          <p> 请输入规则名称 </p>
+          <el-input placeholder="请输入规则名称" v-model="ruleName" clearable></el-input>
+        </li>
+        <li>
+          <p>请输入规则编码</p>
+          <el-input placeholder="请输入规则编码" v-model="ruleCode" clearable></el-input>
+        </li>
+        <li>
+          <p>请选择生效日期</p>
+          <el-date-picker v-model="startDate" type="date" placeholder="请选择生效日期"> </el-date-picker>
+        </li>
+        <li>
+          <p>请选择失效日期</p>
+          <el-date-picker v-model="endDate" type="date" placeholder="请选择失效日期"> </el-date-picker>
+        </li>
+        <li>
+          <p>请选择规则状态</p>
+        <el-select v-model="ruleState" placeholder="请选择规则状态">
           <el-option
             v-for="item in rule"
             :key="item.value"
@@ -45,18 +66,23 @@
             :value="item.value">
           </el-option>
         </el-select>
+        </li>
+      </ul>
+      <div style="margin-top: 20px;">
+        <el-button class="Query" type="primary" size="small" round @click="query()">查 询</el-button>
+        <el-button class="floatRight" type="primary" size="small" round @click="Reset()">重 置</el-button>
       </div>
     </div>
     <!-- 筛选 -->
     <div>
       <div class="elTable">
-        <el-button size="small" type="primary" plain>生效</el-button>
+        <el-button size="small" type="primary" @click="effect()" plain>生效</el-button>
         <el-button size="small" type="primary" plain>失效</el-button>
         <el-button size="small" type="primary" plain>复制</el-button>
         <el-button size="small" type="primary" plain>删除</el-button>
       </div>
       <el-table :data="tableData" border stripe>
-        <el-table-column type="selection" width="55"> </el-table-column>
+        <el-table-column prop="id" type="selection" width="55"> </el-table-column>
         <el-table-column fixed prop="code" label="规则编码" width="150"></el-table-column>
         <el-table-column prop="type" label="规则类型" width="100"></el-table-column>
         <el-table-column prop="name" label="规则名称" width="200"></el-table-column>
@@ -104,8 +130,7 @@ export default {
       ruleCode:"", // 规则编码
       startDate:"", // 生效日期
       endDate:"", // 失效日期
-      
-        currentPage4: 4,
+      currentPage4: 4, //分页
       options: [ // 直属机构信息
         {
           value: "shanghai",
@@ -249,6 +274,7 @@ export default {
       ],
       tableData: [ // 表格数据
         {
+          id:1,
           code: "R0000001",
           type: "渠道",
           name: "佣金费用规则001",
@@ -257,6 +283,7 @@ export default {
           state: "有效"
         },
         {
+          id:2,
           code: "R0000002",
           type: "计价",
           name: "计价规则002",
@@ -265,6 +292,7 @@ export default {
           state: "草稿"
         },
         {
+          id : 3,
           code: "R0000003",
           type: "核保",
           name: "核保规则003",
@@ -331,6 +359,7 @@ export default {
       .then(() => {
         this.Step = "";
         this.Step2 = false;
+        this.Step3 = false;
       })
       .catch(() => {
         this.$message({
@@ -396,6 +425,12 @@ export default {
       this.startDate="", // 生效日期
       this.endDate="" // 失效日期
     },
+    // effect(id){
+    //   this.tableData.forEach( item => {
+    //     console.log(item.id)
+    //   });
+    //   console.log(id)
+    // },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
@@ -422,9 +457,21 @@ export default {
 .Step2 {
   overflow: hidden;
 }
-.Input {
+.Input,
+.Inputtwo
+{
   display: flex;
-  margin: 20px 0;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+}
+.Inputtwo li{
+  width: 33%;
+  margin: 0 20px 20px 0;
+}
+.Input li{
+  width: 30%;
+  margin-right:20px;
 }
 .elTable{
   float: right;
@@ -438,5 +485,9 @@ export default {
   float: right;
   margin-top: 20px;
   margin-right: 30px;
+}
+.el-table__fixed-header-wrapper th{
+  background-color: #d7d7d7;
+  text-align: center;
 }
 </style>
