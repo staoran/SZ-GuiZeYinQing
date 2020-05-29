@@ -425,12 +425,12 @@ export default {
       this.startDate="", // 生效日期
       this.endDate="" // 失效日期
     },
-    // effect(id){
-    //   this.tableData.forEach( item => {
-    //     console.log(item.id)
-    //   });
-    //   console.log(id)
-    // },
+    effect(){
+      this.tableData.forEach( item => {
+        console.log(item.id)
+      });
+      // console.log(id)
+    },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },

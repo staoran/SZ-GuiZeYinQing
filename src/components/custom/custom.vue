@@ -501,10 +501,6 @@ export default {
   background-color: #aaaaaa;
   padding: 0 30px 0 20px;
 }
-.basic{
-  font-weight: 800;
-  margin-left: 20px;
-}
 .condition{
   padding: 15px 0 0 30px;
   display: flex;

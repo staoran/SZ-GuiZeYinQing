@@ -4,6 +4,7 @@ import Home from "@/components/home/home"
 import homeRigth from "@/components/homeRigth/homeRigth"
 import Custom from "@/components/custom/custom"
 import Fixed from "@/components/fixed/fixed"
+import Approval from "@/components/approval/approval"
 
 Vue.use(Router)
 
@@ -33,7 +34,14 @@ export default new Router({
         {
           path: 'fixed',
           name : "fixed",
-          component: Fixed
+          component: Fixed,
+          meta: { keepAlive: true } //缓存当前页面信息
+        },,
+        {
+          path: 'approval',
+          name : "approval",
+          component: Approval,
+          meta: { keepAlive: true } //缓存当前页面信息
         },
       ]
     }

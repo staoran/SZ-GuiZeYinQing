@@ -1,6 +1,7 @@
 <template>
   <el-container>
     <el-header class="title">
+      <img src="../../../static/logo.png" alt="" style="width:110px">
       规则管理系统
     </el-header>
     <el-container>
@@ -45,9 +46,13 @@
                   :index="(3-k*100).toString()"
                 >{{item}}</el-menu-item>
               </el-submenu>
-              <el-menu-item index="custom">
+              <el-menu-item index="4">
                 <i class="el-icon-menu"></i>
                 <span slot="title">费用规则管理</span>
+              </el-menu-item>
+              <el-menu-item index="approval">
+                <i class="el-icon-menu"></i>
+                <span slot="title">审批详情</span>
               </el-menu-item>
             </el-menu>
           </el-col>
@@ -114,7 +119,7 @@ export default {
   padding-left: 20px;
   font-size: 26px;
   font-weight: 800;
-  text-align: center;
+  /* text-align: center; */
 }
 .content {
   display: flex;
