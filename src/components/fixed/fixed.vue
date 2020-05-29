@@ -73,7 +73,66 @@
     </div>
     <!-- 规则配置表 -->
     <div>
-      <p class="basic">规则配置表</p>
+      <p class="basic">规则配置表
+        <span class="addFormula"> 
+          <el-button @click="addformula()" size="mini" type="primary">添加公式</el-button> 
+        </span> 
+      </p>
+      <div class="factorTable" v-show="formulas">
+        <!-- 公式 -->
+        <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="70px" class="demo-dynamic">
+          <el-form-item
+            v-for="(domain, index) in dynamicValidateForm.domains"
+            :key="domain.key"
+            :label ="'公式'+(index+1)"
+            :prop="'domains.' + index + '.value'"
+          >
+            <div class="satisfy" >
+              <span style="font-size:14px" >满足条件</span>
+              <div class="Btngroup" >
+                <el-button @click.prevent="removeDomain(domain)" size="mini" type="primary" plain>删除公式</el-button>
+                <el-select v-model="symbolValue" class="Symbol" size="mini" placeholder="选择符号">
+                  <el-option
+                    v-for="item in symbol"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+                <el-select v-model="factorValue" class="Symbol" size="mini" placeholder="选择因子">
+                  <el-option
+                    v-for="item in factor"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+                <el-select v-model="fixedValue" style="width:120px" size="mini" placeholder="选择固定值">
+                  <el-option
+                    v-for="item in fixed"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+                <el-button @click="addCondition()" size="mini" type="primary">添加</el-button>
+              </div>
+              <div class="formula" >
+                <el-input
+                  type="textarea"
+                  style="color:cyan"
+                  disabled="disabled"
+                  :rows="1"
+                  v-model="textarea">
+                </el-input>
+              </div>
+              <span class="result">核赔结果</span>
+              <div class="formula" style="margin-top :0;">
+              </div>
+            </div>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
   </div>
 </template>
@@ -83,6 +142,9 @@ export default {
   name: "fixed",
   data() {
     return {
+      dynamicValidateForm: {//动态添加
+        domains: [],
+      },
       ruleCode:"", //规则编码
       ruleName:"", //规则名称
       startDate:"", //日期起
@@ -91,6 +153,9 @@ export default {
       edition:"", //版本号
       editionState:"", //版本状态
       ruleType:"", //规则类型
+      textarea: '',
+      formulas:false,
+      arr:[],
       rule:[{ // 规则状态数据
         value: '0',
         label: '草稿'
@@ -126,12 +191,75 @@ export default {
         }, {
         value: 'gd',
         label: '固定'
-      }]
+      }],
+      symbol: [{ //逻辑数据
+        label: '('
+        }, {
+          label: ')'
+        }, {
+          label: '>'
+        }, {
+          label: '<'
+        }, {
+        label: '或'
+      }],
+      factor: [{// 因子
+        label: '事故类型'
+        }, {
+        label: '出险原因'
+        }, {
+        label: '案件属性'
+        }, {
+        label: '事故责任'
+      }],
+      fixed:[{ //固定值
+        label: '2020-01-27'
+        }, {
+        label: '火灾或自燃'
+        }, {
+        label: '否'
+        }, {
+        label: '10万'
+      }],
+      symbolValue: '', //逻辑
+      factorValue: '', //因子
+      fixedValue:"", //固定值
     };
   },
   methods: {
-    retu(){
+    retu(){// 返回
        this.$router.go(-1)
+    },
+    addformula(){//添加公式
+      this.formulas = true
+        this.dynamicValidateForm.domains.push({
+          value: '',
+          key: Date.now()
+        });
+    },
+    removeDomain(item) { //删除公式
+      var index = this.dynamicValidateForm.domains.indexOf(item)
+      if (index !== -1) {
+        this.dynamicValidateForm.domains.splice(index, 1)
+      }
+    },
+    addCondition(){ // 添加条件
+    if(!this.symbolValue && !this.factorValue && !this.fixedValue){
+      this.$message({
+          message: "请选择条件",
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }else{
+        this.arr.push(this.symbolValue)
+        this.arr.push(this.factorValue)
+        this.arr.push(this.fixedValue)
+        this.textarea=this.arr.join(" ")
+        this.symbolValue=""
+        this.factorValue=""
+        this.fixedValue=""
+      }
     }
   }
 };
@@ -144,7 +272,7 @@ export default {
   font-size: 20px;
   font-weight: 800;
   background-color: #aaaaaa;
-  padding-left: 20px;
+  padding: 0 30px 0 20px;
 }
 .basic{
   font-weight: 800;
@@ -166,5 +294,37 @@ export default {
   margin: 0;
   margin-bottom: 10px;
 }
+.factorTable{
+  overflow: hidden;
+  background-color: #f2f2f2;
+  padding: 30px 30px 0 0;
+}
+.satisfy{
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #333;
+}
 
+.Btngroup{
+  float: right;
+}
+.addFormula{
+  float: right;
+  margin-right: 30px;
+}
+.formula{
+  /* background-color: #f2f2f2; */
+  /* height: 300px; */
+  margin: 20px 10px 0;
+  /* padding: 10px; */
+}
+.result{
+  font-size: 14px;
+  margin: 10px 0px;
+  display: inline-block;
+}
+.Symbol{
+  width: 100px;
+}
+input[disabled]{color:red;opacity:1}
 </style>
