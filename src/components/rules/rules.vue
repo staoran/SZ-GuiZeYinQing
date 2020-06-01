@@ -2,7 +2,7 @@
   <div>
     <!-- title -->
     <div class="fixedTitle">
-      核赔规则编辑（自定义规则）
+      费用规则配置
       <div class="floatRight">
         <el-button size="mini" @click="retu()" >返回</el-button>
         <el-button size="mini" type="primary">暂存</el-button>
@@ -40,11 +40,11 @@
           </li>
           <li>
             <p>规则有效起期</p>
-            <el-date-picker size="small" style="width:100%" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" v-model="startDate" type="date" placeholder="请选择生效日期"> </el-date-picker>
+            <el-date-picker size="small" style="width:100%" v-model="startDate" type="date" placeholder="请选择生效日期"> </el-date-picker>
           </li>
           <li>
             <p>规则有效止期</p>
-            <el-date-picker size="small" style="width:100%" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" v-model="endDate" type="date" placeholder="请选择失效日期"> </el-date-picker>
+            <el-date-picker size="small" style="width:100%" v-model="endDate" type="date" placeholder="请选择失效日期"> </el-date-picker>
           </li>
           <li>
             <p>规则状态</p>

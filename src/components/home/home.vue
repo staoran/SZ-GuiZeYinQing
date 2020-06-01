@@ -46,13 +46,21 @@
                   :index="(3-k*100).toString()"
                 >{{item}}</el-menu-item>
               </el-submenu>
-              <el-menu-item index="4">
+              <el-menu-item index="rules">
                 <i class="el-icon-menu"></i>
                 <span slot="title">费用规则管理</span>
               </el-menu-item>
-              <el-menu-item index="approval">
+              <el-menu-item index="ruleQuery">
                 <i class="el-icon-menu"></i>
-                <span slot="title">审批详情</span>
+                <span slot="title">审批测试发布详情</span>
+              </el-menu-item>
+              <el-menu-item index="5">
+                <i class="el-icon-menu"></i>
+                <span slot="title">执行记录查询</span>
+              </el-menu-item>
+              <el-menu-item index="5">
+                <i class="el-icon-menu"></i>
+                <span slot="title">角色权限</span>
               </el-menu-item>
             </el-menu>
           </el-col>

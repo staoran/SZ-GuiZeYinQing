@@ -50,11 +50,11 @@
         </li>
         <li>
           <p>请选择生效日期</p>
-          <el-date-picker v-model="startDate" type="date" placeholder="请选择生效日期"> </el-date-picker>
+          <el-date-picker v-model="startDate" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" type="date" placeholder="请选择生效日期"> </el-date-picker>
         </li>
         <li>
           <p>请选择失效日期</p>
-          <el-date-picker v-model="endDate" type="date" placeholder="请选择失效日期"> </el-date-picker>
+          <el-date-picker v-model="endDate" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" type="date" placeholder="请选择失效日期"> </el-date-picker>
         </li>
         <li>
           <p>请选择规则状态</p>
