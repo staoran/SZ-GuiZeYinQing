@@ -31,7 +31,7 @@
                 <el-menu-item
                   v-for="(item,k) in NoCarInsurance"
                   :key="k"
-                  :index="item.index"
+                  index="homeRigth"
                 >{{item.name}}</el-menu-item>
               </el-submenu>
               <el-submenu index="3">
@@ -53,11 +53,11 @@
                 <i class="el-icon-menu"></i>
                 <span slot="title">审批测试发布详情</span>
               </el-menu-item>
-              <el-menu-item index="5">
+              <el-menu-item index="record">
                 <i class="el-icon-menu"></i>
                 <span slot="title">规则执行记录</span>
               </el-menu-item>
-              <el-menu-item index="5">
+              <el-menu-item index="homeRigth">
                 <i class="el-icon-menu"></i>
                 <span slot="title">规则流程管理</span>
               </el-menu-item>
@@ -72,7 +72,7 @@
                   :index="item.index"
                 >
                 <i :class="item.icon"></i>
-                {{item.name}}
+                  {{item.name}}
                 </el-menu-item>
               </el-submenu>
             </el-menu>
@@ -143,11 +143,11 @@ export default {
       }],
       setUp:[{
         name : '角色权限',
-        index : 'jsqx',
+        index : 'homeRigth',
         icon :"el-icon-s-custom"
         },{
         name : '码表设置',
-        index : 'mbsz'
+        index : 'homeRigth'
         },{
         name : '因子管理',
         index : 'factorQuery'

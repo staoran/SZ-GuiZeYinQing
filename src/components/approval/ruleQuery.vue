@@ -57,7 +57,7 @@
       </div>
     </div>
     <!-- 列表 -->
-    <div class="list">
+    <div class="list" v-show="ruleList">
       <p class="basic">列表</p>
       <el-table :data="queryList" size="mini" border stripe>
         <el-table-column fixed prop="code" label="规则编码" width="150"></el-table-column>
@@ -86,7 +86,7 @@
       </el-pagination>
     </div>
     <!-- 已发布 -->
-    <div class="releaseList">
+    <div class="releaseList" v-show="releaselist">
       <p class="basic">已发布</p>
       <el-table :data="published" size="mini" border stripe>
         <el-table-column fixed prop="code" label="规则编码" width="150"></el-table-column>
@@ -133,6 +133,8 @@ export default {
       ruleType:"", //规则类型
       currentPage4: 4, //分页
       addFactor: false, // 发布模态框
+      ruleList:false,//列表
+      releaselist:false,//已发布列表
       timing: "", //日期框
       disabled:true, // 默认禁用
       radio:'1', //默认按钮
@@ -232,16 +234,20 @@ export default {
           this.published.push(this.publishData)
           this.publishData = {}
           this.addFactor = false
+          this.radio = '1'
+          this.releaselist = true
         }
       }else{
         console.log(this.publishData)
         this.published.push(this.publishData)
         this.publishData={}
         this.addFactor = false
+          this.radio = '1'
+        this.releaselist = true
       }
     },
     Query(){//查询
-
+      this.ruleList = true
     },
     reset(){//重置
       this.ruleCode="", //规则编码
@@ -250,6 +256,8 @@ export default {
       this.endDate="", // 日期止
       this.ruleState="", //规则状态
       this.ruleType="" //规则类型
+      this.ruleList = false
+      this.releaselist = false
     },
     details(row){
       this.$router.push({name:'customs',query:{id:row.id}})
