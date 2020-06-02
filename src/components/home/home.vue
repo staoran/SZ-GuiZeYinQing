@@ -1,15 +1,14 @@
 <template>
   <el-container>
     <el-header class="title">
-      <img src="../../../static/logo.png" alt="" style="width:110px">
-      规则管理系统
+      <img src="../../../static/logo.png" alt="" style="width:110px;margin-right:20px;">
+      <span>规则管理系统</span>
     </el-header>
     <el-container>
       <el-aside class="left">
         <el-row class="tac" style="height :100%">
           <el-col style="height :100%">
             <el-menu
-              default-active="homeRigth"
               class="el-menu-vertical-demo"
               @open="handleOpen"
               @close="handleClose"
@@ -20,10 +19,10 @@
               :unique-opened="true"
               :router="true"
             >
-              <el-menu-item index="homeRigth">
+              <!-- <el-menu-item index="homeRigth">
                 <i class="el-icon-menu"></i>
                 <span slot="title">主页</span>
-              </el-menu-item>
+              </el-menu-item> -->
               <el-submenu index="2">
                 <template slot="title">
                   <i class="el-icon-location"></i>
@@ -32,8 +31,8 @@
                 <el-menu-item
                   v-for="(item,k) in NoCarInsurance"
                   :key="k"
-                  :index="(2+k*10).toString()"
-                >{{item}}</el-menu-item>
+                  :index="item.index"
+                >{{item.name}}</el-menu-item>
               </el-submenu>
               <el-submenu index="3">
                 <template slot="title">
@@ -43,8 +42,8 @@
                 <el-menu-item
                   v-for="(item,k) in CarInsurance"
                   :key="k"
-                  :index="(3-k*100).toString()"
-                >{{item}}</el-menu-item>
+                  :index="item.index"
+                >{{item.name}}</el-menu-item>
               </el-submenu>
               <el-menu-item index="rules">
                 <i class="el-icon-menu"></i>
@@ -56,12 +55,26 @@
               </el-menu-item>
               <el-menu-item index="5">
                 <i class="el-icon-menu"></i>
-                <span slot="title">执行记录查询</span>
+                <span slot="title">规则执行记录</span>
               </el-menu-item>
               <el-menu-item index="5">
                 <i class="el-icon-menu"></i>
-                <span slot="title">角色权限</span>
+                <span slot="title">规则流程管理</span>
               </el-menu-item>
+              <el-submenu index="xtsz">
+                <template slot="title">
+                  <i class="el-icon-setting"></i>
+                  <span>系统设置</span>
+                </template>
+                <el-menu-item
+                  v-for="(item,k) in setUp"
+                  :key="k"
+                  :index="item.index"
+                >
+                <i :class="item.icon"></i>
+                {{item.name}}
+                </el-menu-item>
+              </el-submenu>
             </el-menu>
           </el-col>
         </el-row>
@@ -84,20 +97,61 @@ export default {
     return {
       Step: "",
       Step2:false,
-      CarInsurance: [
-        "报案",
-        "调度",
-        "查勘",
-        "车易赔",
-        "定损",
-        "人伤",
-        "修理厂",
-        "核价",
-        "核算",
-        "理算",
-        "核赔"
-      ],
-      NoCarInsurance: ["核保规则", "计价规则", "其他规则"],
+      CarInsurance: [{
+        name:'报案',
+        index:'homeRigth'
+        },{
+        name:'调度',
+        index:'homeRigth'
+        },{
+        name:'查勘',
+        index:'homeRigth'
+        },{
+        name:'车易赔',
+        index:'homeRigth'
+        },{
+        name:'定损',
+        index:'homeRigth'
+        },{
+        name:'人伤',
+        index:'homeRigth'
+        },{
+        name:'修理厂',
+        index:'homeRigth'
+        },{
+        name:'核价',
+        index:'homeRigth'
+        },{
+        name:'核算',
+        index:'homeRigth'
+        },{
+        name:'理算',
+        index:'homeRigth'
+        },{
+        name:'核赔',
+        index:'homeRigth'
+      }],
+      NoCarInsurance: [{
+        name:'核保规则',
+        index : "hebaoguize"
+        },{
+        name :'计价规则',
+        index: 'jjgz'
+        },{
+        name :'其他规则',
+        index:'jjgz'
+      }],
+      setUp:[{
+        name : '角色权限',
+        index : 'jsqx',
+        icon :"el-icon-s-custom"
+        },{
+        name : '码表设置',
+        index : 'mbsz'
+        },{
+        name : '因子管理',
+        index : 'factorQuery'
+      }]
     };
   },
   methods: {
@@ -127,7 +181,6 @@ export default {
   padding-left: 20px;
   font-size: 26px;
   font-weight: 800;
-  /* text-align: center; */
 }
 .content {
   display: flex;

@@ -9,8 +9,8 @@
       <p class="basic">基础信息
         
         <span class="addFormula"> 
-          <el-button @click="addformula()" size="mini" type="primary">查询</el-button> 
-          <el-button @click="addformula()" size="mini">重置</el-button> 
+          <el-button @click="Query()" size="mini" type="primary">查询</el-button> 
+          <el-button @click="reset()" size="mini">重置</el-button> 
         </span> 
       </p>
       <div class="">
@@ -79,14 +79,14 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage4"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="10"
+        :page-sizes="[3, 5, 10]"
+        :page-size="5"
         layout="total, sizes, prev, pager, next, jumper"
         :total="109">
       </el-pagination>
     </div>
     <!-- 已发布 -->
-    <div class="list">
+    <div class="releaseList">
       <p class="basic">已发布</p>
       <el-table :data="published" size="mini" border stripe>
         <el-table-column fixed prop="code" label="规则编码" width="150"></el-table-column>
@@ -97,11 +97,7 @@
         <el-table-column prop="state" label="发布状态" width="100"></el-table-column>
         <el-table-column fixed="right" label="操作" >
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">详情</el-button>
-          <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">测试</el-button>
-          <el-button @click="handleClick(scope.row)" type="text" size="small">发布</el-button> -->
-          <!-- <el-button type="text" size="small">详情</el-button>
-          <el-button type="text" size="small">修改</el-button> -->
+          <el-button @click="details(scope.row)" type="text" size="small">详情</el-button>
         </template>
         </el-table-column>
       </el-table>
@@ -126,7 +122,7 @@
 
 <script>
 export default {
-  name: "fixed",
+  name: "ruleQuery",
   data() {
     return {
       ruleCode:"", //规则编码
@@ -215,12 +211,14 @@ export default {
     release(row){//发布
       this.addFactor = true;
       this.publishData = row
+      this.publishData.id = this.published.length+1
     },
     change(){ // 动态实现 日期框禁用
       if(this.radio == 2){
         this.disabled=false
       }else{
         this.disabled = true
+        this.timing = ""
       }
     },
     ent(){//模态框确定
@@ -236,10 +234,25 @@ export default {
           this.addFactor = false
         }
       }else{
+        console.log(this.publishData)
         this.published.push(this.publishData)
         this.publishData={}
         this.addFactor = false
       }
+    },
+    Query(){//查询
+
+    },
+    reset(){//重置
+      this.ruleCode="", //规则编码
+      this.ruleName="", //规则名称
+      this.startDate="", //日期起
+      this.endDate="", // 日期止
+      this.ruleState="", //规则状态
+      this.ruleType="" //规则类型
+    },
+    details(row){
+      this.$router.push({name:'customs',query:{id:row.id}})
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
@@ -247,6 +260,9 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
+    handleClick(row){//已发布详情
+      console.log(row)
+    }
   }
 };
 </script>
@@ -290,10 +306,11 @@ export default {
   border-bottom:1px dashed #000;
   overflow: hidden;
 }
+.releaseList{
+  margin-bottom: 20px;
+}
 .paging{
   float: right;
-  /* margin-top: 20px;
-  margin-right: 30px; */
   margin: 20px 30px 20px 0;
 }
 </style>

@@ -4,7 +4,7 @@
       <div class="floatRight">
         <el-button size="mini" @click="retu()" >返回</el-button>
         <el-button size="mini" type="primary">角色授权</el-button>
-        <el-button size="mini" type="primary">查看规则详情</el-button>
+        <el-button size="mini" @click="lookRule()" type="primary">查看规则详情</el-button>
         <el-button size="mini" @click="testResult()" type="primary">查看测试结果</el-button>
         <el-button size="mini" @click="submit()" type="primary">提交</el-button>
       </div>
@@ -120,6 +120,9 @@
       },
       testResult(){// 查看测试结果
         this.$router.push({name:'testResult'})
+      },
+      lookRule(){//查看规则  跳转假页面
+        this.$router.push({name:'customs'})
       }
     }
   };
@@ -134,21 +137,8 @@
     background-color: #aaaaaa;
     padding: 0 30px 0 20px;
   }
-
-.condition{
-  padding: 15px 0 0 30px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  background-color: #f2f2f2;
-  font-size: 14px;
-}
-.condition li{
-  width: 30%;
-  margin: 0 20px 20px 0;
-}
-.condition li p {
-  margin: 0;
-  margin-bottom: 10px;
-}
+  .condition li{
+    width: 30%;
+    margin: 0 20px 20px 0;
+  }
 </style>

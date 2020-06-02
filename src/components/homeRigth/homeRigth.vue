@@ -36,7 +36,6 @@
       </div>
     </div>
     <div class="Step2" v-show="Step3">
-      
       <div>筛选-->
       </div>
       <ul class="Input">
@@ -74,7 +73,7 @@
       </div>
     </div>
     <!-- 筛选 -->
-    <div>
+    <div v-show="screen">
       <div class="elTable">
         <el-button size="small" type="primary" @click="effect()" plain>生效</el-button>
         <el-button size="small" type="primary" plain>失效</el-button>
@@ -91,10 +90,8 @@
         <el-table-column prop="state" label="状态" width="100"></el-table-column>
         <el-table-column fixed="right" label="操作" >
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">详情</el-button>
+          <el-button @click="details(scope.row)" type="text" size="small">详情</el-button>
           <el-button @click="handleClick(scope.row)" type="text" size="small">修改</el-button>
-          <!-- <el-button type="text" size="small">详情</el-button>
-          <el-button type="text" size="small">修改</el-button> -->
         </template>
         </el-table-column>
       </el-table>
@@ -131,6 +128,7 @@ export default {
       startDate:"", // 生效日期
       endDate:"", // 失效日期
       currentPage4: 4, //分页
+      screen:false,//筛选
       options: [ // 直属机构信息
         {
           value: "shanghai",
@@ -407,16 +405,17 @@ export default {
       }
     },
     query(){ //查询
-      if(!this.ruleState && !this.ruleName && !this.ruleCode && !this.startDate && !this.endDate){
-        this.$message({
-          message: "请输入查询条件",
-          type: "error",
-          center: true,
-          duration: 2000
-        });
-      }else{
+      // if(!this.ruleState && !this.ruleName && !this.ruleCode && !this.startDate && !this.endDate){
+        // this.$message({
+        //   message: "请输入查询条件",
+        //   type: "error",
+        //   center: true,
+        //   duration: 2000
+        // });
+      // }else{
         // alert(";adgf")
-      }
+        this.screen=true
+      // }
     },
     Reset(){ //重置
       this.ruleState= "", //规则状态绑定值
@@ -424,6 +423,7 @@ export default {
       this.ruleCode="", // 规则编码
       this.startDate="", // 生效日期
       this.endDate="" // 失效日期
+      this.screen = false
     },
     effect(){
       this.tableData.forEach( item => {
@@ -431,15 +431,18 @@ export default {
       });
       // console.log(id)
     },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
-      handleClick(row) {
-        console.log(row);
-      }
+    details(row){
+      this.$router.push({name:'customs' ,query:{id:row.id}})
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+    handleClick(row) {
+      console.log(row);
+    }
   }
 };
 </script>

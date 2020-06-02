@@ -2,7 +2,7 @@
   <div>
     <!-- title -->
     <div class="fixedTitle">
-      核赔规则编辑（自定义规则）
+      核赔规则编辑（详情）
       <div class="floatRight">
         <el-button size="mini" @click="retu()" >返回</el-button>
         <el-button size="mini" type="primary">暂存</el-button>
@@ -87,8 +87,6 @@
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.row)" type="text" size="small">配置限定值</el-button>
               <el-button @click="deleData(scope.row)" type="text" size="small">删除</el-button>
-              <!-- <el-button type="text" size="small">配置限定值</el-button>
-              <el-button type="text" size="small">删除</el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -183,7 +181,9 @@
       <el-table size="mini" :data="configure" border style="width: 100%; margin-bottom: 10px; ">
         <el-table-column prop="name" label="因子名称" width="300"> </el-table-column>
         <el-table-column label="限定值" width="200">
-          <input type="text" v-model="configure.key">
+          <template slot-scope="scope">
+            <el-input size="mini" v-model="scope.row.index" > </el-input>
+          </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">
@@ -202,22 +202,22 @@
 
 <script>
 export default {
-  name: "fixed",
+  name: "customs",
   data() {
     return {
-      ruleCode:"", //规则编码
-      ruleName:"", //规则名称
-      startDate:"", //日期起
-      endDate:"", // 日期止
-      ruleState:"", //规则状态
-      edition:"", //版本号
-      editionState:"", //版本状态
-      ruleType:"", //规则类型
+      ruleCode:"R000001", //规则编码
+      ruleName:"佣金费用规则001", //规则名称
+      startDate:"2020-01-29", //日期起
+      endDate:"2020-02-20", // 日期止
+      ruleState:"有效", //规则状态
+      edition:"V02", //版本号
+      editionState:"已生效", //版本状态
+      ruleType:"草稿", //规则类型
       addFactor: false, // 添加因子模态框
       LimitValue:false, //限定值模态框
       formulas:false, // 公式显示隐藏
       addName:"",  //新增因子名称
-      textarea:"",
+      textarea:"(出险原因 = 火灾或自燃）",
       rule:[{ // 规则状态数据
         value: '0',
         label: '草稿'
@@ -258,6 +258,7 @@ export default {
         id : 1,
         name: '核赔单/自动理赔单/是否水淹车',
         Valuetype : '布尔值',
+        index:'',
       }],
       rows : {}, //配置限定值数据
       configure: [], //配置限定值数据
@@ -339,23 +340,6 @@ export default {
         value: '5',
         label: '发布中'
       }],
-      State:[{ // 版本状态数据
-        value: 'kaifa',
-        label: '开发中'
-        }, {
-        value: 'shengxiao',
-        label: '已生效'
-        }, {
-        value: 'shixiao',
-        label: '已失效'
-      }],
-      Type:[{ // 规则类型数据
-        value: 'zdy',
-        label: '自定义'
-        }, {
-        value: 'gd',
-        label: '固定'
-      }],
       symbol: [{ //逻辑数据
         label: '('
         }, {
@@ -364,6 +348,16 @@ export default {
           label: '>'
         }, {
           label: '<'
+        }, {
+          label: '='
+      
+        }, {
+          label: '<='
+        
+        }, {
+          label: '>='
+        }, {
+          label: '且'
         }, {
         label: '或'
       }],
@@ -474,21 +468,17 @@ export default {
           this.arr.push(this.symbolValue)
           this.arr.push(this.factorValue)
           this.arr.push(this.fixedValue)
-          this.textarea=this.arr.join(" ")
+          this.textarea=this.arr.join("")
           this.symbolValue=""
           this.factorValue=""
           this.fixedValue=""
         }
-        this.arr.push(this.symbolValue)
-        this.arr.push(this.factorValue)
-        this.arr.push(this.fixedValue)
-        this.textarea=this.arr.join(" ")
-        this.symbolValue=""
-        this.factorValue=""
-        this.fixedValue=""
       },
     details(){//审批详情
       this.$router.push({name:'approval'})
+    },
+    dayin(row){
+      console.log(row)
     }
   }
 };
