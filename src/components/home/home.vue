@@ -6,7 +6,7 @@
     </el-header>
     <el-container>
       <el-aside class="left">
-        <el-row class="tac" style="height :100%">
+        <el-row style="height :100%">
           <el-col style="height :100%">
             <el-menu
               class="el-menu-vertical-demo"
@@ -96,7 +96,6 @@ export default {
   data() {
     return {
       Step: "",
-      Step2:false,
       CarInsurance: [{
         name:'报案',
         index:'homeRigth'
@@ -188,8 +187,7 @@ export default {
 }
 .left {
   width: 250px !important;
-  height: 100%;
-  float: left;
+  /* height: 100%; */
 }
 .rigth {
   margin-bottom: 50px;
