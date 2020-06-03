@@ -31,7 +31,7 @@
                 <el-menu-item
                   v-for="(item,k) in NoCarInsurance"
                   :key="k"
-                  index="homeRigth"
+                  :index="item.index"
                 >{{item.name}}</el-menu-item>
               </el-submenu>
               <el-submenu index="3">
@@ -136,7 +136,7 @@ export default {
         index : "hebaoguize"
         },{
         name :'计价规则',
-        index: 'jjgz'
+        index: 'valuation'
         },{
         name :'其他规则',
         index:'jjgz'

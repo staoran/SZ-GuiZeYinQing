@@ -46,7 +46,6 @@
             <el-button @click="details(scope.row)" type="text" size="small">详情</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="选择" prop="id" type="selection" width="100px" > </el-table-column>
       </el-table>
       <el-pagination
         class="paging"

@@ -152,8 +152,24 @@
             </el-input>
           </div>
           <span class="result">核赔结果</span>
-          <div class="formula" style="margin-top :0;">
-            cx 
+          <div class="Btngroup" style="margin-top: 5px;">
+            <el-select v-model="getValue" class="Symbol" size="mini" placeholder="选择因子">
+              <el-option
+                v-for="item in factor"
+                :key="item.value"
+                :label="item.label"
+                :value="item.label">
+              </el-option>
+            </el-select>
+            <el-button @click="get()" size="mini" type="primary">获取结果</el-button>
+          </div>
+          <div style="margin: 0 10px;">
+            <el-input
+              type="textarea"
+              :disabled="true"
+              :rows="1"
+              v-model="result">
+            </el-input>
           </div>
         </div>
           </el-form-item>
@@ -219,7 +235,9 @@ export default {
       LimitValue:false, //限定值模态框
       formulas:false, // 公式显示隐藏
       addName:"",  //新增因子名称
-      textarea:"",
+      textarea:"",//规则
+      result:"",//结果
+      getValue: "",//获取结果选择因子
       rule:[{ // 规则状态数据
         value: '0',
         label: '草稿'
@@ -408,7 +426,7 @@ export default {
         let addTable = {
           name : this.addName.join("/"),
           id : this.tableData.length+1,
-          Valuetype : '布尔值',
+          Valuetype : '布尔值',//判断值 ，或者说是后台
         }
         this.tableData.push(addTable)
         this.addFactor = false
@@ -466,16 +484,28 @@ export default {
           center: true,
           duration: 2000
         });
-        }else{
-          this.arr.push(this.symbolValue)
-          this.arr.push(this.factorValue)
-          this.arr.push(this.fixedValue)
-          this.textarea=this.arr.join("")
-          this.symbolValue=""
-          this.factorValue=""
-          this.fixedValue=""
-        }
-      },
+      }else{
+        this.arr.push(this.symbolValue)
+        this.arr.push(this.factorValue)
+        this.arr.push(this.fixedValue)
+        this.textarea=this.arr.join("")
+        this.symbolValue=""
+        this.factorValue=""
+        this.fixedValue=""
+      }
+    },
+    get(){
+      if(!this.getValue){
+        this.$message({
+          message: "请选择需要判断的因子值",
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }else{
+        this.result = this.getValue+"="+"成立"
+      }
+    },
     details(){//审批详情
       this.$router.push({name:'approval'})
     },
@@ -538,7 +568,7 @@ export default {
 }
 .result{
   font-size: 14px;
-  margin: 10px 0px;
+  /* margin: 10px 0px; */
   display: inline-block;
 }
 .Symbol{
