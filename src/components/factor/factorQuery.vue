@@ -43,7 +43,6 @@
         <el-table-column label="操作" >
           <template slot-scope="scope">
             <el-button @click="edit(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button @click="details(scope.row)" type="text" size="small">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -122,9 +121,6 @@ export default {
     edit(row){
       // alert('编辑也跳转页面'+row.id)
       this.$router.push({name:"factorEdit",query:{id:row.id}})
-    },
-    details(row){//详情
-      this.$router.push({name:"customs" ,query:{id:row.id}})
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
