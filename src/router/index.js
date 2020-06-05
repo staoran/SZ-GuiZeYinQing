@@ -12,9 +12,12 @@ import TestResult from "@/components/Approval/testResult"
 //费用规则管理
 import Rules from "@/components/rules/rules"
 import CostPZ from "@/components/rules/costPZ"
+// 设置页面
+import Role from "@/components/setUp/role"
 // 因子管理页面
-import FactorQuery from "@/components/factor/factorQuery"
-import FactorEdit from "@/components/factor/factorEdit"
+import FactorQuery from "@/components/setUp/factor/factorQuery"
+import FactorEdit from "@/components/setUp/factor/factorEdit"
+
 // 规则执行记录页面
 import Record from "@/components/record/record"
 //非车险规则管理
@@ -80,6 +83,12 @@ export default new Router({
           path: 'costPZ',
           name : "costPZ",
           component: CostPZ,
+          meta: { keepAlive: true } //缓存当前页面信息
+        },
+        {//角色权限
+          path: 'role',
+          name : "role",
+          component: Role,
           meta: { keepAlive: true } //缓存当前页面信息
         },
         {//编辑因子

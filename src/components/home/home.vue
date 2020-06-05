@@ -25,18 +25,19 @@
               </el-menu-item> -->
               <el-submenu index="2">
                 <template slot="title">
-                  <i class="el-icon-location"></i>
+                  <i class="el-icon-s-management"></i>
                   <span>非车险规则管理</span>
                 </template>
                 <el-menu-item
                   v-for="(item,k) in NoCarInsurance"
                   :key="k"
                   :index="item.index"
-                >{{item.name}}</el-menu-item>
+                >
+                <i :class="item.icon"></i>{{item.name}}</el-menu-item>
               </el-submenu>
               <el-submenu index="3">
                 <template slot="title">
-                  <i class="el-icon-location"></i>
+                  <i class="el-icon-truck"></i>
                   <span>车险规则管理</span>
                 </template>
                 <el-menu-item
@@ -46,19 +47,19 @@
                 >{{item.name}}</el-menu-item>
               </el-submenu>
               <el-menu-item index="rules">
-                <i class="el-icon-menu"></i>
+                <i class="el-icon-coin"></i>
                 <span slot="title">费用规则管理</span>
               </el-menu-item>
               <el-menu-item index="ruleQuery">
-                <i class="el-icon-menu"></i>
+                <i class="el-icon-s-check"></i>
                 <span slot="title">审批测试发布详情</span>
               </el-menu-item>
               <el-menu-item index="record">
-                <i class="el-icon-menu"></i>
+                <i class="el-icon-edit-outline"></i>
                 <span slot="title">规则执行记录</span>
               </el-menu-item>
               <el-menu-item index="homeRigth">
-                <i class="el-icon-menu"></i>
+                <i class="el-icon-s-marketing"></i>
                 <span slot="title">规则流程管理</span>
               </el-menu-item>
               <el-submenu index="xtsz">
@@ -132,24 +133,29 @@ export default {
       }],
       NoCarInsurance: [{
         name:'核保规则',
-        index : "hebaoguize"
+        index : "valuation",
+        icon:"el-icon-document-copy"
         },{
         name :'计价规则',
-        index: 'valuation'
+        index: 'valuation',
+        icon:"el-icon-paperclip"
         },{
         name :'其他规则',
-        index:'jjgz'
+        index:'valuation',
+        icon :"el-icon-s-order"
       }],
       setUp:[{
         name : '角色权限',
-        index : 'homeRigth',
+        index : 'role',
         icon :"el-icon-s-custom"
         },{
         name : '码表设置',
-        index : 'homeRigth'
+        index : 'homeRigth',
+        icon:"el-icon-s-operation"
         },{
         name : '因子管理',
-        index : 'factorQuery'
+        index : 'factorQuery',
+        icon : "el-icon-s-data"
       }]
     };
   },

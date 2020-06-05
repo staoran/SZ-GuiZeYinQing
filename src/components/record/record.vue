@@ -42,20 +42,13 @@
       <p class="basic"> </p>
       <div class="factorTable">
         <el-table size="mini" :data="tableData" border style="width: 100%; margin-bottom: 10px; ">
+          <el-table-column prop="numbers" label="理赔单号" > </el-table-column>
           <el-table-column prop="code" label="规则编码" > </el-table-column>
-          <el-table-column prop="channel" label="渠道类型"> </el-table-column>
-          <el-table-column prop="cost" label="费用类型"> </el-table-column>
-          <el-table-column prop="startDate" label="有效起期" > </el-table-column>
+          <el-table-column prop="version" label="规则版本"> </el-table-column>
+          <el-table-column prop="name" label="规则名称"> </el-table-column>
+          <el-table-column prop="startDate" width="200" label="执行时间" > </el-table-column>
           <el-table-column prop="endDate" label="有效止期" > </el-table-column>
-          <el-table-column prop="state" label="状态" > </el-table-column>
-          <el-table-column fixed="right" label="操作" width="200px">
-            <template slot-scope="scope">
-              <el-button @click="(scope.row)" type="text" size="small">修改</el-button>
-              <el-button type="text" size="small">详情</el-button>
-              <el-button type="text" size="small">失效</el-button>
-              <el-button type="text" size="small">复制</el-button>
-            </template>
-          </el-table-column>
+          <el-table-column prop="state" label="执行状态" > </el-table-column>
         </el-table> 
         <el-pagination
         class="paging"
@@ -86,12 +79,31 @@ export default {
       currentPage4: 4, //分页
       tableData: [{ //配置因子表格数据
         id : 1,
+        numbers:'00001',
         code: 'R000001',
-        channel : '布尔值',
-        cost:'佣金',
+        version : 'V01',
+        name:'佣金费用规则001',
         startDate:'2020-1-22',
         endDate:'2022-2-20',
-        state:'有效'
+        state:'成功'
+        },{
+        id : 2,
+        numbers:'100001',
+        code: 'R000002',
+        version : 'V01',
+        name:'计价规则002',
+        startDate:'2020-2-23',
+        endDate:'2023-1-22',
+        state:'失败'
+        },{
+        id : 3,
+        numbers:'100001',
+        code: 'R000003',
+        version : 'V01',
+        name:'计价规则003',
+        startDate:'2020-1-24',
+        endDate:'2024-1-22',
+        state:'成功'
       }],
     };
     

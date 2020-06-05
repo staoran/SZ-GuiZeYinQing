@@ -101,7 +101,7 @@
         let arr = {
           name : "",
           id : this.factorData.length+1,
-          type : (this.factorState == '枚举值')? "区间枚举值" : this.factorState,
+          type : "区间枚举值" ,
           value: ""
         }
         this.factorData.push(arr)
