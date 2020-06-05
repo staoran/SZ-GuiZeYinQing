@@ -465,7 +465,6 @@ export default {
         fatherId : this.rows.id
       }
       this.configure.push(configures)
-      //
     },
     LimitValueEnt(){ //配置限定值确认按钮
       this.fixed = this.configure.map(item => {
@@ -474,7 +473,7 @@ export default {
           index : item.fatherId
         }
       })
-      console.log(this.fixed)
+      console.log(this.configure)
       this.LimitValue = false
     },
     deleline(){//置空

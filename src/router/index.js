@@ -22,6 +22,7 @@ import FactorEdit from "@/components/setUp/factor/factorEdit"
 import Record from "@/components/record/record"
 //非车险规则管理
 import Valuation from "@/components/notCarInsurance/valuation"
+import NotCarInsurance from "@/components/notCarInsurance/notCarInsurance"
 //假数据页面
 import Customs from "@/components/homeRigth/customs"
 Vue.use(Router)
@@ -113,6 +114,12 @@ export default new Router({
           path: 'valuation',
           name : "valuation",
           component: Valuation,
+          meta: { keepAlive: true } //缓存当前页面信息
+        },
+        { //非车险管理
+          path: 'notCarInsurance',
+          name : "notCarInsurance",
+          component: NotCarInsurance,
           meta: { keepAlive: true } //缓存当前页面信息
         },
         { //假数据页面

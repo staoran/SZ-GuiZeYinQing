@@ -19,22 +19,6 @@
               :unique-opened="true"
               :router="true"
             >
-              <!-- <el-menu-item index="homeRigth">
-                <i class="el-icon-menu"></i>
-                <span slot="title">主页</span>
-              </el-menu-item> -->
-              <el-submenu index="2">
-                <template slot="title">
-                  <i class="el-icon-s-management"></i>
-                  <span>非车险规则管理</span>
-                </template>
-                <el-menu-item
-                  v-for="(item,k) in NoCarInsurance"
-                  :key="k"
-                  :index="item.index"
-                >
-                <i :class="item.icon"></i>{{item.name}}</el-menu-item>
-              </el-submenu>
               <el-submenu index="3">
                 <template slot="title">
                   <i class="el-icon-truck"></i>
@@ -46,6 +30,10 @@
                   :index="item.index"
                 >{{item.name}}</el-menu-item>
               </el-submenu>
+              <el-menu-item index="notCarInsurance">
+                <i class="el-icon-s-management"></i>
+                <span slot="title">非车险规则管理</span>
+              </el-menu-item>
               <el-menu-item index="rules">
                 <i class="el-icon-coin"></i>
                 <span slot="title">费用规则管理</span>
