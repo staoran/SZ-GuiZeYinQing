@@ -132,143 +132,52 @@ export default {
       options: [ // 直属机构信息
         {
           value: "shanghai",
-          label: "上海分公司",
-          children: [
-            {
-              value: "shanghaishi",
-              label: "上海市",
-              children: [
-                {
-                  value: "pudongxinqu",
-                  label: "浦东新区"
-                },
-                {
-                  value: "minhang",
-                  label: "闵行"
-                },
-                {
-                  value: "huangpu",
-                  label: "黄浦"
-                },
-                {
-                  value: "xuhui",
-                  label: "徐汇"
-                }
-              ]
-            }
-          ]
+          label: "总公司",
+          children: [{
+            value: "chengdu",
+            label: "成都电话中心",
+          },{
+            value: "shanghaiDH",
+            label: "上海电话中心",
+          },{
+            value: "wuhanDH",
+            label: "武汉电话中心",
+          },{
+            value: "shanghaishi",
+            label: "上海分公司",
+            children: [{
+              value: "pudongxinqu",
+              label: "上海分公司"
+            }]
+          },{
+            value: "beijishi",
+            label:"北京分公司",
+            children: [{
+              value: "dongcheng",
+              label: "东城营业部"
+              },{
+              value: "huairou",
+              label: "怀柔支公司"
+              },{
+              value: "sjs",
+              label: "石景山支公司"
+            }]
+          },{
+            value: "shenz",
+            label: "深圳分公司",
+            children: [{
+              value: "szdx",
+              label: "深圳分公司电话销售业务部"
+            }]
+          },{
+            value: "wz",
+            label: "温州分公司",
+            children: [{
+              value: "ruian",
+              label: "瑞安支公司"
+            }]
+          }]
         },
-        {
-          value: "beijing",
-          label: "北京分公司",
-          children: [
-            {
-              value: "beijingshi",
-              label: "北京市",
-              children: [
-                {
-                  value: "chaoyang",
-                  label: "朝阳区"
-                },
-                {
-                  value: "shunyi",
-                  label: "顺义区"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: "hebei",
-          label: "河北分公司",
-          children: [
-            {
-              value: "shijiazhuang",
-              label: "石家庄市",
-              children: [
-                {
-                  value: "changan",
-                  label: "长安区"
-                },
-                {
-                  value: "yuhua",
-                  label: "裕华区"
-                },
-                {
-                  value: "luancheng",
-                  label: "栾城县"
-                }
-              ]
-            },
-            {
-              value: "tangshan",
-              label: "唐山市",
-              children: [
-                {
-                  value: "caofeidian",
-                  label: "曹妃甸区"
-                },
-                {
-                  value: "qianxi",
-                  label: "迁西县"
-                }
-              ]
-            },
-            {
-              value: "qinhuangdao",
-              label: "秦皇岛市",
-              children: [
-                {
-                  value: "beidaihe",
-                  label: "北戴河区"
-                },
-                {
-                  value: "shanhaiguan",
-                  label: "山海关区"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: "shanxi",
-          label: "山西分公司",
-          children: [
-            {
-              value: "changzhi",
-              label: "长治市",
-              children: [
-                {
-                  value: "shangdang",
-                  label: "上党区"
-                },
-                {
-                  value: "luzhou",
-                  label: "潞州区"
-                }
-              ]
-            },
-            {
-              value: "datong",
-              label: "大同市",
-              children: [
-                {
-                  value: "caofeidian",
-                  label: "曹妃甸区"
-                },
-                {
-                  value: "qianxi",
-                  label: "迁西县"
-                }
-              ]
-            },
-            {
-              value: "datong",
-              label: "大同市",
-              children: []
-            }
-          ]
-        }
       ],
       tableData: [ // 表格数据
         {
@@ -405,15 +314,6 @@ export default {
       }
     },
     query(){ //查询
-      // if(!this.ruleState && !this.ruleName && !this.ruleCode && !this.startDate && !this.endDate){
-        // this.$message({
-        //   message: "请输入查询条件",
-        //   type: "error",
-        //   center: true,
-        //   duration: 2000
-        // });
-      // }else{
-        // alert(";adgf")
         this.screen=true
       // }
     },
@@ -492,5 +392,8 @@ export default {
 .el-table__fixed-header-wrapper th{
   background-color: #d7d7d7;
   text-align: center;
+}
+.el-cascader{
+  width: 400px !important;
 }
 </style>

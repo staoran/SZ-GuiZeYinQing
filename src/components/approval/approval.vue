@@ -3,7 +3,7 @@
     <div class="fixedTitle">审核规则
       <div class="floatRight">
         <el-button size="mini" @click="retu()" >返回</el-button>
-        <el-button size="mini" type="primary">角色授权</el-button>
+        <el-button size="mini" @click="empower()" type="primary">角色授权</el-button>
         <el-button size="mini" @click="lookRule()" type="primary">查看规则详情</el-button>
         <el-button size="mini" @click="testResult()" type="primary">查看测试结果</el-button>
         <el-button size="mini" @click="submit()" type="primary">提交</el-button>
@@ -99,24 +99,27 @@
        this.$router.go(-1)
       },
       submit(){//提交
-      if(!this.endDate && !this.editionState && !this.ruleState && !this.textarea){
-        this.$message({
-          message: '请输入审核信息',
-          type: 'warning'
-        });
-      }else{
-        let sub = {
-          date : this.endDate,
-          name : this.editionState,
-          result : this.ruleState,
-          opinion : this.textarea
+        if(!this.endDate && !this.editionState && !this.ruleState && !this.textarea){
+          this.$message({
+            message: '请输入审核信息',
+            type: 'warning'
+          });
+        }else{
+          let sub = {
+            date : this.endDate,
+            name : this.editionState,
+            result : this.ruleState,
+            opinion : this.textarea
+          }
+          this.tableData.push(sub),
+          this.endDate = "",
+          this.editionState="",
+          this.ruleState="",
+          this.textarea=""
         }
-        this.tableData.push(sub),
-        this.endDate = "",
-        this.editionState="",
-        this.ruleState="",
-        this.textarea=""
-      }
+      },
+      empower(){
+        this.$router.push({name:"role"})
       },
       testResult(){// 查看测试结果
         this.$router.push({name:'testResult'})

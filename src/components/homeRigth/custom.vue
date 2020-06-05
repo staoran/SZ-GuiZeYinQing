@@ -397,7 +397,6 @@ export default {
       }],
       factor: [],// 因子
       fixed:[],//固定值
-      configures:{},
       symbolValue: '', //逻辑
       factorValue: '', //因子
       fixedValue:"", //固定值
@@ -413,7 +412,6 @@ export default {
       this.addFactor=true
     },
     ent(){ //添加因子确认
-      // console.log(this.$refs['teer']);
       if(!this.addName){
         this.$message({
           message: "请输入因子名称",
@@ -441,12 +439,8 @@ export default {
     },
     handleClick(row) { //配置限定值
       this.LimitValue = true
-      this.configures = {
-        name : row.name,
-        Valuetype : row.Valuetype,
-        id : this.configure.length+1,
-        index:'',
-      }
+      this.rows = row
+      
     },
     deleData(row){ //删除因子
       this.tableData.forEach((item,k) => {
@@ -463,15 +457,24 @@ export default {
       })
     },
     addline(){ // 配置限定值添加行
-      this.configure.push(this.configures)
+      let configures = {
+        name : this.rows.name,
+        Valuetype : this.rows.Valuetype,
+        id : this.configure.length+1,
+        index:'',
+        fatherId : this.rows.id
+      }
+      this.configure.push(configures)
+      //
     },
     LimitValueEnt(){ //配置限定值确认按钮
-      this.configure.forEach(item => {
-        let label = {
-          label : item.index
+      this.fixed = this.configure.map(item => {
+        return {
+          label : item.index,
+          index : item.fatherId
         }
-        this.fixed.push(label)
       })
+      console.log(this.fixed)
       this.LimitValue = false
     },
     deleline(){//置空
