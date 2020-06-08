@@ -96,10 +96,16 @@
           <el-table-column prop="name" label="因子名称" width="300"> </el-table-column>
           <el-table-column prop="Valuetype" label="取值类型" width="180"> </el-table-column>
           <el-table-column label="是否输出"  width="180">
-            <el-checkbox label="输出值" name="type"></el-checkbox>
+            <template slot-scope="scope">
+              <el-checkbox 
+                v-model="scope.row.checked" 
+                @change="onchange(scope.row)" 
+                label="输出值" 
+                name="type">
+              </el-checkbox>
+            </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" >
-            <!-- <template> -->
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.row)" type="text" size="small">配置限定值</el-button>
               <el-button @click="deleData(scope.row)" type="text" size="small">删除</el-button>
@@ -130,7 +136,7 @@
           <span style="font-size:14px" >满足条件</span>
           <div class="Btngroup" >
             <el-button @click.prevent="removeDomain(domain)" size="mini" type="primary" plain>删除公式</el-button>
-            <el-select v-model="symbolValue" class="Symbol" size="mini" placeholder="选择符号">
+            <el-select v-model="symbolValue" class="Symbol" size="mini" clearable placeholder="选择符号">
               <el-option
                 v-for="item in symbol"
                 :key="item.value"
@@ -138,7 +144,7 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-select v-model="factorValue" @change="choice" class="Symbol" size="mini" placeholder="选择因子">
+            <el-select v-model="factorValue" class="Symbol" size="mini" clearable placeholder="选择因子">
               <el-option
                 v-for="item in factor"
                 :key="item.value"
@@ -146,7 +152,7 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-select v-model="fixedValue" @visible-change="xuanze" style="width:120px"  size="mini" placeholder="选择固定值">
+            <el-select v-model="fixedValue" @visible-change="FixedValue" clearable style="width:120px"  size="mini" placeholder="选择固定值">
               <el-option
                 v-for="item in fixed"
                 :key="item.value"
@@ -168,17 +174,17 @@
           </div>
           <span class="result">核赔结果</span>
           <div class="Btngroup" style="margin-top: 5px;">
-            <el-select v-model="getValue" class="Symbol" size="mini" placeholder="选择因子">
+            <el-select v-model="getValue" class="Symbol" clearable  size="mini" placeholder="选择因子">
               <el-option
-                v-for="item in factor"
+                v-for="item in resultFactor"
                 :key="item.value"
                 :label="item.label"
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-select v-model="getFixed" style="width:120px" size="mini" placeholder="选择固定值">
+            <el-select v-model="getFixed" @visible-change="resultFixed" clearable style="width:120px" size="mini" placeholder="选择固定值">
               <el-option
-                v-for="item in fixed"
+                v-for="item in resultfixed"
                 :key="item.value"
                 :label="item.label"
                 :value="item.label">
@@ -298,7 +304,7 @@ export default {
       tableData: [],//配置因子表格数据
       rows : {}, //配置限定值数据
       TotalData: [],//总数据
-      configure: [], //配置限定值数据
+      configure: [], //配置限定值显示数据
       options: [{ //添加因子数据 
         value: "核赔单",
         label: "核赔单",
@@ -394,8 +400,10 @@ export default {
         label: '或'
       }],
       factor: [],// 因子
+      resultFactor: [],//结果因子框
       fixeds:[],// 存放所有固定值的数据框
       fixed:[],//固定值
+      resultfixed:[],//获取结果固定值
       symbolValue: '', //逻辑
       factorValue: '', //因子
       fixedValue:"", //固定值
@@ -423,6 +431,7 @@ export default {
           name : this.addName.join("/"),
           id : this.tableData.length+1,
           Valuetype : '文本值',//判断值 ，或者说是后台
+          checked:false,//复选框默认状态
         }
         let arr = addTable.name.split("/")
         let str = arr.slice(-1)
@@ -440,15 +449,14 @@ export default {
       this.LimitValue = true
       this.rows = row
       // 根据不同的fatherID获取不同的数据
-      this.configure = []
-      if(this.TotalData.length !== 0){
-        this.TotalData.forEach(item => {
-          if(item.fatherId === row.id){
-            this.configure.push(item)
+      this.configure = [] //先把用于展示的数组清空
+      if(this.TotalData.length !== 0){ //判断是否有数据
+        this.TotalData.forEach(item => { //循环数组中里面的数据
+          if(item.fatherId === row.id){ //通过id查找当前行的数据
+            this.configure.push(item) //添加到展示的数组里
           }
         })
       }
-
     },
     deleData(row){ //删除因子
       this.tableData.forEach((item,k) => {
@@ -477,8 +485,8 @@ export default {
         index:'',
         fatherId : this.rows.id
       }
-      this.configure.push(configures)
-      this.TotalData.push(configures)
+      this.configure.push(configures)//往展示的数组里添加数据
+      this.TotalData.push(configures)//往存放所有数据的数组里添加数据
     },
     LimitValueEnt(){ //配置限定值确认按钮
       this.fixeds = this.TotalData.map(item => {
@@ -506,7 +514,7 @@ export default {
         this.dynamicValidateForm.domains.splice(index, 1)
       }
     },
-    xuanze(){
+    FixedValue(){
       if(!this.factorValue){
         this.fixed = this.fixeds
       }else{
@@ -517,8 +525,6 @@ export default {
           }
         })
       }
-    },
-    choice(){
     },
     addCondition(){ // 添加条件
       if(!this.symbolValue && !this.factorValue && !this.fixedValue){
@@ -553,7 +559,37 @@ export default {
         this.textarea=this.arr.join("")
       }
     },
-    get(){
+    onchange(row){//获取结果选择因子
+    // 判断当前是否选中
+      if(row.checked){
+        // 选中 数组里面添加
+        this.factor.forEach(item => {
+          if(row.id === item.id){
+            this.resultFactor.push(item)
+          }
+        })
+      }else{
+        // 没选中移除
+        this.resultFactor.forEach((item,k) => {
+          if(row.id === item.id){
+            this.resultFactor.splice(k,1)
+          }
+        })
+      }
+    },
+    resultFixed(){//获取结果选择固定值
+      if(!this.getValue){
+        this.resultfixed = this.fixeds
+      }else{
+        this.resultfixed=[]
+        this.fixeds.forEach(item => {
+          if(this.getValue === item.fatherName){
+            this.resultfixed.push(item)
+          }
+        })
+      }
+    },
+    get(){ //获取结果
       if(!this.getValue){
         this.$message({
           message: "请选择需要判断的因子值",
@@ -562,8 +598,10 @@ export default {
           duration: 2000
         });
       }else{
-        this.result = this.getValue+"="+"成立"
+        this.result = this.getValue+"="+this.getFixed
       }
+      this.getValue = ''
+      this.getFixed = ''
     },
     details(){//审批详情
       this.$router.push({name:'approval'})
