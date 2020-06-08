@@ -457,11 +457,14 @@ export default {
       })
     },
     deleDatass(row){//删除限定值
-    // console.log(row)
-    // console.log(this.TotalData)
       this.configure.forEach((item,k) => {
         if(row.id === item.id){
           this.configure.splice(k,1)
+        }
+      })
+      this.TotalData.forEach((item,k) => {
+        if(row.fatherId === item.fatherId && row.index === item.index){
+          this.TotalData.splice(k,1)
         }
       })
     },
