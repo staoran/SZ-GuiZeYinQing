@@ -297,6 +297,7 @@ export default {
       }],
       tableData: [],//配置因子表格数据
       rows : {}, //配置限定值数据
+      TotalData: [],//总数据
       configure: [], //配置限定值数据
       options: [{ //添加因子数据 
         value: "核赔单",
@@ -340,17 +341,14 @@ export default {
           value: "报案号",
           label: "报案号",
           id:3,
-          // children: []
         },{
           value: "任务类型",
           label: "任务类型",
           id :4,
-          // children: []
         },{
           value: "分公司代码",
           label: "分公司代码",
           id :5,
-          // children: []
         }]
       }],
       dynamicValidateForm: {//动态添加
@@ -440,7 +438,16 @@ export default {
     handleClick(row) { //配置限定值
       this.LimitValue = true
       this.rows = row
-      
+      // 根据不同的fatherID获取不同的数据
+      this.configure = []
+      if(this.TotalData.length !== 0){
+        this.TotalData.forEach(item => {
+          if(item.fatherId === row.id){
+            this.configure.push(item)
+          }
+        })
+      }
+
     },
     deleData(row){ //删除因子
       this.tableData.forEach((item,k) => {
@@ -450,6 +457,8 @@ export default {
       })
     },
     deleDatass(row){//删除限定值
+    // console.log(row)
+    // console.log(this.TotalData)
       this.configure.forEach((item,k) => {
         if(row.id === item.id){
           this.configure.splice(k,1)
@@ -465,15 +474,15 @@ export default {
         fatherId : this.rows.id
       }
       this.configure.push(configures)
+      this.TotalData.push(configures)
     },
     LimitValueEnt(){ //配置限定值确认按钮
-      this.fixed = this.configure.map(item => {
+      this.fixed = this.TotalData.map(item => {
         return {
           label : item.index,
           index : item.fatherId
         }
       })
-      console.log(this.configure)
       this.LimitValue = false
     },
     deleline(){//置空
