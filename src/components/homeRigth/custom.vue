@@ -138,7 +138,7 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-select v-model="factorValue" class="Symbol" size="mini" placeholder="选择因子">
+            <el-select v-model="factorValue" @change="choice" class="Symbol" size="mini" placeholder="选择因子">
               <el-option
                 v-for="item in factor"
                 :key="item.value"
@@ -146,7 +146,7 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-select v-model="fixedValue" style="width:120px" size="mini" placeholder="选择固定值">
+            <el-select v-model="fixedValue" @visible-change="xuanze" style="width:120px"  size="mini" placeholder="选择固定值">
               <el-option
                 v-for="item in fixed"
                 :key="item.value"
@@ -394,6 +394,7 @@ export default {
         label: '或'
       }],
       factor: [],// 因子
+      fixeds:[],// 存放所有固定值的数据框
       fixed:[],//固定值
       symbolValue: '', //逻辑
       factorValue: '', //因子
@@ -417,7 +418,7 @@ export default {
           center: true,
           duration: 2000
         });
-      }else{ 
+      }else{
         let addTable = {
           name : this.addName.join("/"),
           id : this.tableData.length+1,
@@ -480,10 +481,11 @@ export default {
       this.TotalData.push(configures)
     },
     LimitValueEnt(){ //配置限定值确认按钮
-      this.fixed = this.TotalData.map(item => {
+      this.fixeds = this.TotalData.map(item => {
         return {
           label : item.index,
-          index : item.fatherId
+          index : item.fatherId,
+          fatherName : item.name.split("/").slice(-1).toString()
         }
       })
       this.LimitValue = false
@@ -503,6 +505,20 @@ export default {
       if (index !== -1) {
         this.dynamicValidateForm.domains.splice(index, 1)
       }
+    },
+    xuanze(){
+      if(!this.factorValue){
+        this.fixed = this.fixeds
+      }else{
+        this.fixed=[]
+        this.fixeds.forEach(item => {
+          if(this.factorValue === item.fatherName){
+            this.fixed.push(item)
+          }
+        })
+      }
+    },
+    choice(){
     },
     addCondition(){ // 添加条件
       if(!this.symbolValue && !this.factorValue && !this.fixedValue){
