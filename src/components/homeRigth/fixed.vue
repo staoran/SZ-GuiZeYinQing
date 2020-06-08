@@ -40,11 +40,27 @@
           </li>
           <li>
             <p>规则有效起期</p>
-            <el-date-picker size="small " format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" style="width:100%" v-model="startDate" type="date" placeholder="请选择生效日期"> </el-date-picker>
+            <el-date-picker 
+              size="small" 
+              format="yyyy 年 MM 月 dd 日" 
+              value-format="yyyy-MM-dd" 
+              style="width:100%" 
+              v-model="startDate" 
+              type="date" 
+              placeholder="请选择生效日期"> 
+            </el-date-picker>
           </li>
           <li>
             <p>规则有效止期</p>
-            <el-date-picker size="small " format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" style="width:100%" v-model="endDate" type="date" placeholder="请选择失效日期"> </el-date-picker>
+            <el-date-picker 
+              size="small" 
+              format="yyyy 年 MM 月 dd 日" 
+              value-format="yyyy-MM-dd" 
+              style="width:100%" 
+              v-model="endDate" 
+              type="date" 
+              placeholder="请选择失效日期"> 
+            </el-date-picker>
           </li>
           <li>
             <p>规则状态</p>
@@ -116,6 +132,7 @@
                   </el-option>
                 </el-select>
                 <el-button @click="addCondition()" size="mini" type="primary">添加</el-button>
+                <el-button @click="deleteADD()" size="mini" type="primary">撤销</el-button>
               </div>
               <div class="formula" >
                 <el-input
@@ -127,7 +144,33 @@
                 </el-input>
               </div>
               <span class="result">核赔结果</span>
-              <div class="formula" style="margin-top :0;">
+              <div class="Btngroup" style="margin-top: 5px;">
+                <el-select v-model="getValue" class="Symbol" clearable  size="mini" placeholder="选择因子">
+                  <el-option
+                    v-for="item in factor"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+                <el-select v-model="getFixed" @visible-change="resultFixed" clearable style="width:120px" size="mini" placeholder="选择固定值">
+                  <el-option
+                    v-for="item in fixed"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+                <el-button @click="get()" size="mini" type="primary">获取结果</el-button>
+                <el-button @click="resultUndo()" size="mini" type="primary">撤销</el-button>
+              </div>
+              <div style="margin: 0 10px;">
+                <el-input
+                  type="textarea"
+                  :disabled="true"
+                  :rows="1"
+                  v-model="result">
+                </el-input>
               </div>
             </div>
           </el-form-item>
@@ -153,6 +196,10 @@ export default {
       edition:"", //版本号
       editionState:"", //版本状态
       ruleType:"", //规则类型
+      getValue: "",//获取结果选择因子
+      getFixed:"",//获取结果选择固定值
+      result:"",//结果
+      undo:[],//添加 撤销结果
       textarea: '',
       formulas:false,
       arr:[],
@@ -252,15 +299,73 @@ export default {
           duration: 2000
         });
       }else{
-        this.arr.push(this.symbolValue)
-        this.arr.push(this.factorValue)
-        this.arr.push(this.fixedValue)
-        this.textarea=this.arr.join(" ")
+        let arrPush = []
+        arrPush.push(this.symbolValue)
+        arrPush.push(this.factorValue)
+        arrPush.push(this.fixedValue)
+        this.arr.push(arrPush.join(""))
+        this.textarea=this.arr.join("")
         this.symbolValue=""
         this.factorValue=""
         this.fixedValue=""
       }
-    }
+    },
+    deleteADD(){//删除上一步添加
+      if(!this.textarea){
+        this.$message({
+          message: '没有公式可删除',
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }else{
+        this.arr.pop()
+        this.textarea=this.arr.join("")
+      }
+    },
+    resultFixed(){//获取结果选择固定值
+      if(!this.getValue){
+        this.resultfixed = this.fixeds
+      }else{
+        this.resultfixed=[]
+        this.fixeds.forEach(item => {
+          if(this.getValue === item.fatherName){
+            this.resultfixed.push(item)
+          }
+        })
+      }
+    },
+    get(){ //获取结果
+      if(!this.getValue){
+        this.$message({
+          message: "请选择需要判断的因子值",
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }else{
+        let undoPush = []
+        undoPush.push(this.getValue)
+        undoPush.push(this.getFixed)
+        this.undo.push(undoPush.join(""))
+        this.result = this.undo.join("")
+      }
+      this.getValue = ''
+      this.getFixed = ''
+    },
+    resultUndo(){//核赔结果撤销
+      if(!this.result){
+        this.$message({
+          message: '没有公式可删除',
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }else{
+        this.undo.pop()
+        this.result=this.undo.join("")
+      }
+    },
   }
 };
 </script>

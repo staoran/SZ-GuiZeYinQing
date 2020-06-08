@@ -161,7 +161,7 @@
               </el-option>
             </el-select>
             <el-button @click="addCondition()" size="mini" type="primary">添加</el-button>
-            <el-button @click="deleteADD()" size="mini" type="primary">删除上一次添加</el-button>
+            <el-button @click="deleteADD()" size="mini" type="primary">撤销</el-button>
           </div>
           <div class="formula" >
             <el-input
@@ -191,6 +191,7 @@
               </el-option>
             </el-select>
             <el-button @click="get()" size="mini" type="primary">获取结果</el-button>
+            <el-button @click="resultUndo()" size="mini" type="primary">撤销</el-button>
           </div>
           <div style="margin: 0 10px;">
             <el-input
@@ -219,18 +220,33 @@
     <!-- 配置限定值 -->
     <el-dialog title="配置限定值" :visible.sync="LimitValue">
       <div class="buttons">
-        <el-button @click="addline()" style="margin: 0 20px;" size="mini" type="info">添加行</el-button>
-        <el-button @click="deleline()" style="margin: 0 20px;" size="mini" type="info">置空</el-button>
+        <el-button type="primary" plain @click="addline()" style="margin: 0 20px;" size="mini" >添加行</el-button>
+        <el-button type="primary" plain @click="deleline()" style="margin: 0 20px;" size="mini" >置空</el-button>
       </div>
       <el-table size="mini" :data="configure" border style="width: 100%; margin-bottom: 10px; ">
-        <el-table-column prop="name" label="因子名称" width="300"> </el-table-column>
-        <el-table-column label="限定值" width="200">
+        <el-table-column prop="name" label="因子名称" width="250"> </el-table-column>
+        <el-table-column label="限定值">
           <template slot-scope="scope">
-            <el-input size="mini" v-model="scope.row.index" > </el-input>
+            <el-input size="mini" v-model="scope.row.index" class="input-with-select">
+              <el-select 
+                v-model="scope.row.operator" 
+                slot="prepend" 
+                class="Symbol" 
+                size="mini" 
+                clearable 
+                placeholder="选择符号">
+                <el-option
+                  v-for="item in symbol"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.label">
+                </el-option>
+              </el-select>
+            </el-input>
           </template>
         </el-table-column>
-        <el-table-column label="操作" >
-          <template slot-scope="scope">
+        <el-table-column label="操作" width="100">
+          <template slot-scope="scope" >
             <el-button @click="deleDatass(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
@@ -240,7 +256,6 @@
         <el-button type="primary" @click="LimitValueEnt()">确 定</el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
@@ -360,7 +375,8 @@ export default {
       dynamicValidateForm: {//动态添加
         domains: [],
       },
-      arr:[],
+      arr:[],//添加条件所需要的
+      undo:[],//添加 撤销结果
       rule:[{ // 规则状态数据
         value: '0',
         label: '草稿'
@@ -433,8 +449,8 @@ export default {
           Valuetype : '文本值',//判断值 ，或者说是后台
           checked:false,//复选框默认状态
         }
-        let arr = addTable.name.split("/")
-        let str = arr.slice(-1)
+        let arrs = addTable.name.split("/")
+        let str = arrs.slice(-1)
         let labe = {
           label : str.toString(),
           id: addTable.id
@@ -471,8 +487,9 @@ export default {
           this.configure.splice(k,1)
         }
       })
+      // 在总数据里面也删除掉
       this.TotalData.forEach((item,k) => {
-        if(row.fatherId === item.fatherId && row.index === item.index){
+        if(row.fatherId === item.fatherId && row.index === item.index && row.operator === item.operator){
           this.TotalData.splice(k,1)
         }
       })
@@ -482,6 +499,7 @@ export default {
         name : this.rows.name,
         Valuetype : this.rows.Valuetype,
         id : this.configure.length+1,
+        operator : '',
         index:'',
         fatherId : this.rows.id
       }
@@ -491,7 +509,7 @@ export default {
     LimitValueEnt(){ //配置限定值确认按钮
       this.fixeds = this.TotalData.map(item => {
         return {
-          label : item.index,
+          label : item.operator + item.index ,
           index : item.fatherId,
           fatherName : item.name.split("/").slice(-1).toString()
         }
@@ -598,10 +616,27 @@ export default {
           duration: 2000
         });
       }else{
-        this.result = this.getValue+"="+this.getFixed
+        let undoPush = []
+        undoPush.push(this.getValue)
+        undoPush.push(this.getFixed)
+        this.undo.push(undoPush.join(""))
+        this.result = this.undo.join("")
       }
       this.getValue = ''
       this.getFixed = ''
+    },
+    resultUndo(){//核赔结果撤销
+      if(!this.result){
+        this.$message({
+          message: '没有公式可删除',
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }else{
+        this.undo.pop()
+        this.result=this.undo.join("")
+      }
     },
     details(){//审批详情
       this.$router.push({name:'approval'})
