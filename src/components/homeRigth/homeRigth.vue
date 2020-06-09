@@ -36,8 +36,7 @@
       </div>
     </div>
     <div class="Step2" v-show="Step3">
-      <div>筛选-->
-      </div>
+      <div>筛选--> </div>
       <ul class="Input">
         <li>
           <p> 请输入规则名称 </p>
@@ -49,22 +48,34 @@
         </li>
         <li>
           <p>请选择生效日期</p>
-          <el-date-picker v-model="startDate" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" type="date" placeholder="请选择生效日期"> </el-date-picker>
+          <el-date-picker 
+            v-model="startDate" 
+            format="yyyy 年 MM 月 dd 日" 
+            value-format="yyyy-MM-dd" 
+            type="date" 
+            placeholder="请选择生效日期"> 
+          </el-date-picker>
         </li>
         <li>
           <p>请选择失效日期</p>
-          <el-date-picker v-model="endDate" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" type="date" placeholder="请选择失效日期"> </el-date-picker>
+          <el-date-picker 
+            v-model="endDate" 
+            format="yyyy 年 MM 月 dd 日" 
+            value-format="yyyy-MM-dd" 
+            type="date" 
+            placeholder="请选择失效日期"> 
+          </el-date-picker>
         </li>
         <li>
           <p>请选择规则状态</p>
-        <el-select v-model="ruleState" placeholder="请选择规则状态">
-          <el-option
-            v-for="item in rule"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+          <el-select v-model="ruleState" placeholder="请选择规则状态">
+            <el-option
+              v-for="item in rule"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </li>
       </ul>
       <div style="margin-top: 20px;">
@@ -76,12 +87,12 @@
     <div v-show="screen">
       <div class="elTable">
         <el-button size="small" type="primary" @click="effect()" plain>生效</el-button>
-        <el-button size="small" type="primary" plain>失效</el-button>
-        <el-button size="small" type="primary" plain>复制</el-button>
-        <el-button size="small" type="primary" plain>删除</el-button>
+        <el-button size="small" type="primary" @click="invalid()" plain>失效</el-button>
+        <el-button size="small" type="primary" @click="copy()" plain>复制</el-button>
+        <el-button size="small" type="primary" @click="Delete()" plain>删除</el-button>
       </div>
-      <el-table :data="tableData" border stripe>
-        <el-table-column prop="id" type="selection" width="55"> </el-table-column>
+      <el-table :data="tableData" border stripe   ref="multipleTable">
+        <el-table-column type="selection" width="55"> </el-table-column>
         <el-table-column fixed prop="code" label="规则编码" width="150"></el-table-column>
         <el-table-column prop="type" label="规则类型" width="100"></el-table-column>
         <el-table-column prop="name" label="规则名称" width="200"></el-table-column>
@@ -89,23 +100,22 @@
         <el-table-column prop="enddate" label="有效止期" width="150"></el-table-column>
         <el-table-column prop="state" label="状态" width="100"></el-table-column>
         <el-table-column fixed="right" label="操作" >
-        <template slot-scope="scope">
-          <el-button @click="details(scope.row)" type="text" size="small">详情</el-button>
-          <el-button @click="handleClick(scope.row)" type="text" size="small">修改</el-button>
-        </template>
+          <template slot-scope="scope">
+            <el-button @click="details(scope.row)" type="text" size="small">详情</el-button>
+            <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">修改</el-button> -->
+          </template>
         </el-table-column>
       </el-table>
       <el-pagination
-      class="paging"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage4"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="10"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="109">
-    </el-pagination>
-
+        class="paging"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage4"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="10"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="109">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -240,8 +250,8 @@ export default {
     };
   },
   methods: {
-    // 第一步下一步按钮
-    Step1() {
+    // 通过this.$refs.multipleTable.selection获取当前选中状态
+    Step1() {// 第一步下一步按钮
       if (!this.Step) {
         this.$message({
           message: "请选择直属机构",
@@ -256,28 +266,24 @@ export default {
         this.personnel = "";
       }
     },
-    // 上一步
-    StepUp() { 
+    StepUp() { // 上一步
       this.$confirm("此操作将修改直属机构, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      })
-      .then(() => {
+      }).then(() => {
         this.Step = "";
         this.Step2 = false;
         this.Step3 = false;
-      })
-      .catch(() => {
+      }).catch(() => {
         this.$message({
           type: "info",
           message: "已取消修改"
         });
       });
     },
-    //下一步 用来判断是跳转还是筛选
-    StepDown(){
-      if (!this.Under) {
+    StepDown(){ //下一步 用来判断是跳转还是筛选
+      if(!this.Under) {
         this.$message({
           message: "请输入承保地",
           type: "error",
@@ -315,7 +321,6 @@ export default {
     },
     query(){ //查询
         this.screen=true
-      // }
     },
     Reset(){ //重置
       this.ruleState= "", //规则状态绑定值
@@ -325,13 +330,92 @@ export default {
       this.endDate="" // 失效日期
       this.screen = false
     },
-    effect(){
-      this.tableData.forEach( item => {
-        console.log(item.id)
-      });
-      // console.log(id)
+    effect(){//生效
+      let selection = this.$refs.multipleTable.selection
+      if(selection.length !==0){
+        selection.forEach(item => {
+          this.tableData.forEach( index => {
+            if(item.id === index.id){
+              index.state = "生效"
+            }
+          });
+        })
+      }else{
+        this.$message({
+          message: "请选择需要修改的数据",
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }
     },
-    details(row){
+    invalid(){//失效
+      let selection = this.$refs.multipleTable.selection
+      if(selection.length !==0){
+        selection.forEach(item => {
+          this.tableData.forEach( index => {
+            if(item.id === index.id){
+              index.state = "失效"
+            }
+          });
+        })
+      }else{
+        this.$message({
+          message: "请选择需要修改的数据",
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }
+    },
+    copy(){//复制
+      let selection = this.$refs.multipleTable.selection
+      if(selection.length !==0){
+        selection.forEach(item => {
+          this.tableData.forEach( index => {
+            if(item.id === index.id){
+              let copy = {
+                id:this.tableData.length+1,
+                code: item.code,
+                type: item.type,
+                name: item.name,
+                startdate: item.startdate,
+                enddate: item.enddate,
+                state: item.state
+              }
+              this.tableData.push(copy)
+            }
+          });
+        })
+      }else{
+        this.$message({
+          message: "请选择需要复制的数据",
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }
+    },
+    Delete(){//删除
+      let selection = this.$refs.multipleTable.selection
+      if(selection.length !==0){
+        selection.forEach(item => {
+          this.tableData.forEach( (index ,k) => {
+            if(item.id === index.id){
+              this.tableData.splice(k,1)
+            }
+          });
+        })
+      }else{
+        this.$message({
+          message: "请选择需要删除的数据",
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }
+    },
+    details(row){//详情
       this.$router.push({name:'customs' ,query:{id:row.id}})
     },
     handleSizeChange(val) {
@@ -340,9 +424,9 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
-    handleClick(row) {
-      console.log(row);
-    }
+    // handleClick(row) {
+    //   console.log(row);
+    // }
   }
 };
 </script>

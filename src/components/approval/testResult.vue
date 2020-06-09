@@ -3,7 +3,7 @@
     <div class="fixedTitle">规则测试详情
       <div class="floatRight">
         <el-button size="mini" @click="retu()" >返回</el-button>
-        <el-button size="mini" type="primary">执行测试</el-button>
+        <el-button size="mini" @click="execute()" type="primary">执行测试</el-button>
         <el-button size="mini" @click="lookup()" >查看规则</el-button>
       </div>
     </div>
@@ -12,17 +12,18 @@
       <div class="condition" style=" padding: 15px 15px 15px 30px;">
         <el-table :data="tableData" border :stripe="true" size="mini" style="width: 100%">
           <el-table-column prop="id" type="selection" width="55"> </el-table-column>
-          <el-table-column prop="name" label="因子1" > </el-table-column>
-          <el-table-column prop="result" label="因子2" > </el-table-column>
-          <el-table-column prop="opinion" label="因子3" > </el-table-column>
+          <el-table-column prop="ruleName" label="规则名称" > </el-table-column>
+          <el-table-column prop="ruleType" label="规则类型" > </el-table-column>
+          <el-table-column prop="startDate" label="有效起期" > </el-table-column>
+          <el-table-column prop="endDate" label="有效止期" > </el-table-column>
           <el-table-column prop="state" label="原值"  > </el-table-column>
-          <el-table-column prop="state" label="测试值"  > </el-table-column>
-          <el-table-column prop="state" label="测试结果"  > </el-table-column>
-          <el-table-column label="备注"> 
+          <el-table-column label="测试值">
             <template slot-scope="scope">
-              <el-input size="mini" v-model="scope.row.remarks" > </el-input>
+              <el-input size="mini" v-model="scope.row.test" > </el-input>
             </template>
+            
           </el-table-column>
+          <el-table-column prop="result" label="测试结果"  > </el-table-column>
         </el-table>
       </div>
       <el-pagination
@@ -50,12 +51,14 @@
       textarea:"", // 意见
       currentPage4: 4, //分页
       tableData: [{
-        date: '2016-05-03',
-        name: '王小虎',
-        result: '退回',
+        startDate: '2020-01-29',
+        endDate: '2024-02-19',
+        ruleName: '佣金费用规则001',
+        ruleType:"渠道",
         opinion:'信息不完整',
+        test:"",
+        result:"",//结果
         state:'草稿',
-        remarks:""
       }]
       }
     },
@@ -72,6 +75,10 @@
         }
         console.log(this.tableData,sub)
         this.tableData.push(sub),
+        console.log(this.tableData)
+      },
+      execute(){//执行
+        // alert("执行测试")
         console.log(this.tableData)
       },
       handleSizeChange(val) {

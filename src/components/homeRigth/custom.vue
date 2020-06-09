@@ -152,7 +152,12 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-select v-model="fixedValue" @visible-change="FixedValue" clearable style="width:120px"  size="mini" placeholder="选择固定值">
+            <el-select 
+              v-model="fixedValue" 
+              @visible-change="FixedValue" 
+              clearable style="width:120px"  
+              size="mini" 
+              placeholder="选择固定值">
               <el-option
                 v-for="item in fixed"
                 :key="item.value"
@@ -182,7 +187,13 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-select v-model="getFixed" @visible-change="resultFixed" clearable style="width:120px" size="mini" placeholder="选择固定值">
+            <el-select 
+              v-model="getFixed" 
+              @visible-change="resultFixed" 
+              clearable 
+              style="width:120px" 
+              size="mini" 
+              placeholder="选择固定值">
               <el-option
                 v-for="item in resultfixed"
                 :key="item.value"
@@ -220,30 +231,35 @@
     <!-- 配置限定值 -->
     <el-dialog title="配置限定值" :visible.sync="LimitValue">
       <div class="buttons">
-        <el-button type="primary" plain @click="addline()" style="margin: 0 20px;" size="mini" >添加行</el-button>
-        <el-button type="primary" plain @click="deleline()" style="margin: 0 20px;" size="mini" >置空</el-button>
+        <el-button type="primary" plain @click="addline()"  size="mini" >添加行</el-button>
+        <el-select 
+          v-model="Operator" 
+          class="Symbol" 
+          size="mini" 
+          clearable 
+          style="margin: 0 20px;"
+          placeholder="选择符号">
+          <el-option
+            v-for="item in symbol"
+            :key="item.value"
+            :label="item.label"
+            :value="item.label">
+          </el-option>
+        </el-select>
+        <el-input 
+          size="mini" 
+          v-model="inputValue" 
+          class="input-with-select"
+          style="width:180px"
+          placeholder="输入因子值"
+          >
+        </el-input>
+        <el-button type="primary" plain @click="addData()" style="margin: 0 10px 0 20px;" size="mini">添加数据</el-button>
+        <el-button type="primary" plain @click="deleline()" size="mini">置空</el-button>
       </div>
       <el-table size="mini" :data="configure" border style="width: 100%; margin-bottom: 10px; ">
         <el-table-column prop="name" label="因子名称" width="250"> </el-table-column>
-        <el-table-column label="限定值">
-          <template slot-scope="scope">
-            <el-input size="mini" v-model="scope.row.index" class="input-with-select">
-              <!-- <el-select 
-                v-model="scope.row.operator" 
-                slot="prepend" 
-                class="Symbol" 
-                size="mini" 
-                clearable 
-                placeholder="选择符号">
-                <el-option
-                  v-for="item in symbol"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.label">
-                </el-option>
-              </el-select> -->
-            </el-input>
-          </template>
+        <el-table-column prop="index" label="限定值">
         </el-table-column>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope" >
@@ -278,6 +294,9 @@ export default {
       addName:"",  //新增因子名称
       textarea:"",//规则
       result:"",//结果
+      Operator:"",//选择符号
+      inputValue:"",//输入因子
+      Stage:"",//暂存符号和因子
       getValue: "",//获取结果选择因子
       getFixed:"",//获取结果选择固定值
       rule:[{ // 规则状态数据
@@ -474,6 +493,39 @@ export default {
         })
       }
     },
+    addData(){//添加数据
+      // console.log(this.Operator,this.inputValue)
+      // 先判断是否有数据
+      if(this.configure.length !== 0){
+        if(!this.Operator && !this.inputValue){
+          this.$message({
+            message: '请选择或输入需要添加的数据',
+            type: 'error',
+            center: true,
+            duration: 2000
+          });
+        }else{
+          // 每一次添加的时候存储一次
+          this.Stage = this.Stage + this.Operator + this.inputValue
+          this.configure.forEach(item => {
+            if(item.id === this.configure.length){
+              // 赋值
+              item.index = this.Stage
+            }
+          })
+          this.Operator =""
+          this.inputValue = ""
+        }
+      }else{
+        this.$message({
+          message: '请先添加行',
+          type: 'error',
+          center: true,
+          duration: 2000
+        });
+      }
+      console.log(this.configure)
+    },
     deleData(row){ //删除因子
       this.tableData.forEach((item,k) => {
         if(row.id === item.id){
@@ -490,12 +542,13 @@ export default {
       // 在总数据里面也删除掉
       this.TotalData.forEach((item,k) => {
         if(row.fatherId === item.fatherId && row.index === item.index){
-        // if(row.fatherId === item.fatherId && row.index === item.index && row.operator === item.operator){
           this.TotalData.splice(k,1)
         }
       })
     },
     addline(){ // 配置限定值添加行
+      // 清楚暂存区数据
+      this.Stage = ""
       let configures = {
         name : this.rows.name,
         Valuetype : this.rows.Valuetype,
@@ -523,10 +576,12 @@ export default {
     },
     addformula(){//添加公式
       this.formulas = true
-        this.dynamicValidateForm.domains.push({
-          value: '',
-          key: Date.now()
-        });
+      this.dynamicValidateForm.domains.push({
+        value: '',
+        key: Date.now(),
+        textarea:this.textarea
+      });
+      console.log(this.dynamicValidateForm)
     },
     removeDomain(item) { //删除公式
       var index = this.dynamicValidateForm.domains.indexOf(item)
@@ -534,7 +589,7 @@ export default {
         this.dynamicValidateForm.domains.splice(index, 1)
       }
     },
-    FixedValue(){
+    FixedValue(){//选择固定值数据
       if(!this.factorValue){
         this.fixed = this.fixeds
       }else{
