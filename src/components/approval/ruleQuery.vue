@@ -89,16 +89,16 @@
     <div class="releaseList" v-show="releaselist">
       <p class="basic">已发布</p>
       <el-table :data="published" size="mini" border stripe>
-        <el-table-column fixed prop="code" label="规则编码" width="150"></el-table-column>
+        <el-table-column prop="code" label="规则编码" width="150"></el-table-column>
         <el-table-column prop="type" label="规则类型" width="100"></el-table-column>
         <el-table-column prop="name" label="规则名称" width="200"></el-table-column>
         <el-table-column prop="startdate" label="有效起期" width="150"></el-table-column>
         <el-table-column prop="enddate" label="有效止期" width="150"></el-table-column>
         <el-table-column prop="state" label="发布状态" width="100"></el-table-column>
-        <el-table-column fixed="right" label="操作" >
-        <template slot-scope="scope">
-          <el-button @click="details(scope.row)" type="text" size="small">详情</el-button>
-        </template>
+        <el-table-column label="操作" >
+          <template slot-scope="scope">
+            <el-button @click="details(scope.row)" type="text" size="small">详情</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>

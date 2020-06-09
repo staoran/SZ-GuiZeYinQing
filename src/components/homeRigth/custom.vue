@@ -5,8 +5,8 @@
       核赔规则编辑（自定义规则）
       <div class="floatRight">
         <el-button size="mini" @click="retu()" >返回</el-button>
-        <el-button size="mini" type="primary">暂存</el-button>
-        <el-button size="mini" type="primary">提交</el-button>
+        <el-button size="mini" @click="storage()" type="primary">暂存</el-button>
+        <el-button size="mini" @click="Submit()" type="primary">提交</el-button>
         <el-button size="mini" @click="details()" type="primary">审批详情</el-button>
       </div>
     </div>
@@ -228,7 +228,7 @@
         <el-table-column label="限定值">
           <template slot-scope="scope">
             <el-input size="mini" v-model="scope.row.index" class="input-with-select">
-              <el-select 
+              <!-- <el-select 
                 v-model="scope.row.operator" 
                 slot="prepend" 
                 class="Symbol" 
@@ -241,7 +241,7 @@
                   :label="item.label"
                   :value="item.label">
                 </el-option>
-              </el-select>
+              </el-select> -->
             </el-input>
           </template>
         </el-table-column>
@@ -397,23 +397,23 @@ export default {
         label: '发布中'
       }],
       symbol: [{ //逻辑数据
-        label: '('
+        label: ' ( '
         }, {
-          label: ')'
+          label: ' ) '
         }, {
-          label: '>'
+          label: ' > '
         }, {
-          label: '<'
+          label: ' < '
         }, {
-          label: '='
+          label: ' = '
         }, {
-          label: '<='
+          label: ' <= '
         }, {
-          label: '>='
+          label: ' >= '
         }, {
-          label: '且'
+          label: ' 且 '
         }, {
-        label: '或'
+        label: ' 或 '
       }],
       factor: [],// 因子
       resultFactor: [],//结果因子框
@@ -489,7 +489,8 @@ export default {
       })
       // 在总数据里面也删除掉
       this.TotalData.forEach((item,k) => {
-        if(row.fatherId === item.fatherId && row.index === item.index && row.operator === item.operator){
+        if(row.fatherId === item.fatherId && row.index === item.index){
+        // if(row.fatherId === item.fatherId && row.index === item.index && row.operator === item.operator){
           this.TotalData.splice(k,1)
         }
       })
@@ -509,7 +510,8 @@ export default {
     LimitValueEnt(){ //配置限定值确认按钮
       this.fixeds = this.TotalData.map(item => {
         return {
-          label : item.operator + item.index ,
+          label :   " " + item.index ,
+          // label :  " "+item.operator+ " " + item.index ,
           index : item.fatherId,
           fatherName : item.name.split("/").slice(-1).toString()
         }
@@ -578,7 +580,7 @@ export default {
       }
     },
     onchange(row){//获取结果选择因子
-    // 判断当前是否选中
+      // 判断当前是否选中
       if(row.checked){
         // 选中 数组里面添加
         this.factor.forEach(item => {
@@ -637,6 +639,30 @@ export default {
         this.undo.pop()
         this.result=this.undo.join("")
       }
+    },
+    storage(){//暂存
+      this.$message({
+        message: '已暂存至草稿，下次进入可直接编辑',
+        type: 'warning',
+        center: true,
+        duration: 2000
+      });
+    },
+    Submit(){//成功
+      this.$message({
+        message: '提交成功',
+        type: 'success',
+        center: true,
+        duration: 2000
+      });
+      this.ruleCode="", //规则编码
+      this.ruleName="", //规则名称
+      this.startDate="", //日期起
+      this.endDate="", // 日期止
+      this.ruleState="", //规则状态
+      this.edition="", //版本号
+      this.editionState="", //版本状态
+      this.ruleType="" //规则类型
     },
     details(){//审批详情
       this.$router.push({name:'approval'})

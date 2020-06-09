@@ -46,7 +46,7 @@
                 <i class="el-icon-edit-outline"></i>
                 <span slot="title">规则执行记录</span>
               </el-menu-item>
-              <el-menu-item index="homeRigth">
+              <el-menu-item index="factorQuery">
                 <i class="el-icon-s-marketing"></i>
                 <span slot="title">规则流程管理</span>
               </el-menu-item>

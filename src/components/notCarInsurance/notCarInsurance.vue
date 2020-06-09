@@ -2,7 +2,7 @@
   <div>
     <!-- title -->
     <div class="fixedTitle">
-      规则执行记录查询
+      非车险产品方案
     </div>
     <!-- 基础信息 -->
     <div>
@@ -15,24 +15,54 @@
       <div class="">
         <ul class="condition">
           <li>
-            <p>规则编码</p>
-            <el-input size="small" v-model="ruleCode" placeholder="请输入规则编码"></el-input>
+            <p>产品编码</p>
+            <el-input size="small" v-model="productCode" placeholder="请输入产品编码"></el-input>
           </li>
           <li>
-            <p>规则名称</p>
-            <el-input size="small" v-model="ruleName" placeholder="请输入规则名称"></el-input>
+            <p>产品名称</p>
+            <el-input size="small" v-model="productName" placeholder="请输入产品名称"></el-input>
           </li>
           <li>
-            <p>规则版本</p>
-            <el-input size="small" v-model="ruleEdition" placeholder="请输入规则版本"></el-input>
+            <p>产品状态</p>
+            <el-select size="small" style="width:100%" v-model="productEdition" placeholder="请选择产品状态">
+              <el-option
+                v-for="item in state"
+                :key="item.value"
+                :label="item.label"
+                :value="item.label">
+              </el-option>
+            </el-select>
           </li>
           <li>
-            <p>理赔单号</p>
-            <el-input size="small" v-model="ruleNo" placeholder="请输入理赔单号"></el-input>
+            <p>操作人</p>
+            <el-input size="small" v-model="operator" placeholder="请输入操作人"></el-input>
           </li>
           <li>
-            <p>规则执行时间</p>
-            <el-date-picker size="small" style="width:100%" v-model="ruleDate" type="date" placeholder="请选择规则执行时间"> </el-date-picker>
+            <p>起售时间</p>
+            <el-date-picker 
+              size="small" 
+              format="yyyy 年 MM 月 dd 日" 
+              value-format="yyyy-MM-dd"  
+              style="width:100%" 
+              v-model="ruleDate" 
+              type="date" 
+              placeholder="请选择起售时间"> 
+            </el-date-picker>
+          </li>
+          <li>
+            <p>当前版本</p>
+            <el-input size="small" v-model="edition" placeholder="请输入当前版本"></el-input>
+          </li>
+          <li>
+            <p>销售渠道</p>
+            <el-select size="small" style="width:100%" v-model="saleChannel" placeholder="请选择销售渠道">
+              <el-option
+                v-for="item in channel"
+                :key="item.value"
+                :label="item.label"
+                :value="item.label">
+              </el-option>
+            </el-select>
           </li>
         </ul>
       </div>
@@ -70,11 +100,13 @@ export default {
   name: "record",
   data() {
     return {
-      ruleCode:"", //规则编码
-      ruleName:"",//规则名称
-      ruleEdition:"",//规则版本
-      ruleNo:"",//理赔单号
+      productCode:"", //产品编码
+      productName:"",//产品名称
+      productEdition:"",//产品状态
+      operator:"",//操作人
+      edition:"",//版本
       ruleDate:"",//规则执行时间
+      saleChannel:"",//销售渠道
       recordList:false,//列表
       currentPage4: 4, //分页
       tableData: [{ //配置因子表格数据
@@ -105,6 +137,26 @@ export default {
         endDate:'2024-1-22',
         state:'成功'
       }],
+      state:[{//产品状态
+        label:"未配置",
+        id:1,
+        },{
+        label:"配置中",
+        id:2
+        },{
+        label:"已完成",
+        id:3
+      }],
+      channel:[{//销售渠道
+        label:"网售",
+        id:1
+        },{
+        label:"电话销售",
+        id:2
+        },{
+        label:"线下",
+        id:3
+      }]
     };
     
   },
@@ -113,11 +165,13 @@ export default {
       this.recordList = true
     },
     reset(){//重置
-      this.ruleCode="", //规则编码
-      this.ruleName="",//规则名称
-      this.ruleEdition="",//规则版本
-      this.ruleNo="",//理赔单号
-      this.ruleDate=""//规则执行时间
+      this.productCode="", //产品编码
+      this.productName="",//产品名称
+      this.productEdition="",//产品状态
+      this.operator="",//操作人
+      this.edition="",//版本
+      this.ruleDate="",//规则执行时间
+      this.saleChannel="",//销售渠道
       this.recordList = false
     },
     handleSizeChange(val) {
