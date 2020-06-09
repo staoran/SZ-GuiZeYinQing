@@ -703,7 +703,7 @@ export default {
         duration: 2000
       });
     },
-    Submit(){//成功
+    Submit(){//提交
       this.$message({
         message: '提交成功',
         type: 'success',

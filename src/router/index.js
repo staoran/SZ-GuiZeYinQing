@@ -21,8 +21,8 @@ import FactorEdit from "@/components/setUp/factor/factorEdit"
 // 规则执行记录页面
 import Record from "@/components/record/record"
 //非车险规则管理
-import Valuation from "@/components/notCarInsurance/valuation"
 import NotCarInsurance from "@/components/notCarInsurance/notCarInsurance"
+import Valuation from "@/components/notCarInsurance/configure/valuation"
 //假数据页面
 import Customs from "@/components/homeRigth/customs"
 Vue.use(Router)

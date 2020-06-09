@@ -72,24 +72,32 @@
       <p class="basic"> </p>
       <div class="factorTable">
         <el-table size="mini" :data="tableData" border style="width: 100%; margin-bottom: 10px; ">
-          <el-table-column prop="numbers" label="理赔单号" > </el-table-column>
-          <el-table-column prop="code" label="规则编码" > </el-table-column>
-          <el-table-column prop="version" label="规则版本"> </el-table-column>
-          <el-table-column prop="name" label="规则名称"> </el-table-column>
-          <el-table-column prop="startDate" width="200" label="执行时间" > </el-table-column>
-          <el-table-column prop="endDate" label="有效止期" > </el-table-column>
-          <el-table-column prop="state" label="执行状态" > </el-table-column>
+          <el-table-column prop="productName" width="100" label="产品名称" > </el-table-column>
+          <el-table-column prop="productCode" width="100" label="产品编码" > </el-table-column>
+          <el-table-column prop="editionState" width="100" label="版本状态"> </el-table-column>
+          <el-table-column prop="name" width="100" label="操作人"> </el-table-column>
+          <el-table-column prop="listingDate" width="180" label="上架时间" > </el-table-column>
+          <el-table-column prop="edition" width="100" label="上架版本" > </el-table-column>
+          <el-table-column prop="cpbb" width="100" label="产品版本" > </el-table-column>
+          <el-table-column label="配置操作" >
+            <template slot-scope="scope">
+              <el-button @click="details(scope.row)" type="text" size="small">产品</el-button>
+              <el-button @click="details(scope.row)" type="text" size="small">核保规则</el-button>
+              <el-button @click="custom(scope.row)" type="text" size="small">核赔规则</el-button>
+              <el-button @click="premium(scope.row)" type="text" size="small">保费规则</el-button>
+            </template>
+          </el-table-column>
         </el-table> 
         <el-pagination
-        class="paging"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="10"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="109">
-      </el-pagination>
+          class="paging"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage4"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="10"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="109">
+        </el-pagination>
       </div>
     </div>
   </div>
@@ -100,8 +108,8 @@ export default {
   name: "record",
   data() {
     return {
-      productCode:"", //产品编码
       productName:"",//产品名称
+      productCode:"", //产品编码
       productEdition:"",//产品状态
       operator:"",//操作人
       edition:"",//版本
@@ -111,31 +119,31 @@ export default {
       currentPage4: 4, //分页
       tableData: [{ //配置因子表格数据
         id : 1,
-        numbers:'00001',
-        code: 'R000001',
-        version : 'V01',
-        name:'佣金费用规则001',
-        startDate:'2020-1-22',
-        endDate:'2022-2-20',
-        state:'成功'
+        productName:'雇主责任险',
+        productCode: 'P0202022',
+        editionState : '配置中',
+        name:'张三',
+        listingDate:'2020-1-29 12:21:00',
+        edition:'V01',
+        cpbb:'V03'
         },{
         id : 2,
-        numbers:'100001',
-        code: 'R000002',
-        version : 'V01',
-        name:'计价规则002',
-        startDate:'2020-2-23',
-        endDate:'2023-1-22',
-        state:'失败'
+        productName:'旅游意外险',
+        productCode: 'P0202033',
+        editionState : '配置中',
+        name:'李四',
+        listingDate:'2020-01-29 12:21:00',
+        edition:'V01',
+        cpbb:'V03'
         },{
         id : 3,
-        numbers:'100001',
-        code: 'R000003',
-        version : 'V01',
-        name:'计价规则003',
-        startDate:'2020-1-24',
-        endDate:'2024-1-22',
-        state:'成功'
+        productName:'家庭财产险',
+        productCode: 'P0202021',
+        editionState : '配置中',
+        name:'王麻子',
+        listingDate:'2020-01-29 12:21:00',
+        edition:'V01',
+        cpbb:'V03'
       }],
       state:[{//产品状态
         label:"未配置",
@@ -174,6 +182,13 @@ export default {
       this.saleChannel="",//销售渠道
       this.recordList = false
     },
+    custom(row){//核赔规则
+      this.$router.push({name:'customs',query:{id:row.id}})
+    },
+    premium(row){//保费规则
+      this.$router.push({name:'valuation',query:{id:row.id}})
+    },
+    details(row){},
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },

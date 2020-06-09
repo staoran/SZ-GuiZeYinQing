@@ -5,8 +5,8 @@
       核赔规则编辑（详情）
       <div class="floatRight">
         <el-button size="mini" @click="retu()" >返回</el-button>
-        <el-button size="mini" type="primary">暂存</el-button>
-        <el-button size="mini" type="primary">提交</el-button>
+        <el-button size="mini" @click="storage()" type="primary">暂存</el-button>
+        <el-button size="mini" @click="Submit()" type="primary">提交</el-button>
         <el-button size="mini" @click="details()" type="primary">审批详情</el-button>
       </div>
     </div>
@@ -197,18 +197,38 @@
     <!-- 配置限定值 -->
     <el-dialog title="配置限定值" :visible.sync="LimitValue">
       <div class="buttons">
-        <el-button @click="addline()" style="margin: 0 20px;" size="mini" type="info">添加行</el-button>
-        <el-button @click="deleline()" style="margin: 0 20px;" size="mini" type="info">置空</el-button>
+        <el-button type="primary" plain @click="addline()"  size="mini" >添加行</el-button>
+        <el-select 
+          v-model="Operator" 
+          class="Symbol" 
+          size="mini" 
+          clearable 
+          style="margin: 0 20px;"
+          placeholder="选择符号">
+          <el-option
+            v-for="item in symbol"
+            :key="item.value"
+            :label="item.label"
+            :value="item.label">
+          </el-option>
+        </el-select>
+        <el-input 
+          size="mini" 
+          v-model="inputValue" 
+          class="input-with-select"
+          style="width:180px"
+          placeholder="输入因子值"
+          >
+        </el-input>
+        <el-button type="primary" plain @click="addData()" style="margin: 0 10px 0 20px;" size="mini">添加数据</el-button>
+        <el-button type="primary" plain @click="deleline()" size="mini">置空</el-button>
       </div>
       <el-table size="mini" :data="configure" border style="width: 100%; margin-bottom: 10px; ">
-        <el-table-column prop="name" label="因子名称" width="300"> </el-table-column>
-        <el-table-column label="限定值" width="200">
-          <template slot-scope="scope">
-            <el-input size="mini" v-model="scope.row.index" > </el-input>
-          </template>
+        <el-table-column prop="name" label="因子名称" width="250"> </el-table-column>
+        <el-table-column prop="index" label="限定值">
         </el-table-column>
-        <el-table-column fixed="right" label="操作" >
-          <template slot-scope="scope">
+        <el-table-column label="操作" width="100">
+          <template slot-scope="scope" >
             <el-button @click="deleDatass(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
@@ -345,6 +365,9 @@ export default {
       },
       arr:[],
       result:"事故类型=成立",//结果
+      Operator:"",//选择符号
+      inputValue:"",//输入因子
+      Stage:"",//暂存符号和因子
       getValue: "",//获取结果选择因子
       getFixed:"",//获取结果选择固定值
       rule:[{ // 规则状态数据
@@ -434,6 +457,39 @@ export default {
       this.LimitValue = true
       this.rows = row
     },
+    addData(){//添加数据
+      // console.log(this.Operator,this.inputValue)
+      // 先判断是否有数据
+      if(this.configure.length !== 0){
+        if(!this.Operator && !this.inputValue){
+          this.$message({
+            message: '请选择或输入需要添加的数据',
+            type: 'error',
+            center: true,
+            duration: 2000
+          });
+        }else{
+          // 每一次添加的时候存储一次
+          this.Stage = this.Stage + this.Operator + this.inputValue
+          this.configure.forEach(item => {
+            if(item.id === this.configure.length){
+              // 赋值
+              item.index = this.Stage
+            }
+          })
+          this.Operator =""
+          this.inputValue = ""
+        }
+      }else{
+        this.$message({
+          message: '请先添加行',
+          type: 'error',
+          center: true,
+          duration: 2000
+        });
+      }
+      console.log(this.configure)
+    },
     deleData(row){ //删除因子
       this.tableData.forEach((item,k) => {
         if(row.id === item.id){
@@ -461,13 +517,18 @@ export default {
       this.configure = []
     },
     addline(){ // 配置限定值添加行
+      // 清楚暂存区数据
+      this.Stage = ""
       let configures = {
         name : this.rows.name,
         Valuetype : this.rows.Valuetype,
         id : this.configure.length+1,
-        index : ""
+        operator : '',
+        index:'',
+        fatherId : this.rows.id
       }
-      this.configure.push(configures)
+      this.configure.push(configures)//往展示的数组里添加数据
+      this.TotalData.push(configures)//往存放所有数据的数组里添加数据
     },
     addformula(){//添加公式
       this.formulas = true
@@ -526,6 +587,30 @@ export default {
       }else{
         this.result = this.getValue+"="+"成立"
       }
+    },
+    storage(){//暂存
+      this.$message({
+        message: '已暂存至草稿，下次进入可直接编辑',
+        type: 'warning',
+        center: true,
+        duration: 2000
+      });
+    },
+    Submit(){//提交
+      this.$message({
+        message: '提交成功',
+        type: 'success',
+        center: true,
+        duration: 2000
+      });
+      this.ruleCode="", //规则编码
+      this.ruleName="", //规则名称
+      this.startDate="", //日期起
+      this.endDate="", // 日期止
+      this.ruleState="", //规则状态
+      this.edition="", //版本号
+      this.editionState="", //版本状态
+      this.ruleType="" //规则类型
     },
     details(){//审批详情
       this.$router.push({name:'approval'})
