@@ -72,13 +72,13 @@
       <p class="basic"> </p>
       <div class="factorTable">
         <el-table size="mini" :data="tableData" border style="width: 100%; margin-bottom: 10px; ">
-          <el-table-column prop="productName" width="100" label="产品名称" > </el-table-column>
-          <el-table-column prop="productCode" width="100" label="产品编码" > </el-table-column>
+          <el-table-column prop="productName" width="110" label="产品名称" > </el-table-column>
+          <el-table-column prop="productCode" width="110" label="产品编码" > </el-table-column>
           <el-table-column prop="editionState" width="100" label="版本状态"> </el-table-column>
-          <el-table-column prop="name" width="100" label="操作人"> </el-table-column>
+          <el-table-column prop="name" width="90" label="操作人"> </el-table-column>
           <el-table-column prop="listingDate" width="180" label="上架时间" > </el-table-column>
-          <el-table-column prop="edition" width="100" label="上架版本" > </el-table-column>
-          <el-table-column prop="cpbb" width="100" label="产品版本" > </el-table-column>
+          <el-table-column prop="edition" width="90" label="上架版本" > </el-table-column>
+          <el-table-column prop="cpbb" width="90" label="产品版本" > </el-table-column>
           <el-table-column label="配置操作" >
             <template slot-scope="scope">
               <el-button @click="details(scope.row)" type="text" size="small">产品</el-button>
@@ -186,7 +186,7 @@ export default {
       this.$router.push({name:'customs',query:{id:row.id}})
     },
     premium(row){//保费规则
-      this.$router.push({name:'valuation',query:{id:row.id}})
+      this.$router.push({name:'valuation',query:{id:row.id,name:row.productName}})
     },
     details(row){},
     handleSizeChange(val) {

@@ -144,7 +144,13 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-select v-model="factorValue" class="Symbol" size="mini" clearable placeholder="选择因子">
+            <el-select 
+              v-model="factorValue" 
+              class="Symbol" 
+              size="mini" 
+              clearable 
+              style="width:120px"
+              placeholder="选择因子">
               <el-option
                 v-for="item in factor"
                 :key="item.value"
@@ -179,7 +185,13 @@
           </div>
           <span class="result">核赔结果</span>
           <div class="Btngroup" style="margin-top: 5px;">
-            <el-select v-model="getValue" class="Symbol" clearable  size="mini" placeholder="选择因子">
+            <el-select 
+              v-model="getValue" 
+              class="Symbol" 
+              clearable 
+              size="mini" 
+              style="width:120px"
+              placeholder="选择因子">
               <el-option
                 v-for="item in resultFactor"
                 :key="item.value"
@@ -494,7 +506,6 @@ export default {
       }
     },
     addData(){//添加数据
-      // console.log(this.Operator,this.inputValue)
       // 先判断是否有数据
       if(this.configure.length !== 0){
         if(!this.Operator && !this.inputValue){
@@ -524,12 +535,16 @@ export default {
           duration: 2000
         });
       }
-      console.log(this.configure)
     },
     deleData(row){ //删除因子
       this.tableData.forEach((item,k) => {
         if(row.id === item.id){
           this.tableData.splice(k,1)
+        }
+      })
+      this.factor.forEach((item,k) => {
+        if(row.id === item.id){
+          this.factor.splice(k,1)
         }
       })
     },
@@ -581,7 +596,6 @@ export default {
         key: Date.now(),
         textarea:this.textarea
       });
-      console.log(this.dynamicValidateForm)
     },
     removeDomain(item) { //删除公式
       var index = this.dynamicValidateForm.domains.indexOf(item)
@@ -665,9 +679,9 @@ export default {
       }
     },
     get(){ //获取结果
-      if(!this.getValue){
+      if(!this.getValue || !this.getFixed){
         this.$message({
-          message: "请选择需要判断的因子值",
+          message: "请选择需要判断的因子值和固定值",
           type: "error",
           center: true,
           duration: 2000

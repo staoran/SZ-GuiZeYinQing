@@ -6,8 +6,8 @@
         保费规则配置
           <div class="floatRight">
             <el-button size="mini" @click="retu()" >返回</el-button>
-            <el-button size="mini" type="primary">暂存</el-button>
-            <el-button size="mini" type="primary">提交</el-button>
+            <el-button size="mini" @click="storage()" type="primary">暂存</el-button>
+            <el-button size="mini" @click="Submit()" type="primary">提交</el-button>
             <el-button size="mini" @click="details()" type="primary">审批详情</el-button>
           </div>
         </div>
@@ -73,13 +73,20 @@
                 <el-button @click="influence()" size="mini" type="primary">配置影响因子</el-button>
               </span> 
             </p>
-            <el-radio v-model="rate" label="1">基础费率</el-radio>
-            <el-radio v-model="rate" label="2">基础保费</el-radio>
-            <el-table height="200" class="rateTitle" size="mini" :data="factorData" border  stripe>
+            <el-radio-group v-model="choice" @change="judge">
+              <el-radio :label="1">基础费率</el-radio>
+              <el-radio :label="2">基础保费</el-radio>
+            </el-radio-group>
+            <el-table height="218" class="rateTitle" size="mini" :data="factorData" border  stripe>
               <el-table-column prop="name" label="因子名称"></el-table-column>
               <el-table-column prop="limitValue" label="限定值"></el-table-column>
               <el-table-column prop="limit" label="是否续费"></el-table-column>
-              <el-table-column label="基础保费">
+              <el-table-column label="基础费率" v-if="rates">
+                <template slot-scope="scope">
+                  <el-input size="mini" v-model="scope.row.rate" > </el-input>
+                </template>
+              </el-table-column>
+              <el-table-column label="基础保费" v-if="premiums">
                 <template slot-scope="scope">
                   <el-input size="mini" v-model="scope.row.premium" > </el-input>
                 </template>
@@ -95,6 +102,13 @@
             <p>调整系数
               <span class="addFormula"> 
                 <el-button @click="Query()" size="mini" type="primary">添加调整系数表</el-button>
+              </span> 
+            </p>
+          </div>
+          <div class="type">
+            <p>保费公式
+              <span class="addFormula"> 
+                <el-button  size="mini" type="primary">添加保费公式</el-button>
               </span> 
             </p>
           </div>
@@ -136,28 +150,8 @@
         <el-table-column label="限定值">
           <template slot-scope="scope">
             <el-input placeholder="请输入限定值" size="mini" v-model="scope.row.limitValue" clearable> </el-input>
-            <!-- <el-select size="mini" v-model="scope.row.limitValue" placeholder="请选择限定值">
-              <el-option
-                v-for="item in limitValues"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label">
-              </el-option>
-            </el-select> -->
           </template>
         </el-table-column>
-        <!-- <el-table-column width="200" label="是否续保">
-          <template slot-scope="scope">
-            <el-select size="mini" v-model="scope.row.limit" placeholder="请选择限定值">
-              <el-option
-                v-for="item in TFRenewal"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label">
-              </el-option>
-            </el-select>
-          </template>
-        </el-table-column> -->
         <el-table-column width="100" label="操作" >
           <template slot-scope="scope">
             <el-button @click="delFactor(scope.row)" type="text" size="small">删除</el-button>
@@ -193,6 +187,8 @@ export default {
           }]
         }]
       }],
+      rates:false,
+      premiums:true,
       State:[{
         label:"开发中",
         },{
@@ -201,21 +197,9 @@ export default {
         label:'已失效'
       }],
       
-      meter:3,//选择器默认
-      rate:1,//保费选择默认
-      factorData: [{// 表格数据
-        id:1,
-        name: "被保人年龄",
-        limitValue: "[0,6]",
-        limit: "是",
-        premium: ""
-        }, {
-        id:2,
-        name: "被保人年龄",
-        limitValue: "[7,20]",
-        limit: "否",
-        premium: ""
-      }],
+      meter:1,//选择器默认
+      choice:2,//保费选择默认
+      factorData: [],// 表格数据
       limitType:[{ // 限定类型
         label:"固定值",
         id: 1,
@@ -228,26 +212,6 @@ export default {
         },{
         label:"区间枚举值",
         id: 4,
-      }],
-      limitValues:[{//限制值
-        label:'[0,6]',
-        id: 1
-        },{
-        label:'[7,20]',
-        id: 2
-        },{
-        label:'[21,25]',
-        id: 3
-        },{
-        label:'[26,40]',
-        id: 4
-      }],
-      TFRenewal:[{//是否续保
-        label:"是",
-        value:"true"
-        },{
-        label:"否",
-        value:"false"
       }],
       gridData: [],//模态框数据
     }
@@ -265,7 +229,16 @@ export default {
     influence(){//配置影响因子按钮
       this.influenceFactor = true
     },
-    Delete(row){//基础保费删除
+    judge(){//展示费率
+      if(this.choice == 1){
+        this.rates=true,
+        this.premiums=false
+      }else{
+        this.rates=false,
+        this.premiums=true
+      }
+    },
+    Delete(row){//基础保费/费率删除
       this.factorData.forEach((item,k) => {
         if(row.id === item.id){
           this.factorData.splice(k,1)
@@ -283,24 +256,25 @@ export default {
       this.gridData.push(add)
     },
     preservation(){//模态框保存
-      // alert(this.gridData.id)
-      // split(";")
-      // let zs = this.gridData.map(item => {
-      //   return item.limitValue; 
-      // }).join(';').split(';')
-      // console.log(zs)
       this.gridData.forEach(item => {
-        item.aa = "是"
-        // this.factorData.push(item)
-        // item.limitValue = item.limitValue.split(';')
-        // item.limitValue.map(index => {
-        //   return this.factorData.limitValue = index
-        //   console.log(this.factorData.limitValue)
-        // })
-          // this.factorData.push(item)
-        // console.log(item)
+        let limitValue = item.limitValue.split(";")//限定值字符转数组 split
+        let limit = ["是","否"] //基础保费类型
+        limitValue.forEach( items => {
+          limit.forEach( index => {
+            let apl = {
+              id : this.factorData.length+1,
+              name : item.name.slice(-1).toString(),//只要数组的最后一项slice
+              limitValue : items,
+              limit : index,
+              premium:"",//保费
+              rate:""//费率
+            }
+            this.factorData.push(apl)
+          })
+        })
       })
-      console.log(this.gridData)
+      this.influenceFactor = false
+      this.gridData =[]
     },
     delFactor(row){// 配置影响因子 删除
       this.gridData.forEach((item,k) => {
@@ -308,7 +282,26 @@ export default {
           this.gridData.splice(k,1)
         }
       })
-    }
+    },
+    Query(){//调整系数
+      console.log("133")
+    },
+    storage(){//暂存
+      this.$message({
+        message: '已暂存至草稿，下次进入可直接编辑',
+        type: 'warning',
+        center: true,
+        duration: 2000
+      });
+    },
+    Submit(){//提交
+      this.$message({
+        message: '提交成功',
+        type: 'success',
+        center: true,
+        duration: 2000
+      });
+    },
   }
 }
 </script>>

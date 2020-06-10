@@ -18,6 +18,8 @@ import Role from "@/components/setUp/role"
 import FactorQuery from "@/components/setUp/factor/factorQuery"
 import FactorEdit from "@/components/setUp/factor/factorEdit"
 
+// 规则流程管理
+import ProcessRun from "@/components/processRun/processRun"
 // 规则执行记录页面
 import Record from "@/components/record/record"
 //非车险规则管理
@@ -25,6 +27,7 @@ import NotCarInsurance from "@/components/notCarInsurance/notCarInsurance"
 import Valuation from "@/components/notCarInsurance/configure/valuation"
 //假数据页面
 import Customs from "@/components/homeRigth/customs"
+
 Vue.use(Router)
 
 export default new Router({
@@ -114,6 +117,12 @@ export default new Router({
           path: 'valuation',
           name : "valuation",
           component: Valuation,
+          meta: { keepAlive: true } //缓存当前页面信息
+        },
+        { //规则流程管理
+          path: 'processRun',
+          name : "processRun",
+          component: ProcessRun,
           meta: { keepAlive: true } //缓存当前页面信息
         },
         { //非车险管理
