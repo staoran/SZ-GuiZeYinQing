@@ -81,7 +81,7 @@
               <el-table height="218" class="rateTitle" size="mini" :data="factorData" border stripe>
                 <template v-for="item in gridData">
                   <el-table-column 
-                    prop="limitValue"
+                    :prop="item.dataItem"
                     :label="item.name.slice(-1).toString()"
                     :key="item.id">
                   </el-table-column>
@@ -244,8 +244,10 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          // 重置表格
+          // 重置添加表格
           this.gridData =[]
+          // 重置显示表格
+          this.factorData = []
           this.influenceFactor = true
         }).catch(() => {
           this.$message({
@@ -280,7 +282,7 @@ export default {
         id: this.gridData.length+1,
         name: "",
         type:"",
-        // dataItem:"",
+        dataItem:"limitValue",
         limitValue:"",
         // limit:"",
       }
@@ -322,8 +324,6 @@ export default {
       }
       this.influenceFactor = false
       this.Table=true
-      console.log(this.factorData)
-      console.log(this.gridData)
     },
     delFactor(row){// 配置影响因子 删除
       this.gridData.forEach((item,k) => {
