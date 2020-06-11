@@ -1,7 +1,10 @@
 <template>
-  <div class="containers" ref="content">
-    <div class="canvas" ref="canvas"></div>
-    <div id="js-properties-panel" class="panel"></div>
+  <div>
+    <div class="fixedTitle">规则流程配置</div>
+    <div class="containers" ref="content">
+      <div class="canvas" ref="canvas"></div>
+      <div id="js-properties-panel" class="panel"></div>
+    </div>
   </div>
 </template>
 <script>
@@ -11,9 +14,8 @@
   import propertiesPanelModule from 'bpmn-js-properties-panel'
   import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
   import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
- 
- 
   export default {
+    name: "processRun",
     data(){
       return {
         // bpmn建模器

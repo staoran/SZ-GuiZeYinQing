@@ -199,15 +199,6 @@ export default {
 };
 </script>
 <style scoped>
-.fixedTitle {
-  height: 50px;
-  line-height: 50px;
-  color: #fff;
-  font-size: 20px;
-  font-weight: 800;
-  background-color: #aaaaaa;
-  padding: 0 30px 0 20px;
-}
 .addFormula{
   float: right;
   margin-right: 30px;
