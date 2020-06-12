@@ -110,6 +110,46 @@
                 <el-button @click="Query()" size="mini" type="primary">添加调整系数</el-button>
               </span> 
             </p>
+            <!-- 加form表单实现动态添加 -->
+            <el-form 
+              :model="dynamicValidateForm" 
+              ref="dynamicValidateForm" 
+              class="demo-dynamic">
+               <el-form-item
+                v-for="(domain, index) in dynamicValidateForm.domains"
+                :key="domain.key"
+                :prop="'domains.' + index + '.value'"
+                size="mini"
+              >
+                <div class="coefficient">
+                  <p>调整系数 : <el-input size="mini" v-model="domain.index" style="width:200px" placeholder="请输入调整系数"> </el-input>
+                    <span class="addFormula">
+                      <el-button size="mini" type="primary">配置影响因子</el-button>
+                      <el-button @click.prevent="removeDomain(domain)" size="mini" type="primary">删除调整系数</el-button>
+                    </span>
+                  </p>
+                  <el-table  class="rateTitle" size="mini"  border stripe>
+                    <!-- <template v-for="item in gridData">
+                      <el-table-column 
+                        :prop="item.dataItem"
+                        :label="item.name.slice(-1).toString()"
+                        :key="item.id">
+                      </el-table-column>
+                    </template> -->
+                    <el-table-column label="调整系数">
+                      <template slot-scope="scope">
+                        <el-input size="mini" v-model="scope.row.premium" > </el-input>
+                      </template>
+                    </el-table-column>
+                    <el-table-column label="操作" >
+                      <template slot-scope="scope">
+                        <el-button @click="Delete(scope.row)" type="text" size="small">删除</el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div>
+              </el-form-item>
+            </el-form>
           </div>
           <div class="type">
             <p>保费公式
@@ -117,6 +157,48 @@
                 <el-button  size="mini" type="primary">添加保费公式</el-button>
               </span> 
             </p>
+            <div class="coefficient">
+              <div class="Btngroup" >
+                <el-button @click.prevent="removeDomain(domain)" size="mini" type="primary" plain>删除公式</el-button>
+                <el-select v-model="symbolValue" class="Symbol" size="mini" clearable placeholder="选择符号">
+                  <el-option
+                    v-for="item in symbol"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+                <el-select 
+                  v-model="factorValue" 
+                  class="Symbol" 
+                  size="mini" 
+                  clearable 
+                  style="width:120px"
+                  placeholder="选择因子">
+                  <el-option
+                    v-for="item in factor"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+                <el-select 
+                  v-model="fixedValue" 
+                  @visible-change="FixedValue" 
+                  clearable style="width:120px"  
+                  size="mini" 
+                  placeholder="选择固定值">
+                  <el-option
+                    v-for="item in fixed"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+                <el-button @click="addCondition()" size="mini" type="primary">添加</el-button>
+                <el-button @click="deleteADD()" size="mini" type="primary">撤销</el-button>
+              </div>
+            </div>
           </div>
         </el-main>
       </el-container>
@@ -190,9 +272,11 @@ export default {
           children: [{
             value: "名字",
             label: "名字",
+            index: "name"
           },{
             value: "年龄",
             label: "年龄",
+            index: "age"
           }]
         }]
       }],
@@ -206,6 +290,9 @@ export default {
         },{
         label:'已失效'
       }],
+      dynamicValidateForm: {
+        domains: [],
+      },
       premium:"",
       rate:"",
       meter:1,//选择器默认
@@ -225,6 +312,21 @@ export default {
         id: 4,
       }],
       gridData: [],//模态框用于展示因子数据
+      limitValues:[],
+
+      symbol: [{ //逻辑数据
+        label: ' > '
+        }, {
+        label: ' < '
+        }, {
+        label: ' = '
+        }, {
+        label: ' <= '
+        }, {
+        label: ' >= '
+        }, {
+        label: ' 且 '
+      }],
     }
   },
   methods: {
@@ -286,27 +388,41 @@ export default {
         limitValue:"",
         // limit:"",
       }
-      this.gridData.push(add)
+      if(this.gridData.length >= 5){
+        this.$message({
+          message: '数据添加过多',
+          type: 'warning',
+            center: true,
+            duration: 2000
+        });
+      }else{
+        this.gridData.push(add)
+      }
     },
     preservation(){//模态框保存(创建表格)
+      // 判断有几行数据
       if(this.gridData.length > 1){
-      //   this.gridData.forEach(item => {
-      //     let limitValue = item.limitValue.split(";")//限定值字符转数组 split
-      //     let limit = ["是","否"] //基础保费类型
-      //     limitValue.forEach( items => {
-      //       limit.forEach( index => {
-      //         let apl = {
-      //           id : this.factorData.length+1,
-      //           name : item.name.slice(-1).toString(),//只要数组的最后一项slice
-      //           limitValue : items,
-      //           limit : index,
-      //           premium:"",//保费
-      //           rate:""//费率
-      //         }
-      //         this.factorData.push(apl)
-      //       })
-      //     })
-      //   })
+        let gridDataT = this.gridData.slice(-1)//最后一项
+        let gridDataO = [this.gridData[0]]//第一项
+        gridDataO.forEach((item,k) => {
+          gridDataT.forEach(items => {
+            this.limitValues = items.limitValue.split(";")//限定值字符转数组 split
+          })
+          let limitValue = item.limitValue.split(";")//限定值字符转数组 split
+          limitValue.forEach( index => {
+            this.limitValues.forEach( indexs => {
+              let apl = {
+                id : this.factorData.length+1,
+                name : item.name.slice(-1).toString(),//只要数组的最后一项slice
+                limitValue : index,
+                limit : indexs,
+                premium:"",//保费
+                rate:""//费率
+              }
+              this.factorData.push(apl)
+            })
+          })
+        })
       }else{
         this.gridData.forEach(item => {
         let limitValue = item.limitValue.split(";")//限定值字符转数组 split
@@ -334,8 +450,18 @@ export default {
     },
     NewTable(){//创建表格显示表格
     },
-    Query(){//调整系数
-      // console.log("133")
+    Query(){//添加调整系数
+      this.dynamicValidateForm.domains.push({
+        value: '',
+        index:"",
+        key: Date.now()
+      });
+    },
+    removeDomain(item) {//删除调整系数
+      var index = this.dynamicValidateForm.domains.indexOf(item)
+      if (index !== -1) {
+        this.dynamicValidateForm.domains.splice(index, 1)
+      }
     },
     storage(){//暂存
       this.$message({
@@ -433,7 +559,18 @@ export default {
             margin: 0 20px 0 0;
           }
         }
-        
+        .coefficient{
+          border: 1px solid #333;
+          padding: 5px;
+          background-color: #fff;
+          overflow: hidden;
+          p{
+            font-size: 14px;
+          }
+          .Btngroup{
+            float: right;
+          }
+        }
         .addFormula{
           float: right;
           margin-right: 30px;

@@ -72,10 +72,111 @@
         </ul>
       </div>
     </div>
-    <!-- 列表 -->
+    <!-- 配置影响因子 -->
     <div>
       <p class="basic">配置影响因子 </p>
       <div class="factorTable">
+        <span class="Btngroup">
+          <el-button size="mini" type="primary">添加因子</el-button>
+          <el-button size="mini" type="primary">创建配置表</el-button>
+        </span>
+        <div>
+          <el-table size="mini" :data="ruleTable" border  stripe >
+            <el-table-column prop="id"  label="序号" width="100"> </el-table-column>
+            <el-table-column label="因子名称"> 
+              <template slot-scope="scope">
+                <el-select size='mini' v-model="scope.row.careers" placeholder="请选择因子名称">
+                  <el-option
+                    v-for="item in careersType"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column prop="type" label="取值类型"> 
+              <template slot-scope="scope">
+                <el-select size='mini' v-model="scope.row.age" placeholder="请选择取值类型">
+                  <el-option
+                    v-for="item in insuredAge"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column label="是否输出值"> 
+              <!-- <template slot-scope="scope">
+                <el-input size="mini" v-model="scope.row.rate" > </el-input>
+              </template> -->
+              <template slot-scope="scope">
+                <el-checkbox 
+                  v-model="scope.row.checked" 
+                  @change="onchange(scope.row)" 
+                  label="输出值" 
+                  name="type">
+                </el-checkbox>
+              </template>
+            </el-table-column>
+            <el-table-column fixed="right" label="操作">
+              <template slot-scope="scope">
+                <el-button @click="copyLine(scope.row)" type="text" size="small">配置限定值</el-button>
+                <el-button @click="deleData(scope.row)" type="text" size="small">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </div>
+    <!-- 规则配置表 -->
+    <div>
+      <p class="basic">规则配置表 </p>
+      <div class="factorTable">
+        <span class="Btngroup">
+          <el-button @click="addLine" size="mini" type="primary">添加行</el-button>
+        </span>
+        <div v-show="RuleTable">
+          <el-table size="mini" :data="ruleTable" border  stripe >
+            <!-- <el-table-column prop="id"  label="ID" width="100"> </el-table-column> -->
+            <el-table-column label="被保人职业类别"> 
+              <template slot-scope="scope">
+                <el-select size='mini' v-model="scope.row.careers" placeholder="请选择被保人职业类别">
+                  <el-option
+                    v-for="item in careersType"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column prop="type" label="取值类型"> 
+              <template slot-scope="scope">
+                <el-select size='mini' v-model="scope.row.age" placeholder="请选择被保人年龄">
+                  <el-option
+                    v-for="item in insuredAge"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column label="佣金率"> 
+              <template slot-scope="scope">
+                <el-input size="mini" v-model="scope.row.rate" > </el-input>
+              </template>
+            </el-table-column>
+            <el-table-column fixed="right" label="操作">
+              <template slot-scope="scope">
+                <el-button @click="deleData(scope.row)" type="text" size="small">删除</el-button>
+                <el-button @click="copyLine(scope.row)" type="text" size="small">复制</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </div>
     </div>
   </div>
@@ -130,6 +231,21 @@ export default {
         value: 'gd',
         label: '固定'
       }],
+
+      RuleTable:false,//规则配置表隐藏
+      ruleTable: [],//规则配置表数据
+      careersType:[{//选择职业类型
+        label:"一类"
+        },{
+        label:"二类或者三类"
+        },{
+        label:"(非一类)且(非二类)且(非三类)"
+      }],
+      insuredAge:[{ // 规则状态数据
+        label: '≤35'
+        },{ 
+        label: '＞35'
+      }],
     };
     
   },
@@ -147,10 +263,34 @@ export default {
       this.ruleName="",//规则名称
       this.ruleType="" //规则类型
     },
+    addLine(){//规则配置表添加行
+      this.RuleTable = true
+      let line = {
+        id:this.ruleTable.length+1,
+        careers: '',
+        age:"",
+        rate:''
+      }
+      this.ruleTable.push(line)
+    },
+    deleData(row){//删除配置表的某一行
+      this.ruleTable.forEach((item,k) => {
+        if(row.id === item.id){
+          this.ruleTable.splice(k,1)
+        }
+      })
+    },
+    copyLine(row){//复制行
+      this.ruleTable.forEach((item,k) => {
+        if(row.id === item.id){
+          this.ruleTable.push(row)
+        }
+      })
+    },
   }
 };
 </script>
-<style scoped>
+<style lang="less" scoped>
 .fixedTitle {
   height: 50px;
   line-height: 50px;
@@ -183,7 +323,11 @@ export default {
 .factorTable{
   background-color: #f2f2f2;
   overflow: hidden;
-  padding: 30px;
+  padding: 20px 30px 20px ;
+  .Btngroup{
+    float:right;
+    margin-bottom: 10px;
+  }
 }
 .paging{
   float: right;

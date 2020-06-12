@@ -123,7 +123,7 @@
         </span> 
         </p>
         <!-- 条件div -->
-      <div class="factorTable" v-show="formulas" style="padding: 30px 30px 0 0;">
+      <div class="factorTable"  style="padding: 30px 30px 0 0;">
         <!-- 公式 -->
         <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="70px" class="demo-dynamic">
           <el-form-item
@@ -132,99 +132,99 @@
             :label ="'公式'+(index+1)"
             :prop="'domains.' + index + '.value'"
           >
-        <div class="satisfy" v-show="formulas">
-          <span style="font-size:14px" >满足条件</span>
-          <div class="Btngroup" >
-            <el-button @click.prevent="removeDomain(domain)" size="mini" type="primary" plain>删除公式</el-button>
-            <el-select v-model="symbolValue" class="Symbol" size="mini" clearable placeholder="选择符号">
-              <el-option
-                v-for="item in symbol"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label">
-              </el-option>
-            </el-select>
-            <el-select 
-              v-model="factorValue" 
-              class="Symbol" 
-              size="mini" 
-              clearable 
-              style="width:120px"
-              placeholder="选择因子">
-              <el-option
-                v-for="item in factor"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label">
-              </el-option>
-            </el-select>
-            <el-select 
-              v-model="fixedValue" 
-              @visible-change="FixedValue" 
-              clearable style="width:120px"  
-              size="mini" 
-              placeholder="选择固定值">
-              <el-option
-                v-for="item in fixed"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label">
-              </el-option>
-            </el-select>
-            <el-button @click="addCondition()" size="mini" type="primary">添加</el-button>
-            <el-button @click="deleteADD()" size="mini" type="primary">撤销</el-button>
-          </div>
-          <div class="formula" >
-            <el-input
-              type="textarea"
-              style="color:cyan"
-              :disabled="true"
-              :rows="1"
-              v-model="textarea">
-            </el-input>
-          </div>
-          <span class="result">核赔结果</span>
-          <div class="Btngroup" style="margin-top: 5px;">
-            <el-select 
-              v-model="getValue" 
-              class="Symbol" 
-              clearable 
-              size="mini" 
-              style="width:120px"
-              placeholder="选择因子">
-              <el-option
-                v-for="item in resultFactor"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label">
-              </el-option>
-            </el-select>
-            <el-select 
-              v-model="getFixed" 
-              @visible-change="resultFixed" 
-              clearable 
-              style="width:120px" 
-              size="mini" 
-              placeholder="选择固定值">
-              <el-option
-                v-for="item in resultfixed"
-                :key="item.value"
-                :label="item.label"
-                :value="item.label">
-              </el-option>
-            </el-select>
-            <el-button @click="get()" size="mini" type="primary">获取结果</el-button>
-            <el-button @click="resultUndo()" size="mini" type="primary">撤销</el-button>
-          </div>
-          <div style="margin: 0 10px;">
-            <el-input
-              type="textarea"
-              :disabled="true"
-              :rows="1"
-              v-model="result">
-            </el-input>
-          </div>
-        </div>
+            <div class="satisfy" >
+              <span style="font-size:14px" >满足条件</span>
+              <div class="Btngroup" >
+                <el-button @click.prevent="removeDomain(domain)" size="mini" type="primary" plain>删除公式</el-button>
+                <el-select v-model="symbolValue" class="Symbol" size="mini" clearable placeholder="选择符号">
+                  <el-option
+                    v-for="item in symbol"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+                <el-select 
+                  v-model="factorValue" 
+                  class="Symbol" 
+                  size="mini" 
+                  clearable 
+                  style="width:120px"
+                  placeholder="选择因子">
+                  <el-option
+                    v-for="item in factor"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+                <el-select 
+                  v-model="fixedValue" 
+                  @visible-change="FixedValue" 
+                  clearable style="width:120px"  
+                  size="mini" 
+                  placeholder="选择固定值">
+                  <el-option
+                    v-for="item in fixed"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+                <el-button @click="addCondition()" size="mini" type="primary">添加</el-button>
+                <el-button @click="deleteADD()" size="mini" type="primary">撤销</el-button>
+              </div>
+              <div class="formula" >
+                <el-input
+                  type="textarea"
+                  style="color:cyan"
+                  :disabled="true"
+                  :rows="1"
+                  v-model="textarea">
+                </el-input>
+              </div>
+              <span class="result">核赔结果</span>
+              <div class="Btngroup" style="margin-top: 5px;">
+                <el-select 
+                  v-model="getValue" 
+                  class="Symbol" 
+                  clearable 
+                  size="mini" 
+                  style="width:120px"
+                  placeholder="选择因子">
+                  <el-option
+                    v-for="item in resultFactor"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+                <el-select 
+                  v-model="getFixed" 
+                  @visible-change="resultFixed" 
+                  clearable 
+                  style="width:120px" 
+                  size="mini" 
+                  placeholder="选择固定值">
+                  <el-option
+                    v-for="item in resultfixed"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+                </el-select>
+                <el-button @click="get()" size="mini" type="primary">获取结果</el-button>
+                <el-button @click="resultUndo()" size="mini" type="primary">撤销</el-button>
+              </div>
+              <div style="margin: 0 10px;">
+                <el-input
+                  type="textarea"
+                  :disabled="true"
+                  :rows="1"
+                  v-model="result">
+                </el-input>
+              </div>
+            </div>
           </el-form-item>
         </el-form>
       </div>
@@ -302,7 +302,7 @@ export default {
       ruleType:"", //规则类型
       addFactor: false, // 添加因子模态框
       LimitValue:false, //限定值模态框
-      formulas:false, // 公式显示隐藏
+      // formulas:false, // 公式显示隐藏
       addName:"",  //新增因子名称
       textarea:"",//规则
       result:"",//结果
@@ -590,7 +590,7 @@ export default {
       this.configure = []
     },
     addformula(){//添加公式
-      this.formulas = true
+      // this.formulas = true
       this.dynamicValidateForm.domains.push({
         value: '',
         key: Date.now(),
