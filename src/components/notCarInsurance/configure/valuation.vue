@@ -39,12 +39,15 @@
         </div>
       </el-header>
       <el-container class="content">
+        <!-- 左侧 -->
         <el-aside width="200px" class="left">
           <el-input size="mini" placeholder="请输入内容" v-model="search" class="input-with-select">
             <el-button slot="append" @click="Search()" icon="el-icon-search"></el-button>
           </el-input>
         </el-aside>
+        <!-- 右侧 -->
         <el-main class="right">
+          <!-- 计价类型 -->
           <div class="type">
             <p>选择计价类型</p>
             <el-radio-group v-model="meter">
@@ -54,6 +57,7 @@
               <el-radio :label="4">关联费率</el-radio>
             </el-radio-group>
           </div>
+          <!-- 基础信息 -->
           <div class="type">
             <p>基础信息</p>
             <ul class="condition">
@@ -67,6 +71,7 @@
               </li>
             </ul>
           </div>
+          <!-- 基础保费 -->
           <div class="type">
             <p>基础费率/保费
               <span class="addFormula"> 
@@ -104,6 +109,7 @@
               </el-table>
             </div>
           </div>
+          <!-- 调整系数 -->
           <div class="type">
             <p>调整系数
               <span class="addFormula"> 
@@ -119,16 +125,20 @@
                 v-for="(domain, index) in dynamicValidateForm.domains"
                 :key="domain.key"
                 :prop="'domains.' + index + '.value'"
-                size="mini"
-              >
+                size="mini">
                 <div class="coefficient">
-                  <p>调整系数 : <el-input size="mini" v-model="domain.index" style="width:200px" placeholder="请输入调整系数"> </el-input>
+                  <p>调整系数 : 
+                    <el-input 
+                      size="mini" 
+                      v-model="domain.index" 
+                      style="width:200px" 
+                      placeholder="请输入调整系数"> </el-input>
                     <span class="addFormula">
-                      <el-button size="mini" type="primary">配置影响因子</el-button>
+                      <el-button @click.prevent="pzyxyz(domain)" size="mini" type="primary">配置影响因子</el-button>
                       <el-button @click.prevent="removeDomain(domain)" size="mini" type="primary">删除调整系数</el-button>
                     </span>
                   </p>
-                  <el-table  class="rateTitle" size="mini"  border stripe>
+                  <el-table  class="rateTitle" size="mini" :data="adjustData" border stripe>
                     <!-- <template v-for="item in gridData">
                       <el-table-column 
                         :prop="item.dataItem"
@@ -151,66 +161,127 @@
               </el-form-item>
             </el-form>
           </div>
+          <!-- 保费公式 -->
           <div class="type">
             <p>保费公式
               <span class="addFormula"> 
-                <el-button  size="mini" type="primary">添加保费公式</el-button>
+                <el-button @click="addFormula" size="mini" type="primary">添加保费公式</el-button>
               </span> 
             </p>
-            <div class="coefficient">
-              <div class="Btngroup" >
-                <el-button @click.prevent="removeDomain(domain)" size="mini" type="primary" plain>删除公式</el-button>
-                <el-select v-model="symbolValue" class="Symbol" size="mini" clearable placeholder="选择符号">
-                  <el-option
-                    v-for="item in symbol"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.label">
-                  </el-option>
-                </el-select>
-                <el-select 
-                  v-model="factorValue" 
-                  class="Symbol" 
-                  size="mini" 
-                  clearable 
-                  style="width:120px"
-                  placeholder="选择因子">
-                  <el-option
-                    v-for="item in factor"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.label">
-                  </el-option>
-                </el-select>
-                <el-select 
-                  v-model="fixedValue" 
-                  @visible-change="FixedValue" 
-                  clearable style="width:120px"  
-                  size="mini" 
-                  placeholder="选择固定值">
-                  <el-option
-                    v-for="item in fixed"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.label">
-                  </el-option>
-                </el-select>
-                <el-button @click="addCondition()" size="mini" type="primary">添加</el-button>
-                <el-button @click="deleteADD()" size="mini" type="primary">撤销</el-button>
-              </div>
-            </div>
+            <el-form 
+              :model="premiumFormula" 
+              ref="premiumFormula" 
+              class="demo-dynamic">
+              <el-form-item
+                v-for="(domain, index) in premiumFormula.domains"
+                :key="domain.key"
+                :prop="'domains.' + index + '.value'"
+                size="mini">
+                <div class="coefficient">
+                  <span style="font-size:14px" >满足条件</span>
+                  <div class="Btngroup" >
+                    <el-button 
+                      @click.prevent="deleFormula(domain)" 
+                      size="mini" 
+                      type="primary" 
+                      plain>删除公式</el-button>
+                    <el-select 
+                      v-model="symbolValue" 
+                      style="width:120px" 
+                      class="Symbol" 
+                      size="mini" 
+                      clearable 
+                      placeholder="选择符号">
+                      <el-option
+                        v-for="item in symbol"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.label">
+                      </el-option>
+                    </el-select>
+                    <el-select 
+                      v-model="factorValue" 
+                      class="Symbol" 
+                      size="mini" 
+                      clearable 
+                      style="width:120px"
+                      placeholder="选择因子">
+                      <el-option
+                        v-for="item in factor"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.label">
+                      </el-option>
+                    </el-select>
+                    <el-select 
+                      v-model="fixedValue" 
+                      clearable style="width:120px"  
+                      size="mini" 
+                      placeholder="选择固定值">
+                      <el-option
+                        v-for="item in fixed"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.label">
+                      </el-option>
+                    </el-select>
+                    <el-select 
+                      v-model="fixedValue" 
+                      clearable style="width:120px"  
+                      size="mini" 
+                      placeholder="选择系数">
+                      <el-option
+                        v-for="item in fixed"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.label">
+                      </el-option>
+                    </el-select>
+                    <el-button @click="addCondition()" size="mini" type="primary">添加</el-button>
+                    <el-button @click="deleteADD()" size="mini" type="primary">撤销</el-button>
+                  </div>
+                  <div class="formula" >
+                    <el-input
+                      type="textarea"
+                      :disabled="true"
+                      :rows="1"
+                      v-model="domain.satisfy"
+                      >
+                    </el-input>
+                  </div>
+                  <span style="font-size:14px" >保费公式</span>
+                  <div class="formula" >
+                    <el-input
+                      type="textarea"
+                      :disabled="true"
+                      :rows="1"
+                      v-model="domain.formula"
+                      >
+                    </el-input>
+                  </div>
+                </div>
+              </el-form-item>
+            </el-form >
           </div>
         </el-main>
       </el-container>
     </el-container>
     <!-- 模态框部分 -->
     <!-- 配置影响因子模态框 -->
-    <el-dialog  title="配置影响因子" :visible.sync="influenceFactor" width="80%" style="padding-bottom: 20px;">
+    <el-dialog  
+      title="配置影响因子" 
+      :visible.sync="influenceFactor" 
+      width="80%" 
+      style="padding-bottom: 20px;">
       <span  class="btn">
         <el-button size="mini" @click="influenceFactor = false">返回</el-button>
         <el-button size="mini" type="primary" @click="preservation()">创建表格</el-button>
       </span>
-      <el-input size="mini" placeholder="请输入因子名称搜索" v-model="nameSearch" class="input-with-select namesearch">
+      <el-input 
+        size="mini" 
+        placeholder="请输入因子名称搜索" 
+        v-model="nameSearch" 
+        class="input-with-select namesearch">
         <el-button slot="append" @click="Search()" icon="el-icon-search"></el-button>
       </el-input>
       <div style="margin: 10px 0;">
@@ -220,7 +291,70 @@
         <el-table-column property="id" label="序号" width="80"></el-table-column>
         <el-table-column label="因子名称">
           <template slot-scope="scope">
-            <el-cascader style="width:100%" size="mini" :options="options" ref="teer" v-model="scope.row.name" clearable></el-cascader>
+            <el-cascader 
+              style="width:100%" 
+              size="mini" 
+              :options="options" 
+              ref="teer" 
+              v-model="scope.row.name" 
+              clearable></el-cascader>
+          </template>
+        </el-table-column>
+        <el-table-column label="限定类型">
+          <template slot-scope="scope">
+            <el-select size="mini" v-model="scope.row.type" placeholder="请选择">
+              <el-option
+                v-for="item in limitType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.label">
+              </el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column label="限定值">
+          <template slot-scope="scope">
+            <el-input placeholder="请输入限定值" size="mini" v-model="scope.row.limitValue" clearable> </el-input>
+          </template>
+        </el-table-column>
+        <el-table-column width="100" label="操作" >
+          <template slot-scope="scope">
+            <el-button @click="delFactor(scope.row)" type="text" size="small">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+    <!-- 调整系数配置因子模态框 -->
+    <el-dialog  
+      title="配置影响因子" 
+      :visible.sync="adjustFactor" 
+      width="80%" 
+      style="padding-bottom: 20px;">
+      <span  class="btn">
+        <el-button size="mini" @click="adjustFactor = false">返回</el-button>
+        <el-button size="mini" type="primary" @click="preservation()">创建表格</el-button>
+      </span>
+      <el-input 
+        size="mini" 
+        placeholder="请输入因子名称搜索" 
+        v-model="nameSearch" 
+        class="input-with-select namesearch">
+        <el-button slot="append" @click="Search()" icon="el-icon-search"></el-button>
+      </el-input>
+      <div style="margin: 10px 0;">
+        <el-button size="mini" type="primary" @click="addFactor()">添加因子</el-button>
+      </div>
+      <el-table size="mini" border stripe :data="gridData">
+        <el-table-column property="id" label="序号" width="80"></el-table-column>
+        <el-table-column label="因子名称">
+          <template slot-scope="scope">
+            <el-cascader 
+              style="width:100%" 
+              size="mini" 
+              :options="options" 
+              ref="teer" 
+              v-model="scope.row.name" 
+              clearable></el-cascader>
           </template>
         </el-table-column>
         <el-table-column label="限定类型">
@@ -259,8 +393,9 @@ export default {
       describe:"",//版本描述
       search:"",//搜索框内容
       code:"",//规则编码
-      describe:"",//描述
+      describe:"",//描述 
       influenceFactor:false,//配置影响因子模态框
+      adjustFactor:false,//调整系数配置因子模态框
       nameSearch:"",//因子名称搜索
       zs: "zs",//在售
       options: [{ //添加因子数据 
@@ -290,14 +425,23 @@ export default {
         },{
         label:'已失效'
       }],
-      dynamicValidateForm: {
+      dynamicValidateForm: {//调整系数
         domains: [],
       },
+      premiumFormula:{ // 保费公式
+        domains:[]
+      },
+      symbolValue:"",//符号
+      factorValue:"",//因子绑定
+      factor: [],// 因子数据
+      fixedValue:"", //固定值
+      fixed:[],//固定值数据
       premium:"",
       rate:"",
       meter:1,//选择器默认
       choice:2,//保费选择默认
-      factorData: [],// 表格数据
+      factorData: [],// 基础保费表格数据
+      adjustData: [],//调整系数表格数据
       limitType:[{ // 限定类型
         label:"固定值",
         id: 1,
@@ -340,7 +484,7 @@ export default {
       alert(this.search)
     },
     influence(){//配置影响因子按钮
-      if(this.gridData.length !==0){
+      if(this.factorData.length !==0){
         this.$confirm('此操作将重置表格, 是否修改?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -360,6 +504,7 @@ export default {
           });          
         });
       }else{
+        this.gridData =[]
         this.influenceFactor = true
       }
     },
@@ -378,6 +523,9 @@ export default {
           this.factorData.splice(k,1)
         }
       })
+      if(this.factorData.length == 0){
+        this.Table = false
+      }
     },
     addFactor(){//模态框添加因子
       let add =  {
@@ -452,15 +600,33 @@ export default {
     },
     Query(){//添加调整系数
       this.dynamicValidateForm.domains.push({
+        id:this.dynamicValidateForm.domains.length+1,
         value: '',
         index:"",
         key: Date.now()
       });
     },
+    pzyxyz(item){
+      this.adjustFactor=true
+    },
     removeDomain(item) {//删除调整系数
       var index = this.dynamicValidateForm.domains.indexOf(item)
       if (index !== -1) {
         this.dynamicValidateForm.domains.splice(index, 1)
+      }
+    },
+    addFormula(){//添加保费公式
+      this.premiumFormula.domains.push({
+        id:this.premiumFormula.domains.length+1,
+        value: '',
+        satisfy:"",
+        key: Date.now()
+      });
+    },
+    deleFormula(item){//删除保费公式
+      var index = this.premiumFormula.domains.indexOf(item)
+      if (index !== -1) {
+        this.premiumFormula.domains.splice(index, 1)
       }
     },
     storage(){//暂存
@@ -569,6 +735,9 @@ export default {
           }
           .Btngroup{
             float: right;
+          }
+          .formula{
+            margin: 10px 10px 0;
           }
         }
         .addFormula{

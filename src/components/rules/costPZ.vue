@@ -18,15 +18,15 @@
         <ul class="condition">
           <li>
             <p>规则编码</p>
-            <el-input size="small " v-model="ruleCode" placeholder="请输入规则编码"></el-input>
+            <el-input size="small" v-model="ruleCode" placeholder="请输入规则编码"></el-input>
           </li>
           <li>
             <p>规则名称</p>
-            <el-input size="small " v-model="ruleName" placeholder="请输入规则名称"></el-input>
+            <el-input size="small" v-model="ruleName" placeholder="请输入规则名称"></el-input>
           </li>
           <li>
             <p>规则类型</p>
-            <el-select size="small " style="width:100%" v-model="ruleType" placeholder="请选择规则类型">
+            <el-select size="small" style="width:100%" v-model="ruleType" placeholder="请选择规则类型">
               <el-option
                 v-for="item in Type"
                 :key="item.value"
@@ -37,19 +37,35 @@
           </li>
           <li>
             <p>当前版本号</p>
-            <el-input size="small " v-model="edition" placeholder="请输入当前版本号"></el-input>
+            <el-input size="small" v-model="edition" placeholder="请输入当前版本号"></el-input>
           </li>
           <li>
             <p>规则有效起期</p>
-            <el-date-picker size="small " format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" style="width:100%" v-model="startDate" type="date" placeholder="请选择生效日期"> </el-date-picker>
+            <el-date-picker 
+              size="small" 
+              format="yyyy 年 MM 月 dd 日" 
+              value-format="yyyy-MM-dd" 
+              style="width:100%" 
+              v-model="startDate" 
+              type="date" 
+              placeholder="请选择生效日期"> 
+            </el-date-picker>
           </li>
           <li>
             <p>规则有效止期</p>
-            <el-date-picker size="small " format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" style="width:100%" v-model="endDate" type="date" placeholder="请选择失效日期"> </el-date-picker>
+            <el-date-picker 
+              size="small" 
+              format="yyyy 年 MM 月 dd 日" 
+              value-format="yyyy-MM-dd" 
+              style="width:100%" 
+              v-model="endDate" 
+              type="date" 
+              placeholder="请选择失效日期"> 
+            </el-date-picker>
           </li>
           <li>
             <p>规则状态</p>
-            <el-select size="small " style="width:100%" v-model="ruleState" placeholder="请选择规则状态">
+            <el-select size="small" style="width:100%" v-model="ruleState" placeholder="请选择规则状态">
               <el-option
                 v-for="item in rule"
                 :key="item.value"
@@ -60,7 +76,7 @@
           </li>
           <li>
             <p>当前版本状态</p>
-            <el-select size="small " style="width:100%" v-model="editionState" placeholder="请选择版本状态">
+            <el-select size="small" style="width:100%" v-model="editionState" placeholder="请选择版本状态">
               <el-option
                 v-for="item in State"
                 :key="item.value"
@@ -77,17 +93,17 @@
       <p class="basic">配置影响因子 </p>
       <div class="factorTable">
         <span class="Btngroup">
-          <el-button size="mini" type="primary">添加因子</el-button>
+          <el-button @click="addFactord" size="mini" type="primary">添加因子</el-button>
           <el-button size="mini" type="primary">创建配置表</el-button>
         </span>
-        <div>
-          <el-table size="mini" :data="ruleTable" border  stripe >
+        <div v-show="Factor">
+          <el-table size="mini" :data="FactorTable" border  stripe >
             <el-table-column prop="id"  label="序号" width="100"> </el-table-column>
             <el-table-column label="因子名称"> 
               <template slot-scope="scope">
-                <el-select size='mini' v-model="scope.row.careers" placeholder="请选择因子名称">
+                <el-select size='mini' v-model="scope.row.name" placeholder="请选择因子名称">
                   <el-option
-                    v-for="item in careersType"
+                    v-for="item in factorname"
                     :key="item.value"
                     :label="item.label"
                     :value="item.label">
@@ -97,9 +113,9 @@
             </el-table-column>
             <el-table-column prop="type" label="取值类型"> 
               <template slot-scope="scope">
-                <el-select size='mini' v-model="scope.row.age" placeholder="请选择取值类型">
+                <el-select size='mini' v-model="scope.row.type" placeholder="请选择取值类型">
                   <el-option
-                    v-for="item in insuredAge"
+                    v-for="item in typeVale"
                     :key="item.value"
                     :label="item.label"
                     :value="item.label">
@@ -123,7 +139,7 @@
             <el-table-column fixed="right" label="操作">
               <template slot-scope="scope">
                 <el-button @click="copyLine(scope.row)" type="text" size="small">配置限定值</el-button>
-                <el-button @click="deleData(scope.row)" type="text" size="small">删除</el-button>
+                <el-button @click="deleFactor(scope.row)" type="text" size="small">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -231,7 +247,34 @@ export default {
         value: 'gd',
         label: '固定'
       }],
-
+      Factor:false,//配置影响因子 列表隐藏
+      FactorTable:[],//配置影响因子数据
+      factorname:[{//因子名称数据
+        label:"被保人年龄"
+        },{
+        label:"是否有社保"
+        },{
+        label:"保险期限(天)"
+        },{
+        label:"旅游天数"
+        },{
+        label:"被保人性别"
+        },{
+        label:"是否续保"
+        },{
+        label:"体检类型"
+        },{
+        label:"佣金率"
+      }],
+      typeVale:[{//取值类型
+        label:"区间枚举值"
+        },{
+        label:"布尔值"
+        },{
+        label:"文本枚举值"
+        },{
+        label:"数值型"
+      }],
       RuleTable:false,//规则配置表隐藏
       ruleTable: [],//规则配置表数据
       careersType:[{//选择职业类型
@@ -263,6 +306,27 @@ export default {
       this.ruleName="",//规则名称
       this.ruleType="" //规则类型
     },
+    addFactord(){//配置影响因子 添加因子
+      let factor = {
+        id : this.FactorTable.length+1,
+        name : "",
+        type : ""
+      }
+      this.FactorTable.push(factor)
+      this.Factor=true
+    },
+    deleFactor(row){//配置影响因子 删除因子
+      this.FactorTable.forEach((item,k) => {
+        if(row.id === item.id){
+          this.FactorTable.splice(k,1)
+        }
+      })
+      // 删光之后列表隐藏
+      if(this.FactorTable.length == 0){
+        this.Factor=false
+      }
+    },
+
     addLine(){//规则配置表添加行
       this.RuleTable = true
       let line = {
@@ -279,6 +343,10 @@ export default {
           this.ruleTable.splice(k,1)
         }
       })
+      // 删光之后列表隐藏
+      if(this.ruleTable.length == 0){
+        this.RuleTable = false
+      }
     },
     copyLine(row){//复制行
       this.ruleTable.forEach((item,k) => {
