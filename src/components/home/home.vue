@@ -174,7 +174,6 @@ export default {
 }
 .left {
   width: 250px !important;
-  /* height: 100%; */
 }
 .rigth {
   margin-bottom: 50px;
