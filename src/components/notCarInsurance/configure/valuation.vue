@@ -226,7 +226,7 @@
                       </el-option>
                     </el-select>
                     <el-select 
-                      v-model="fixedValue" 
+                      v-model="adjustment" 
                       clearable style="width:120px"  
                       size="mini" 
                       placeholder="选择系数">
@@ -237,8 +237,8 @@
                         :value="item.label">
                       </el-option>
                     </el-select>
-                    <el-button @click="addCondition()" size="mini" type="primary">添加</el-button>
-                    <el-button @click="deleteADD()" size="mini" type="primary">撤销</el-button>
+                    <el-button @click="addCondition(domain)" size="mini" type="primary">添加</el-button>
+                    <el-button @click="deleteADD(domain)" size="mini" type="primary">撤销</el-button>
                   </div>
                   <div class="formula" >
                     <el-input
@@ -431,11 +431,28 @@ export default {
       premiumFormula:{ // 保费公式
         domains:[]
       },
+      
+      symbol: [{ //fuhao
+        label: ' > '
+        }, {
+        label: ' < '
+        }, {
+        label: ' = '
+        }, {
+        label: ' <= '
+        }, {
+        label: ' >= '
+        }, {
+        label: ' 且 '
+      }],
       symbolValue:"",//符号
       factorValue:"",//因子绑定
       factor: [],// 因子数据
       fixedValue:"", //固定值
+      adjustment:"",//选择调整系数
       fixed:[],//固定值数据
+      addr:[],//添加公式 过渡
+
       premium:"",
       rate:"",
       meter:1,//选择器默认
@@ -458,19 +475,6 @@ export default {
       gridData: [],//模态框用于展示因子数据
       limitValues:[],
 
-      symbol: [{ //逻辑数据
-        label: ' > '
-        }, {
-        label: ' < '
-        }, {
-        label: ' = '
-        }, {
-        label: ' <= '
-        }, {
-        label: ' >= '
-        }, {
-        label: ' 且 '
-      }],
     }
   },
   methods: {
@@ -494,7 +498,12 @@ export default {
           this.gridData =[]
           // 重置显示表格
           this.factorData = []
+          // 重置选择因子数据
+          this.factor = []
           this.influenceFactor = true
+          if(this.factorData.length == 0){
+            this.Table = false
+          }
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -586,6 +595,17 @@ export default {
           })
         })
       }
+      // 将当前选择的因子push进选择因子数据里
+      this.gridData.map(item => {
+        return item.name.slice(-1).toString()
+      }).forEach(items => {
+        let factorName = {
+          id : this.factor.length+1,
+          label : items,
+          index : '',
+        }
+        this.factor.push(factorName)
+      })
       this.influenceFactor = false
       this.Table=true
     },
@@ -620,6 +640,7 @@ export default {
         id:this.premiumFormula.domains.length+1,
         value: '',
         satisfy:"",
+        formula:"",
         key: Date.now()
       });
     },
@@ -628,6 +649,49 @@ export default {
       if (index !== -1) {
         this.premiumFormula.domains.splice(index, 1)
       }
+    },
+    addCondition(index){//添加保费公式添加
+      if(!this.symbolValue && !this.factorValue && !this.fixedValue && !this.adjustment){
+        this.$message({
+          message: "请选择条件",
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }else{
+        let adds = []
+        adds.push(this.symbolValue)
+        adds.push(this.factorValue)
+        adds.push(this.fixedValue )
+        adds.push(this.adjustment )
+        this.addr.push(adds.join(""))
+        this.premiumFormula.domains.forEach(item => {
+          if(index.id === item.id){
+            item.satisfy = this.addr.join("")
+          }
+        })
+        this.symbolValue = ""
+        this.factorValue = ""
+        this.fixedValue  = ""
+        this.adjustment  = ""
+      }
+    },
+    deleteADD(index){//添加保费公式撤销
+      this.premiumFormula.domains.forEach(item => {
+        if(index.id === item.id){
+          if(!item.satisfy){
+            this.$message({
+              message: '没有公式可删除',
+              type: "error",
+              center: true,
+              duration: 2000
+            });
+          }else{
+            this.addr.pop()
+            item.satisfy=this.addr.join("")
+          }
+        }
+      })
     },
     storage(){//暂存
       this.$message({
