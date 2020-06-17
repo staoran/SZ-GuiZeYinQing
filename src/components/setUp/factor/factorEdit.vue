@@ -97,6 +97,22 @@
       retu(){//返回
        this.$router.go(-1)
       },
+      testResult(){//暂存
+        this.$message({
+          message: '已暂存至草稿，下次进入可直接编辑',
+          type: 'warning',
+          center: true,
+          duration: 2000
+        });
+      },
+      submit(){//提交
+        this.$message({
+          message: '提交成功',
+          type: 'success',
+          center: true,
+          duration: 2000
+        });
+      },
       addFactor(){//新增枚举
         let arr = {
           name : "",
