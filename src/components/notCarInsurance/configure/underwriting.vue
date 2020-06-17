@@ -2,7 +2,7 @@
   <div>
     <!-- title -->
     <div class="fixedTitle">
-      核赔规则编辑（自定义规则）
+      核保规则编辑
       <div class="floatRight">
         <el-button size="mini" @click="retu()" >返回</el-button>
         <el-button size="mini" @click="storage()" type="primary">暂存</el-button>
@@ -289,7 +289,7 @@
 
 <script>
 export default {
-  name: "custom",
+  name: "underwriting",
   data() {
     return {
       ruleCode:"", //规则编码

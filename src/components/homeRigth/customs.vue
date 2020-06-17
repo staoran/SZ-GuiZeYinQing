@@ -638,7 +638,7 @@ export default {
 }
 .condition li{
   width: 23%;
-  margin: 0 20px 20px 0;
+  margin: 0 18px 18px 0;
 }
 .condition li p {
   margin: 0;

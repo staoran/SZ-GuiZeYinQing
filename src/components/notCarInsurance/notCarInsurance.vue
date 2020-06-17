@@ -72,16 +72,16 @@
       <p class="basic"> </p>
       <div class="factorTable">
         <el-table size="mini" :data="tableData" border style="width: 100%; margin-bottom: 10px; ">
-          <el-table-column prop="productName" width="110" label="产品名称" > </el-table-column>
-          <el-table-column prop="productCode" width="110" label="产品编码" > </el-table-column>
-          <el-table-column prop="editionState" width="100" label="版本状态"> </el-table-column>
+          <el-table-column prop="productName" width="90" label="产品名称" > </el-table-column>
+          <el-table-column prop="productCode" width="90" label="产品编码" > </el-table-column>
+          <el-table-column prop="editionState" width="90" label="版本状态"> </el-table-column>
           <el-table-column prop="name" width="90" label="操作人"> </el-table-column>
-          <el-table-column prop="listingDate" width="180" label="上架时间" > </el-table-column>
+          <el-table-column prop="listingDate" width="160" label="上架时间" > </el-table-column>
           <el-table-column prop="edition" width="90" label="上架版本" > </el-table-column>
           <el-table-column prop="cpbb" width="90" label="产品版本" > </el-table-column>
           <el-table-column label="配置操作" >
             <template slot-scope="scope">
-              <el-button @click="details(scope.row)" type="text" size="small">产品</el-button>
+              <!-- <el-button @click="product(scope.row)" type="text" size="small">产品</el-button> -->
               <el-button @click="details(scope.row)" type="text" size="small">核保规则</el-button>
               <el-button @click="custom(scope.row)" type="text" size="small">核赔规则</el-button>
               <el-button @click="premium(scope.row)" type="text" size="small">保费规则</el-button>
@@ -182,13 +182,18 @@ export default {
       this.saleChannel="",//销售渠道
       this.recordList = false
     },
+    // product(row){//产品
+    //   console.log(row)
+    // },
+    details(row){//核保规则
+      this.$router.push({name:'underwriting',query:{id:row.id}})
+    },
     custom(row){//核赔规则
       this.$router.push({name:'customs',query:{id:row.id}})
     },
     premium(row){//保费规则
       this.$router.push({name:'valuation',query:{id:row.id,name:row.productName}})
     },
-    details(row){},
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
@@ -205,7 +210,7 @@ export default {
 }
 .condition li{
   width: 23%;
-  margin: 0 20px 20px 0;
+  margin: 0 18px 18px 0;
 }
 .factorTable{
   overflow: hidden;

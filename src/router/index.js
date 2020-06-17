@@ -25,6 +25,7 @@ import Record from "@/components/record/record"
 //非车险规则管理
 import NotCarInsurance from "@/components/notCarInsurance/notCarInsurance"
 import Valuation from "@/components/notCarInsurance/configure/valuation"
+import Underwriting from "@/components/notCarInsurance/configure/underwriting"
 //假数据页面
 import Customs from "@/components/homeRigth/customs"
 
@@ -117,6 +118,12 @@ export default new Router({
           path: 'valuation',
           name : "valuation",
           component: Valuation,
+          meta: { keepAlive: true } //缓存当前页面信息
+        },
+        { //核保规则配置
+          path: 'underwriting',
+          name : "underwriting",
+          component: Underwriting,
           meta: { keepAlive: true } //缓存当前页面信息
         },
         { //规则流程管理

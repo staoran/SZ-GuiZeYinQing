@@ -64,7 +64,7 @@
       </div>
     </div>
     <!-- 列表 -->
-    <div>
+    <div v-show="list">
       <p class="basic">列表 </p>
       <div class="factorTable">
         <el-button style="float: right; margin-bottom: 10px;" @click="addfactor()" size="mini" type="primary">新增规则</el-button>
@@ -77,10 +77,10 @@
           <el-table-column prop="state" label="状态" > </el-table-column>
           <el-table-column fixed="right" label="操作" width="200px">
             <template slot-scope="scope">
-              <el-button @click="(scope.row)" type="text" size="small">修改</el-button>
-              <el-button type="text" size="small">详情</el-button>
-              <el-button type="text" size="small">失效</el-button>
-              <el-button type="text" size="small">复制</el-button>
+              <el-button @click="modify(scope.row)" type="text" size="small">修改</el-button>
+              <el-button @click="details(scope.row)" type="text" size="small">详情</el-button>
+              <el-button @click="invalid(scope.row)" type="text" size="small">失效</el-button>
+              <el-button @click="copy(scope.row)" type="text" size="small">复制</el-button>
             </template>
           </el-table-column>
         </el-table> 
@@ -113,6 +113,7 @@ export default {
       ruleName:"",//规则名称
       ruleType:"", //规则类型
       currentPage4: 4, //分页
+      list:false,
       rule:[{ // 规则状态数据
         value: '0',
         label: '草稿'
@@ -152,6 +153,9 @@ export default {
     
   },
   methods: {
+    Query(){  
+      this.list = true
+    },
     reset(){//重置
       this.ruleCode="", //适用渠道
       this.editionState="", //费用类型
@@ -161,9 +165,35 @@ export default {
       this.edition="", //规则编码
       this.ruleName="",//规则名称
       this.ruleType="" //规则类型
+      this.list = false
     },
     addfactor(){//新增规则
       this.$router.push({name:'costPZ'})
+    },
+    modify(row){//修改
+      this.$router.push({name:'costPZ',query:{id:row.id}})
+    },
+    details(row){//详情
+      this.$router.push({name:'costPZ',query:{id:row.id}})
+    },
+    invalid(row){//失效
+      this.tableData.forEach(item => {
+        if(row.id == item.id){
+          item.state="失效"
+        }
+      })
+    },
+    copy(row){//复制
+      let copy = {
+        id : this.tableData.length+1,
+        code: row.code,
+        channel : row.channel,
+        cost: row.cost,
+        startDate: row.startDate,
+        endDate: row.endDate,
+        state:row.state
+      }
+      this.tableData.push(copy)
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
@@ -190,7 +220,7 @@ export default {
 }
 .condition li{
   width: 23%;
-  margin: 0 20px 20px 0;
+  margin: 0 18px 18px 0;
 }
 .factorTable{
   overflow: hidden;

@@ -5,9 +5,9 @@
       费用规则配置
       <div class="floatRight">
         <el-button size="mini" @click="retu()" >返回</el-button>
-        <el-button size="mini" type="primary">暂存</el-button>
-        <el-button size="mini" type="primary">提交</el-button>
-        <el-button size="mini" type="primary">审批详情</el-button>
+        <el-button size="mini" @click="storage()" type="primary">暂存</el-button>
+        <el-button size="mini" @click="Submit()" type="primary">提交</el-button>
+        <el-button size="mini" @click="details()" type="primary">审批详情</el-button>
       </div>
     </div>
     <!-- 基础信息 -->
@@ -355,6 +355,33 @@ export default {
         }
       })
     },
+    storage(){//暂存
+      this.$message({
+        message: '已暂存至草稿，下次进入可直接编辑',
+        type: 'warning',
+        center: true,
+        duration: 2000
+      });
+    },
+    Submit(){//提交
+      this.$message({
+        message: '提交成功',
+        type: 'success',
+        center: true,
+        duration: 2000
+      });
+      // this.ruleCode="", //规则编码
+      // this.ruleName="", //规则名称
+      // this.startDate="", //日期起
+      // this.endDate="", // 日期止
+      // this.ruleState="", //规则状态
+      // this.edition="", //版本号
+      // this.editionState="", //版本状态
+      // this.ruleType="" //规则类型
+    },
+    details(){//审批详情
+      this.$router.push({name:'approval'})
+    },
   }
 };
 </script>
@@ -378,7 +405,7 @@ export default {
 }
 .condition li{
   width: 23%;
-  margin: 0 20px 20px 0;
+  margin: 0 18px 18px 0;
 }
 .condition li p {
   margin: 0;

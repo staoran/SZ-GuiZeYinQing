@@ -16,7 +16,7 @@
               active-text-color="#ffd04b"
               style="height :100%"
               :unique-opened="true"
-              :router="true"
+              router
             >
               <!-- <el-submenu index="3">
                 <template slot="title">

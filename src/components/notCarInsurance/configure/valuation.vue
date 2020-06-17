@@ -332,7 +332,7 @@
       style="padding-bottom: 20px;">
       <span  class="btn">
         <el-button size="mini" @click="adjustFactor = false">返回</el-button>
-        <el-button size="mini" type="primary" @click="preservation()">创建表格</el-button>
+        <el-button size="mini" type="primary" @click="adjustTable()">创建表格</el-button>
       </span>
       <el-input 
         size="mini" 
@@ -616,8 +616,6 @@ export default {
         }
       })
     },
-    NewTable(){//创建表格显示表格
-    },
     Query(){//添加调整系数
       this.dynamicValidateForm.domains.push({
         id:this.dynamicValidateForm.domains.length+1,
@@ -628,6 +626,9 @@ export default {
     },
     pzyxyz(item){
       this.adjustFactor=true
+    },
+    adjustTable(){//调整系数创建表格
+      alert("调整系数创建表格")
     },
     removeDomain(item) {//删除调整系数
       var index = this.dynamicValidateForm.domains.indexOf(item)
