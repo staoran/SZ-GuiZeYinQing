@@ -138,25 +138,27 @@
                       <el-button @click.prevent="removeDomain(domain)" size="mini" type="primary">删除调整系数</el-button>
                     </span>
                   </p>
-                  <el-table  class="rateTitle" size="mini" :data="adjustData" border stripe>
-                    <!-- <template v-for="item in gridData">
-                      <el-table-column 
-                        :prop="item.dataItem"
-                        :label="item.name.slice(-1).toString()"
-                        :key="item.id">
+                  <div v-show="AdjustTable">
+                    <el-table  class="rateTitle" size="mini" :data="adjustData" border stripe>
+                      <template v-for="item in addAdjustData">
+                        <el-table-column 
+                          :prop="item.dataItem"
+                          :label="item.name.slice(-1).toString()"
+                          :key="item.id">
+                        </el-table-column>
+                      </template>
+                      <el-table-column label="调整系数">
+                        <template slot-scope="scope">
+                          <el-input size="mini" v-model="scope.row.premium" > </el-input>
+                        </template>
                       </el-table-column>
-                    </template> -->
-                    <el-table-column label="调整系数">
-                      <template slot-scope="scope">
-                        <el-input size="mini" v-model="scope.row.premium" > </el-input>
-                      </template>
-                    </el-table-column>
-                    <el-table-column label="操作" >
-                      <template slot-scope="scope">
-                        <el-button @click="Delete(scope.row)" type="text" size="small">删除</el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
+                      <el-table-column label="操作" >
+                        <template slot-scope="scope">
+                          <el-button @click="adjustDelete(scope.row)" type="text" size="small">删除</el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </div>
                 </div>
               </el-form-item>
             </el-form>
@@ -342,9 +344,9 @@
         <el-button slot="append" @click="Search()" icon="el-icon-search"></el-button>
       </el-input>
       <div style="margin: 10px 0;">
-        <el-button size="mini" type="primary" @click="addFactor()">添加因子</el-button>
+        <el-button size="mini" type="primary" @click="addAdjust()">添加因子</el-button>
       </div>
-      <el-table size="mini" border stripe :data="gridData">
+      <el-table size="mini" border stripe :data="addAdjustData">
         <el-table-column property="id" label="序号" width="80"></el-table-column>
         <el-table-column label="因子名称">
           <template slot-scope="scope">
@@ -376,7 +378,7 @@
         </el-table-column>
         <el-table-column width="100" label="操作" >
           <template slot-scope="scope">
-            <el-button @click="delFactor(scope.row)" type="text" size="small">删除</el-button>
+            <el-button @click="delAdjust(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -417,7 +419,8 @@ export default {
       }],
       rates:false,
       premiums:true,
-      Table:false,//显示隐藏表格
+      Table:false,//显示隐藏基础费率/保费内表格
+      AdjustTable:false,//显示隐藏调整系数内表格
       State:[{
         label:"开发中",
         },{
@@ -474,7 +477,7 @@ export default {
       }],
       gridData: [],//模态框用于展示因子数据
       limitValues:[],
-
+      addAdjustData:[],//调整系数模态框数据展示
     }
   },
   methods: {
@@ -536,6 +539,16 @@ export default {
         this.Table = false
       }
     },
+    adjustDelete(row){//调整系数删除
+      this.adjustData.forEach((item,k) => {
+        if(row.id === item.id){
+          this.adjustData.splice(k,1)
+        }
+      })
+      if(this.factorData.length == 0){
+        this.AdjustTable = false
+      }
+    },
     addFactor(){//模态框添加因子
       let add =  {
         id: this.gridData.length+1,
@@ -554,6 +567,26 @@ export default {
         });
       }else{
         this.gridData.push(add)
+      }
+    },
+    addAdjust(){//调整系数配置影响因子
+      let add =  {
+        id: this.addAdjustData.length+1,
+        name: "",
+        type:"",
+        dataItem:"limitValue",
+        limitValue:"",
+        // limit:"",
+      }
+      if(this.addAdjustData.length >= 5){
+        this.$message({
+          message: '数据添加过多',
+          type: 'warning',
+            center: true,
+            duration: 2000
+        });
+      }else{
+        this.addAdjustData.push(add)
       }
     },
     preservation(){//模态框保存(创建表格)
@@ -616,6 +649,13 @@ export default {
         }
       })
     },
+    delAdjust(row){// 调整系数 配置影响因子 删除
+      this.addAdjustData.forEach((item,k) => {
+        if(row.id === item.id){
+          this.addAdjustData.splice(k,1)
+        }
+      })
+    },
     Query(){//添加调整系数
       this.dynamicValidateForm.domains.push({
         id:this.dynamicValidateForm.domains.length+1,
@@ -628,7 +668,57 @@ export default {
       this.adjustFactor=true
     },
     adjustTable(){//调整系数创建表格
-      alert("调整系数创建表格")
+      // alert("调整系数创建表格")
+      if(this.addAdjustData.length > 1){
+        let addAdjustDataT = this.addAdjustData.slice(-1)//最后一项
+        let addAdjustDataO = [this.addAdjustData[0]]//第一项
+        addAdjustDataO.forEach((item,k) => {
+          addAdjustDataT.forEach(items => {
+            this.limitValues = items.limitValue.split(";")//限定值字符转数组 split
+          })
+          let limitValue = item.limitValue.split(";")//限定值字符转数组 split
+          limitValue.forEach( index => {
+            this.limitValues.forEach( indexs => {
+              let apl = {
+                id : this.adjustData.length+1,
+                name : item.name.slice(-1).toString(),//只要数组的最后一项slice
+                limitValue : index,
+                limit : indexs,
+                premium:"",//保费
+                rate:""//费率
+              }
+              this.adjustData.push(apl)
+            })
+          })
+        })
+      }else{
+        this.addAdjustData.forEach(item => {
+        let limitValue = item.limitValue.split(";")//限定值字符转数组 split
+        limitValue.forEach( items => {
+            let apl = {
+              id : this.adjustData.length+1,
+              name : item.name.slice(-1).toString(),//只要数组的最后一项slice
+              limitValue : items,
+              premium:"",//保费
+              rate:""//费率
+            }
+            this.adjustData.push(apl)
+          })
+        })
+      }
+      // 将当前选择的因子push进选择因子数据里
+      this.addAdjustData.map(item => {
+        return item.name.slice(-1).toString()
+      }).forEach(items => {
+        let factorName = {
+          id : this.factor.length+1,
+          label : items,
+          index : '',
+        }
+        this.factor.push(factorName)
+      })
+      this.adjustFactor = false
+      this.AdjustTable=true
     },
     removeDomain(item) {//删除调整系数
       var index = this.dynamicValidateForm.domains.indexOf(item)

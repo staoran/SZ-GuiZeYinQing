@@ -168,7 +168,7 @@
                 </el-select>
               </template>
             </el-table-column>
-            <el-table-column prop="type" label="取值类型"> 
+            <el-table-column prop="type" label="被保人年龄"> 
               <template slot-scope="scope">
                 <el-select size='mini' v-model="scope.row.age" placeholder="请选择被保人年龄">
                   <el-option
@@ -370,14 +370,6 @@ export default {
         center: true,
         duration: 2000
       });
-      // this.ruleCode="", //规则编码
-      // this.ruleName="", //规则名称
-      // this.startDate="", //日期起
-      // this.endDate="", // 日期止
-      // this.ruleState="", //规则状态
-      // this.edition="", //版本号
-      // this.editionState="", //版本状态
-      // this.ruleType="" //规则类型
     },
     details(){//审批详情
       this.$router.push({name:'approval'})

@@ -117,6 +117,18 @@
         :total="109">
       </el-pagination>
     </div>
+    <!-- 复制模态框 -->
+    <el-dialog title="复制规则" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+        <el-form-item label="选择直属机构">
+          <el-cascader class="directly" :options="options" :clearable="true" v-model="institution"></el-cascader>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="assign">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -139,6 +151,18 @@ export default {
       endDate:"", // 失效日期
       currentPage4: 4, //分页
       screen:false,//筛选
+      dialogFormVisible: false,//复制模态框
+      institution:"",//模态框的机构
+      form: {
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: ''
+      },
       options: [ // 直属机构信息
         {
           value: "shanghai",
@@ -371,6 +395,26 @@ export default {
     copy(){//复制
       let selection = this.$refs.multipleTable.selection
       if(selection.length !==0){
+        this.dialogFormVisible =true
+      }else{
+        this.$message({
+          message: "请选择需要复制的数据",
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }
+    },
+    assign(){//复制模态框确定
+      if(!this.institution){
+        this.$message({
+          message: "请选择需要复制到的机构",
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }else{
+        let selection = this.$refs.multipleTable.selection
         selection.forEach(item => {
           this.tableData.forEach( index => {
             if(item.id === index.id){
@@ -387,13 +431,7 @@ export default {
             }
           });
         })
-      }else{
-        this.$message({
-          message: "请选择需要复制的数据",
-          type: "error",
-          center: true,
-          duration: 2000
-        });
+        this.dialogFormVisible = false
       }
     },
     Delete(){//删除
