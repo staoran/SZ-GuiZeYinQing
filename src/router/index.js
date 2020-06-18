@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+// 登录页
+import Login from "@/components/login/login"
+// 主页面
 import Home from "@/components/home/home"
 // home页面右半部分内容
 import homeRigth from "@/components/homeRigth/homeRigth"
@@ -36,6 +39,11 @@ export default new Router({
     {
       path: '/',
       redirect: "/home/homeRigth"
+    },
+    {
+      path:"/login",
+      name:"login",
+      component:Login
     },
     {
       path: '/home',

@@ -171,10 +171,10 @@ export default {
       this.$router.push({name:'costPZ'})
     },
     modify(row){//修改
-      this.$router.push({name:'costPZ',query:{id:row.id}})
+      this.$router.push({name:'costPZ',query:{id:row.id,modify:2}})
     },
     details(row){//详情
-      this.$router.push({name:'costPZ',query:{id:row.id}})
+      this.$router.push({name:'costPZ',query:{id:row.id,modify:1}})
     },
     invalid(row){//失效
       this.tableData.forEach(item => {
@@ -201,7 +201,10 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
-  }
+  },
+  created(){
+    // this.fangfa()
+  },
 };
 </script>
 <style scoped>

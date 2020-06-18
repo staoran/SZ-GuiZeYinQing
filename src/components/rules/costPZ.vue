@@ -356,6 +356,7 @@ export default {
       })
     },
     storage(){//暂存
+      alert(this.$route.query.modify)
       this.$message({
         message: '已暂存至草稿，下次进入可直接编辑',
         type: 'warning',
