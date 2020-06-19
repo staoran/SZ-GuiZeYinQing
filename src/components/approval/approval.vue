@@ -36,12 +36,19 @@
         </li>
         <li>
           <p>审核时间</p>
-          <el-date-picker size="small"  format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" style="width:100%" v-model="endDate" type="date" placeholder="请选择审核时间"> </el-date-picker>
+          <el-date-picker 
+            size="small"  
+            format="yyyy 年 MM 月 dd 日" 
+            value-format="yyyy-MM-dd" 
+            style="width:100%" 
+            v-model="endDate" 
+            type="date" 
+            placeholder="请选择审核时间">
+          </el-date-picker>
         </li>
         <li style="flex: 0.87;">
           <p>审核意见</p>
           <el-input  type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"> </el-input>
-          <!-- <el-date-picker size="small" style="width:100%" v-model="endDate" type="date" placeholder="请选择审核时间"> </el-date-picker> -->
         </li>
       </ul>
     </div>

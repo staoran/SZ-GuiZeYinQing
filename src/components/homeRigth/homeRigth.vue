@@ -93,13 +93,13 @@
       </div>
       <el-table :data="tableData" border stripe   ref="multipleTable">
         <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column fixed prop="code" label="规则编码" width="150"></el-table-column>
+        <el-table-column prop="code" label="规则编码" width="150"></el-table-column>
         <el-table-column prop="type" label="规则类型" width="100"></el-table-column>
         <el-table-column prop="name" label="规则名称" width="200"></el-table-column>
         <el-table-column prop="startdate" label="有效起期" width="150"></el-table-column>
         <el-table-column prop="enddate" label="有效止期" width="150"></el-table-column>
         <el-table-column prop="state" label="状态" width="100"></el-table-column>
-        <el-table-column fixed="right" label="操作" >
+        <el-table-column label="操作" >
           <template slot-scope="scope">
             <el-button @click="details(scope.row)" type="text" size="small">详情</el-button>
             <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">修改</el-button> -->
