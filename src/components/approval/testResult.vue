@@ -5,24 +5,48 @@
         <el-button size="mini" @click="retu()" >返回</el-button>
         <el-button size="mini" @click="execute()" type="primary">执行测试</el-button>
         <el-button size="mini" @click="add()" type="primary">添加行</el-button>
+        <el-button size="mini" @click="dele()" type="primary">删除行</el-button>
         <el-button size="mini" @click="lookup()" >查看规则</el-button>
       </div>
     </div>
     <div>
       <p class="basic"></p>
       <div class="condition" style=" padding: 15px 15px 15px 30px;">
-        <el-table :data="tableData" border :stripe="true" size="mini" style="width: 100%">
+        <el-table 
+          :data="tableData" 
+          border 
+          :stripe="true" 
+          size="mini" 
+          ref="multipleTable"
+          style="width: 100%">
           <el-table-column prop="id" type="selection" width="55"> </el-table-column>
-          <el-table-column prop="ruleName" label="规则名称" > </el-table-column>
-          <el-table-column prop="ruleType" label="规则类型" > </el-table-column>
-          <el-table-column prop="startDate" label="有效起期" > </el-table-column>
-          <el-table-column prop="endDate" label="有效止期" > </el-table-column>
-          <el-table-column prop="state" label="原值"  > </el-table-column>
-          <el-table-column label="测试值">
+          <el-table-column label="出险时间">
+            <template slot-scope="scope">
+              <el-input size="mini" v-model="scope.row.time" > </el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="是否现场报案">
+            <template slot-scope="scope">
+              <el-input size="mini" v-model="scope.row.scene" > </el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="出险原因" >
+            <template slot-scope="scope">
+              <el-input size="mini" v-model="scope.row.reason" > </el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="有无人伤" >
+            <template slot-scope="scope">
+              <el-input size="mini" v-model="scope.row.injured" > </el-input>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column prop="state" label="原值"  > </el-table-column> -->
+          <!-- <el-table-column label="测试值">
             <template slot-scope="scope">
               <el-input size="mini" v-model="scope.row.test" > </el-input>
             </template>
-          </el-table-column>
+          </el-table-column> -->
+          <el-table-column prop="test" label="自动核赔"></el-table-column>
           <el-table-column prop="result" label="测试结果"  > </el-table-column>
         </el-table>
       </div>
@@ -51,49 +75,87 @@
       textarea:"", // 意见
       currentPage4: 4, //分页
       tableData: [{
-        startDate: '2020-01-29',
-        endDate: '2024-02-19',
-        ruleName: '佣金费用规则001',
-        ruleType:"渠道",
-        opinion:'信息不完整',
-        test:"",
-        result:"",//结果
-        state:'草稿',
+        id : 1,
+        reason: "火灾或自燃",
+        injured: "无",
+        time: "2020-05-05",
+        scene:"是",
+        test:"成立",
+        result:"正确",//结果
+      },{
+        id : 2,
+        reason: "倾覆",
+        injured: "有",
+        time: "2020-05-06",
+        scene:"否",
+        test:"不成立",
+        result:"错误",//结果
+      },{
+        id : 3,
+        reason: "盗抢",
+        injured: "无",
+        time: "2020-04-28",
+        scene:"是",
+        test:"不成立",
+        result:"正确",//结果
       }]
       }
     },
     methods:{
+      // 通过this.$refs.multipleTable.selection获取当前选中状态
       retu(){//返回
        this.$router.go(-1)
       },
-      submit(){//提交
-        let sub = {
-          date : this.endDate,
-          name : this.editionState,
-          result : this.ruleState,
-          opinion : this.textarea
-        }
-        console.log(this.tableData,sub)
-        this.tableData.push(sub),
-        console.log(this.tableData)
-      },
       execute(){//执行
-        // alert("执行测试")
-        console.log(this.tableData)
+      let selection = this.$refs.multipleTable.selection
+      if(selection.length !==0){
+        selection.forEach(item => {
+          this.tableData.forEach( index => {
+            if(item.id === index.id){
+              index.test = "成立"
+              index.result = "正确"
+            }
+          });
+        })
+      }else{
+        this.$message({
+          message: "请选择需要执行的数据",
+          type: "error",
+          center: true,
+          duration: 2000
+        });
+      }
       },
       add(){//添加行
         let addRow = {
           id:this.tableData.length+1,
-          startDate: '2020-01-29',
-          endDate: '2024-02-19',
-          ruleName: '佣金费用规则001',
-          ruleType:"渠道",
-          opinion:'信息不完整',
+          reason: "",
+          injured: "",
+          time: "",
+          scene:"",
           test:"",
           result:"",//结果
-          state:'草稿'
         }
         this.tableData.push(addRow)
+      },
+      dele(){//删除行
+        let selection = this.$refs.multipleTable.selection
+        if(selection.length !==0){
+          selection.forEach(item => {
+            this.tableData.forEach( (index ,k) => {
+              if(item.id === index.id){
+                this.tableData.splice(k,1)
+              }
+            });
+          })
+        }else{
+          this.$message({
+            message: "请选择需要删除的数据",
+            type: "error",
+            center: true,
+            duration: 2000
+          });
+        }
       },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);

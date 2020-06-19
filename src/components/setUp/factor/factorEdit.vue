@@ -37,6 +37,16 @@
           <p>备注</p>
           <el-input size='mini' placeholder="请输入备注" v-model="factorRemark" clearable></el-input>
         </li>
+          <li>
+            <p>选择机构</p>
+            <el-cascader 
+              size="mini"  
+              class="directly" 
+              :options="options" 
+              :clearable="true" 
+              v-model="Step">
+            </el-cascader>
+          </li>
       </ul>
     </div>
      <div class="factorList">
@@ -75,6 +85,7 @@
         factorName:"", //因子名称
         factorState:"", //因子类型
         factorRoute:"", //因子路径
+        Step: "",//直属机构
         factorRemark:"",//备注
         factor:[{ // 规则状态数据
           label: '文本类型'
@@ -85,6 +96,56 @@
           }, {
           label: '枚举值'
         }],
+      options: [ // 直属机构信息
+        {
+          value: "shanghai",
+          label: "总公司",
+          children: [{
+            value: "chengdu",
+            label: "成都电话中心",
+          },{
+            value: "shanghaiDH",
+            label: "上海电话中心",
+          },{
+            value: "wuhanDH",
+            label: "武汉电话中心",
+          },{
+            value: "shanghaishi",
+            label: "上海分公司",
+            children: [{
+              value: "pudongxinqu",
+              label: "上海分公司"
+            }]
+          },{
+            value: "beijishi",
+            label:"北京分公司",
+            children: [{
+              value: "dongcheng",
+              label: "东城营业部"
+              },{
+              value: "huairou",
+              label: "怀柔支公司"
+              },{
+              value: "sjs",
+              label: "石景山支公司"
+            }]
+          },{
+            value: "shenz",
+            label: "深圳分公司",
+            children: [{
+              value: "szdx",
+              label: "深圳分公司电话销售业务部"
+            }]
+          },{
+            value: "wz",
+            label: "温州分公司",
+            children: [{
+              value: "ruian",
+              label: "瑞安支公司"
+            }]
+          }]
+        },
+      ],
         factorData: [{
           id: 1,
           name: '未成年',
@@ -147,7 +208,7 @@
     padding: 0 30px 0 20px;
   }
   .condition li{
-    width: 19%;
+    width: 31%;
     margin: 0 10px 20px 0;
   }
   .factorList{

@@ -34,6 +34,16 @@
             <p>规则执行时间</p>
             <el-date-picker size="small" style="width:100%" v-model="ruleDate" type="date" placeholder="请选择规则执行时间"> </el-date-picker>
           </li>
+          <li>
+            <p>选择机构</p>
+            <el-cascader 
+              size="small"  
+              class="directly" 
+              :options="options" 
+              :clearable="true" 
+              v-model="Step">
+            </el-cascader>
+          </li>
         </ul>
       </div>
     </div>
@@ -75,6 +85,7 @@ export default {
       ruleEdition:"",//规则版本
       ruleNo:"",//理赔单号
       ruleDate:"",//规则执行时间
+      Step: "",//直属机构
       recordList:false,//列表
       currentPage4: 4, //分页
       tableData: [{ //配置因子表格数据
@@ -105,6 +116,56 @@ export default {
         endDate:'2024-1-22',
         state:'成功'
       }],
+      options: [ // 直属机构信息
+        {
+          value: "shanghai",
+          label: "总公司",
+          children: [{
+            value: "chengdu",
+            label: "成都电话中心",
+          },{
+            value: "shanghaiDH",
+            label: "上海电话中心",
+          },{
+            value: "wuhanDH",
+            label: "武汉电话中心",
+          },{
+            value: "shanghaishi",
+            label: "上海分公司",
+            children: [{
+              value: "pudongxinqu",
+              label: "上海分公司"
+            }]
+          },{
+            value: "beijishi",
+            label:"北京分公司",
+            children: [{
+              value: "dongcheng",
+              label: "东城营业部"
+              },{
+              value: "huairou",
+              label: "怀柔支公司"
+              },{
+              value: "sjs",
+              label: "石景山支公司"
+            }]
+          },{
+            value: "shenz",
+            label: "深圳分公司",
+            children: [{
+              value: "szdx",
+              label: "深圳分公司电话销售业务部"
+            }]
+          },{
+            value: "wz",
+            label: "温州分公司",
+            children: [{
+              value: "ruian",
+              label: "瑞安支公司"
+            }]
+          }]
+        },
+      ],
     };
     
   },
@@ -118,6 +179,7 @@ export default {
       this.ruleEdition="",//规则版本
       this.ruleNo="",//理赔单号
       this.ruleDate=""//规则执行时间
+      this.Step = ""//机构
       this.recordList = false
     },
     handleSizeChange(val) {

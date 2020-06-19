@@ -38,7 +38,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: "/home/homeRigth"
+      redirect: "/login"
     },
     {
       path:"/login",

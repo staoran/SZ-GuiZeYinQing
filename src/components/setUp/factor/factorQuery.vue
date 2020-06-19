@@ -24,6 +24,16 @@
               </el-option>
             </el-select>
           </li>
+          <li>
+            <p>选择机构</p>
+            <el-cascader 
+              size="small"  
+              class="directly" 
+              :options="options" 
+              :clearable="true" 
+              v-model="Step">
+            </el-cascader>
+          </li>
         </ul>
         <span class="addFormula"> 
           <el-button @click="Query()" size="mini" type="primary">查询</el-button> 
@@ -68,6 +78,7 @@ export default {
       coded:"",//因子编码
       name : "",//因子名称
       type : "",//因子类型
+      Step: "",//直属机构
       currentPage4: 4, //分页
       factorlist:false,//因子列表
       rule:[{//结论
@@ -102,6 +113,56 @@ export default {
         type: "区间枚举值",
         route: "核赔单 / 自动理算单 / 事故责任"
       }],
+      options: [ // 直属机构信息
+        {
+          value: "shanghai",
+          label: "总公司",
+          children: [{
+            value: "chengdu",
+            label: "成都电话中心",
+          },{
+            value: "shanghaiDH",
+            label: "上海电话中心",
+          },{
+            value: "wuhanDH",
+            label: "武汉电话中心",
+          },{
+            value: "shanghaishi",
+            label: "上海分公司",
+            children: [{
+              value: "pudongxinqu",
+              label: "上海分公司"
+            }]
+          },{
+            value: "beijishi",
+            label:"北京分公司",
+            children: [{
+              value: "dongcheng",
+              label: "东城营业部"
+              },{
+              value: "huairou",
+              label: "怀柔支公司"
+              },{
+              value: "sjs",
+              label: "石景山支公司"
+            }]
+          },{
+            value: "shenz",
+            label: "深圳分公司",
+            children: [{
+              value: "szdx",
+              label: "深圳分公司电话销售业务部"
+            }]
+          },{
+            value: "wz",
+            label: "温州分公司",
+            children: [{
+              value: "ruian",
+              label: "瑞安支公司"
+            }]
+          }]
+        },
+      ],
     }
   },
   methods: {
@@ -112,6 +173,7 @@ export default {
       this.coded="",//因子编码
       this.name = "",//因子名称
       this.type = ""//因子类型
+      this.Step = ""//机构
       this.factorlist=false
     },
     addFactor(){//新增因子跳转页面
@@ -142,7 +204,7 @@ export default {
   padding-bottom: 15px;
 }
 .condition li{
-  width: 31%;
+  width: 22%;
   margin-right:20px;
 }
 .paging{

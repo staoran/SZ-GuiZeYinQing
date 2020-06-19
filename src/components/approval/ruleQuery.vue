@@ -53,6 +53,16 @@
               </el-option>
             </el-select>
           </li>
+          <li>
+            <p>选择机构</p>
+            <el-cascader 
+              size="small"  
+              class="directly" 
+              :options="options" 
+              :clearable="true" 
+              v-model="Step">
+            </el-cascader>
+          </li>
         </ul>
       </div>
     </div>
@@ -130,6 +140,7 @@ export default {
       startDate:"", //日期起
       endDate:"", // 日期止
       ruleState:"", //规则状态
+      Step: "",//直属机构
       ruleType:"", //规则类型
       currentPage4: 4, //分页
       addFactor: false, // 发布模态框
@@ -201,6 +212,56 @@ export default {
         value: 'gd',
         label: '固定'
       }],
+      options: [ // 直属机构信息
+        {
+          value: "shanghai",
+          label: "总公司",
+          children: [{
+            value: "chengdu",
+            label: "成都电话中心",
+          },{
+            value: "shanghaiDH",
+            label: "上海电话中心",
+          },{
+            value: "wuhanDH",
+            label: "武汉电话中心",
+          },{
+            value: "shanghaishi",
+            label: "上海分公司",
+            children: [{
+              value: "pudongxinqu",
+              label: "上海分公司"
+            }]
+          },{
+            value: "beijishi",
+            label:"北京分公司",
+            children: [{
+              value: "dongcheng",
+              label: "东城营业部"
+              },{
+              value: "huairou",
+              label: "怀柔支公司"
+              },{
+              value: "sjs",
+              label: "石景山支公司"
+            }]
+          },{
+            value: "shenz",
+            label: "深圳分公司",
+            children: [{
+              value: "szdx",
+              label: "深圳分公司电话销售业务部"
+            }]
+          },{
+            value: "wz",
+            label: "温州分公司",
+            children: [{
+              value: "ruian",
+              label: "瑞安支公司"
+            }]
+          }]
+        },
+      ],
     };
   },
   methods: {
@@ -256,6 +317,7 @@ export default {
       this.endDate="", // 日期止
       this.ruleState="", //规则状态
       this.ruleType="" //规则类型
+      this.Step = ""//机构
       this.ruleList = false
       this.releaselist = false
     },
@@ -298,7 +360,7 @@ export default {
   font-size: 14px;
 }
 .condition li{
-  width: 30%;
+  width: 22%;
   margin: 0 20px 20px 0;
 }
 .condition li p {
