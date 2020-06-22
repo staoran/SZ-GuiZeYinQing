@@ -6,7 +6,7 @@
     </div>
     <!-- 基础信息 -->
     <div style="border-bottom:1px dashed #000">
-      <p class="basic">基础信息
+      <p class="basic">查询条件
         
         <span class="addFormula"> 
           <el-button @click="Query()" size="mini" type="primary">查询</el-button> 

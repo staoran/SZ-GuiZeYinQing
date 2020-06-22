@@ -465,7 +465,7 @@ export default {
       this.$router.push({name:'customs' ,query:{id:row.id,modify:1,row:row}})
     },
     edit(row){
-      this.$router.push({name:'customs' ,query:{id:row.id,modify:2,row:row}})
+      this.$router.push({name:'custom',query:{id:row.id,modify:2,row:row}})
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);

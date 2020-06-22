@@ -448,7 +448,6 @@ export default {
     this.editionState = row.Current
     // if(this.$route.query.modify)
     this.$route.query.modify == 1 ? this.disabled=true :this.disabled=false
-     
   },
   methods: {
     retu(){ //返回

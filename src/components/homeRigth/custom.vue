@@ -2,7 +2,7 @@
   <div>
     <!-- title -->
     <div class="fixedTitle">
-      核赔规则编辑（自定义规则）
+      核赔规则编辑（{{Custom}}）
       <div class="floatRight">
         <el-button size="mini" @click="retu()" >返回</el-button>
         <el-button size="mini" @click="storage()" type="primary">暂存</el-button>
@@ -292,6 +292,7 @@ export default {
   name: "custom",
   data() {
     return {
+      Custom:"自定义规则",
       ruleCode:"", //规则编码
       ruleName:"", //规则名称
       startDate:"", //日期起
@@ -457,8 +458,25 @@ export default {
     };
     
   },
+  // created(){
+  //   console.log(this.$route.query.row)
+  // },
   created(){
-    console.log(this.$route.query.row)
+    // modify 1详情 2修改
+    if(this.$route.query.modify == 2){
+      let row = this.$route.query.row
+      this.ruleCode = row.code
+      this.ruleName = row.name
+      this.ruleType = row.type
+      this.edition = row.VERSION
+      this.startDate = row.startdate
+      this.endDate = row.enddate
+      this.ruleState = row.state
+      this.editionState = row.Current
+      this.Custom = "编辑"
+    }
+    // if(this.$route.query.modify)
+    // this.$route.query.modify == 1 ? this.disabled=true :this.disabled=false
   },
   methods: {
     retu(){ //返回

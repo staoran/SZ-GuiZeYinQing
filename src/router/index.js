@@ -60,7 +60,7 @@ export default new Router({
           path: 'custom',
           name : "custom",
           component: Custom,
-          meta: { keepAlive: true } //缓存当前页面信息
+          // meta: { keepAlive: true } //缓存当前页面信息
         },
         { //固定规则
           path: 'fixed',

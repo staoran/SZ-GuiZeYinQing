@@ -161,7 +161,7 @@
                     :value="item.label">
                   </el-option>
                 </el-select>
-                <el-button @click="get()" size="mini" type="primary">获取结果</el-button>
+                <el-button @click="get()" size="mini" type="primary">添加</el-button>
                 <el-button @click="resultUndo()" size="mini" type="primary">撤销</el-button>
               </div>
               <div style="margin: 0 10px;">
