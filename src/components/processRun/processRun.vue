@@ -147,7 +147,7 @@
   }
   .panel{
     position: absolute;
-    right: 30px;
+    right: 250px;
     top: 0;
     width: 300px;
   }

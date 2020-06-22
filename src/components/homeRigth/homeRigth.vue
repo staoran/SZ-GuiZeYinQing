@@ -102,7 +102,7 @@
         <el-table-column label="操作" >
           <template slot-scope="scope">
             <el-button @click="details(scope.row)" type="text" size="small">详情</el-button>
-            <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">修改</el-button> -->
+            <el-button @click="(scope.row)" type="text" size="small">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>

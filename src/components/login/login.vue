@@ -31,6 +31,7 @@
         password:"123456"
       }
     },
+    
     methods:{
       logins(){
         // console.log(this.userName,this.password)

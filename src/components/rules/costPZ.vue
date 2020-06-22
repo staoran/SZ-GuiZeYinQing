@@ -18,7 +18,7 @@
         <ul class="condition">
           <li>
             <p>规则编码</p>
-            <el-input size="small" v-model="ruleCode" placeholder="请输入规则编码"></el-input>
+            <el-input size="small" :disabled="bianma" v-model="ruleCode" placeholder="请输入规则编码"></el-input>
           </li>
           <li>
             <p>规则名称</p>
@@ -138,7 +138,7 @@
             </el-table-column>
             <el-table-column fixed="right" label="操作">
               <template slot-scope="scope">
-                <el-button @click="copyLine(scope.row)" type="text" size="small">配置限定值</el-button>
+                <el-button @click="(scope.row)" type="text" size="small">配置限定值</el-button>
                 <el-button @click="deleFactor(scope.row)" type="text" size="small">删除</el-button>
               </template>
             </el-table-column>
@@ -211,6 +211,7 @@ export default {
       edition:"", //规则编码
       ruleName:"",//规则名称
       ruleType:"", //规则类型
+      bianma:false,
       rule:[{ // 规则状态数据
         value: '0',
         label: '草稿'
@@ -292,6 +293,12 @@ export default {
     };
     
   },
+  created(){
+    if(this.$route.query.modify ==1){
+      this.ruleCode="R000001"
+      this.bianma=true
+    }
+  },
   methods: {
     retu(){// 返回
        this.$router.go(-1)
@@ -349,14 +356,18 @@ export default {
       }
     },
     copyLine(row){//复制行
-      this.ruleTable.forEach((item,k) => {
-        if(row.id === item.id){
-          this.ruleTable.push(row)
-        }
-      })
+      let copy = {
+        id : this.ruleTable.length+1,
+        careers: row.careers,
+        age:row.age,
+        rate:row.rate
+      }
+      this.ruleTable.push(copy)
+    },
+    onchange(row){
+
     },
     storage(){//暂存
-      alert(this.$route.query.modify)
       this.$message({
         message: '已暂存至草稿，下次进入可直接编辑',
         type: 'warning',
@@ -375,7 +386,7 @@ export default {
     details(){//审批详情
       this.$router.push({name:'approval'})
     },
-  }
+  },
 };
 </script>
 <style lang="less" scoped>
