@@ -294,9 +294,14 @@ export default {
     
   },
   created(){
-    if(this.$route.query.modify ==1){
-      this.ruleCode="R000001"
-      this.bianma=true
+    // modify 1详情 2修改
+    if(this.$route.query.modify){
+      let row = this.$route.query.row
+      this.ruleCode = row.code
+      this.startDate = row.startDate
+      this.endDate = row.endDate
+      this.ruleState = row.state
+      console.log(this.$route.query.row)
     }
   },
   methods: {

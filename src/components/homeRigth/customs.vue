@@ -5,9 +5,9 @@
       核赔规则编辑（详情）
       <div class="floatRight">
         <el-button size="mini" @click="retu()" >返回</el-button>
-        <el-button size="mini" @click="storage()" type="primary">暂存</el-button>
-        <el-button size="mini" @click="Submit()" type="primary">提交</el-button>
-        <el-button size="mini" @click="details()" type="primary">审批详情</el-button>
+        <el-button :disabled="disabled" size="mini" @click="storage()" type="primary">暂存</el-button>
+        <el-button :disabled="disabled" size="mini" @click="Submit()" type="primary">提交</el-button>
+        <el-button :disabled="disabled" size="mini" @click="details()" type="primary">审批详情</el-button>
       </div>
     </div>
     <!-- 基础信息 -->
@@ -17,15 +17,15 @@
         <ul class="condition">
           <li>
             <p>规则编码</p>
-            <el-input size="small" v-model="ruleCode" placeholder="请输入规则编码"></el-input>
+            <el-input :disabled="disabled" size="small" v-model="ruleCode" placeholder="请输入规则编码"></el-input>
           </li>
           <li>
             <p>规则名称</p>
-            <el-input size="small" v-model="ruleName" placeholder="请输入规则名称"></el-input>
+            <el-input :disabled="disabled" size="small" v-model="ruleName" placeholder="请输入规则名称"></el-input>
           </li>
           <li>
             <p>规则类型</p>
-            <el-select size="small" style="width:100%" v-model="ruleType" placeholder="请选择规则类型">
+            <el-select :disabled="disabled" size="small" style="width:100%" v-model="ruleType" placeholder="请选择规则类型">
               <el-option
                 v-for="item in Type"
                 :key="item.value"
@@ -36,19 +36,35 @@
           </li>
           <li>
             <p>当前版本号</p>
-            <el-input size="small" v-model="edition" placeholder="请输入当前版本号"></el-input>
+            <el-input :disabled="disabled" size="small" v-model="edition" placeholder="请输入当前版本号"></el-input>
           </li>
           <li>
             <p>规则有效起期</p>
-            <el-date-picker size="small" style="width:100%" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" v-model="startDate" type="date" placeholder="请选择生效日期"> </el-date-picker>
+            <el-date-picker 
+              :disabled="disabled"
+              size="small" 
+              style="width:100%" 
+              format="yyyy 年 MM 月 dd 日" 
+              value-format="yyyy-MM-dd" 
+              v-model="startDate" 
+              type="date" 
+              placeholder="请选择生效日期"> </el-date-picker>
           </li>
           <li>
             <p>规则有效止期</p>
-            <el-date-picker size="small" style="width:100%" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" v-model="endDate" type="date" placeholder="请选择失效日期"> </el-date-picker>
+            <el-date-picker 
+              :disabled="disabled"
+              size="small" 
+              style="width:100%" 
+              format="yyyy 年 MM 月 dd 日" 
+              value-format="yyyy-MM-dd" 
+              v-model="endDate" 
+              type="date" 
+              placeholder="请选择失效日期"> </el-date-picker>
           </li>
           <li>
             <p>规则状态</p>
-            <el-select size="small" style="width:100%" v-model="ruleState" placeholder="请选择规则状态">
+            <el-select :disabled="disabled" size="small" style="width:100%" v-model="ruleState" placeholder="请选择规则状态">
               <el-option
                 v-for="item in rule"
                 :key="item.value"
@@ -59,7 +75,7 @@
           </li>
           <li>
             <p>当前版本状态</p>
-            <el-select size="small" style="width:100%" v-model="editionState" placeholder="请选择版本状态">
+            <el-select :disabled="disabled" size="small" style="width:100%" v-model="editionState" placeholder="请选择版本状态">
               <el-option
                 v-for="item in State"
                 :key="item.value"
@@ -80,28 +96,28 @@
           <el-table-column prop="name" label="因子名称" width="300"> </el-table-column>
           <el-table-column prop="Valuetype" label="取值类型" width="180"> </el-table-column>
           <el-table-column label="是否输出"  width="180">
-            <el-checkbox label="输出值" name="type"></el-checkbox>
+            <el-checkbox :disabled="disabled" label="输出值" name="type"></el-checkbox>
           </el-table-column>
           <el-table-column fixed="right" label="操作" >
             <!-- <template> -->
             <template slot-scope="scope">
-              <el-button @click="handleClick(scope.row)" type="text" size="small">配置限定值</el-button>
-              <el-button @click="deleData(scope.row)" type="text" size="small">删除</el-button>
+              <el-button :disabled="disabled" @click="handleClick(scope.row)" type="text" size="small">配置限定值</el-button>
+              <el-button :disabled="disabled" @click="deleData(scope.row)" type="text" size="small">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-button style="float: right;" @click="addfactor()" size="mini" type="primary">添加因子</el-button> 
+        <el-button :disabled="disabled" style="float: right;" @click="addfactor()" size="mini" type="primary">添加因子</el-button> 
       </div>
     </div>
     <!-- 规则配置表 -->
     <div>
       <p class="basic">规则配置表
         <span class="addFormula"> 
-          <el-button @click="addformula()" size="mini" type="primary">添加公式</el-button> 
+          <el-button :disabled="disabled" @click="addformula()" size="mini" type="primary">添加公式</el-button> 
         </span> 
         </p>
         <!-- 条件div -->
-      <div class="factorTable" v-show="formulas" style="padding: 30px 30px 0 0;">
+      <div class="factorTable" style="padding: 30px 30px 0 0;">
         <!-- 公式 -->
         <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="70px" class="demo-dynamic">
           <el-form-item
@@ -110,11 +126,11 @@
             :label ="'公式'+(index+1)"
             :prop="'domains.' + index + '.value'"
           >
-        <div class="satisfy" v-show="formulas">
+        <div class="satisfy" >
           <span style="font-size:14px" >满足条件</span>
           <div class="Btngroup" >
-            <el-button @click.prevent="removeDomain(domain)" size="mini" type="primary" plain>删除公式</el-button>
-            <el-select v-model="symbolValue" class="Symbol" size="mini" placeholder="选择符号">
+            <el-button :disabled="disabled" @click.prevent="removeDomain(domain)" size="mini" type="primary" plain>删除公式</el-button>
+            <el-select :disabled="disabled" v-model="symbolValue" class="Symbol" size="mini" placeholder="选择符号">
               <el-option
                 v-for="item in symbol"
                 :key="item.value"
@@ -122,7 +138,7 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-select v-model="factorValue" class="Symbol" size="mini" placeholder="选择因子">
+            <el-select :disabled="disabled" v-model="factorValue" class="Symbol" size="mini" placeholder="选择因子">
               <el-option
                 v-for="item in factor"
                 :key="item.value"
@@ -130,7 +146,7 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-select v-model="fixedValue" style="width:120px" size="mini" placeholder="选择固定值">
+            <el-select :disabled="disabled" v-model="fixedValue" style="width:120px" size="mini" placeholder="选择固定值">
               <el-option
                 v-for="item in fixed"
                 :key="item.value"
@@ -138,8 +154,8 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-button @click="addCondition()" size="mini" type="primary">添加</el-button>
-            <el-button @click="deleteADD()" size="mini" type="primary">删除上一次添加</el-button>
+            <el-button :disabled="disabled" @click="addCondition()" size="mini" type="primary">添加</el-button>
+            <el-button :disabled="disabled" @click="deleteADD()" size="mini" type="primary">删除上一次添加</el-button>
           </div>
           <div class="formula" >
             <el-input
@@ -152,7 +168,7 @@
           </div>
           <span class="result">核赔结果</span>
           <div class="Btngroup" style="margin-top: 5px;">
-            <el-select v-model="getValue" class="Symbol" size="mini" placeholder="选择因子">
+            <el-select :disabled="disabled" v-model="getValue" class="Symbol" size="mini" placeholder="选择因子">
               <el-option
                 v-for="item in factor"
                 :key="item.value"
@@ -160,7 +176,7 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-select v-model="getFixed" style="width:120px" size="mini" placeholder="选择固定值">
+            <el-select :disabled="disabled" v-model="getFixed" style="width:120px" size="mini" placeholder="选择固定值">
               <el-option
                 v-for="item in fixed"
                 :key="item.value"
@@ -168,7 +184,7 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-button @click="get()" size="mini" type="primary">获取结果</el-button>
+            <el-button :disabled="disabled" @click="get()" size="mini" type="primary">获取结果</el-button>
           </div>
           <div style="margin: 0 10px;">
             <el-input
@@ -247,17 +263,18 @@ export default {
   name: "customs",
   data() {
     return {
-      ruleCode:"R000001", //规则编码
-      ruleName:"佣金费用规则001", //规则名称
-      startDate:"2020-01-29", //日期起
-      endDate:"2020-02-20", // 日期止
-      ruleState:"有效", //规则状态
-      edition:"V02", //版本号
-      editionState:"已生效", //版本状态
-      ruleType:"草稿", //规则类型
+      ruleCode:"", //规则编码
+      ruleName:"", //规则名称
+      startDate:"", //日期起
+      endDate:"", // 日期止
+      ruleState:"", //规则状态
+      edition:"", //版本号
+      disabled:false,
+      editionState:"", //版本状态
+      ruleType:"", //规则类型
       addFactor: false, // 添加因子模态框
       LimitValue:false, //限定值模态框
-      formulas:false, // 公式显示隐藏
+      // formulas:false, // 公式显示隐藏
       addName:"",  //新增因子名称
       getFixed:"",//获取结果选择固定值
       textarea:"(出险原因 = 火灾或自燃）",
@@ -361,7 +378,7 @@ export default {
         }]
       }],
       dynamicValidateForm: {//动态添加
-        domains: [],
+        domains: [{}],
       },
       arr:[],
       result:"事故类型=成立",//结果
@@ -417,6 +434,21 @@ export default {
       fixedValue:"", //固定值
     };
     
+  },
+  created(){
+    // modify 1详情 2修改
+    let row = this.$route.query.row
+    this.ruleCode = row.code
+    this.ruleName = row.name
+    this.ruleType = row.type
+    this.edition = row.VERSION
+    this.startDate = row.startdate
+    this.endDate = row.enddate
+    this.ruleState = row.state
+    this.editionState = row.Current
+    // if(this.$route.query.modify)
+    this.$route.query.modify == 1 ? this.disabled=true :this.disabled=false
+     
   },
   methods: {
     retu(){ //返回
@@ -531,7 +563,7 @@ export default {
       this.TotalData.push(configures)//往存放所有数据的数组里添加数据
     },
     addformula(){//添加公式
-      this.formulas = true
+      // this.formulas = true
         this.dynamicValidateForm.domains.push({
           value: '',
           key: Date.now()

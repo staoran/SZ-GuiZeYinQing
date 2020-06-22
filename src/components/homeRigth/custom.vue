@@ -302,7 +302,7 @@ export default {
       ruleType:"", //规则类型
       addFactor: false, // 添加因子模态框
       LimitValue:false, //限定值模态框
-      // formulas:false, // 公式显示隐藏
+      formulas:false, // 公式显示隐藏
       addName:"",  //新增因子名称
       textarea:"",//规则
       result:"",//结果
@@ -456,6 +456,9 @@ export default {
       fixedValue:"", //固定值
     };
     
+  },
+  created(){
+    console.log(this.$route.query.row)
   },
   methods: {
     retu(){ //返回

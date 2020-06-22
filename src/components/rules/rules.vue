@@ -6,7 +6,7 @@
     </div>
     <!-- 基础信息 -->
     <div>
-      <p class="basic">基础信息
+      <p class="basic">查询条件
         <span class="addFormula"> 
           <el-button @click="Query()" size="mini" type="primary">查询</el-button> 
           <el-button @click="reset()" size="mini">重置</el-button> 
@@ -171,10 +171,10 @@ export default {
       this.$router.push({name:'costPZ'})
     },
     modify(row){//修改
-      this.$router.push({name:'costPZ',query:{id:row.id,modify:2}})
+      this.$router.push({name:'costPZ',query:{id:row.id,modify:2,row:row}})
     },
     details(row){//详情
-      this.$router.push({name:'costPZ',query:{id:row.id,modify:1}})
+      this.$router.push({name:'costPZ',query:{id:row.id,modify:1,row:row}})
     },
     invalid(row){//失效
       this.tableData.forEach(item => {

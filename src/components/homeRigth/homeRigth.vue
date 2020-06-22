@@ -92,17 +92,19 @@
         <el-button size="small" type="primary" @click="Delete()" plain>删除</el-button>
       </div>
       <el-table :data="tableData" border stripe   ref="multipleTable">
-        <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column prop="code" label="规则编码" width="150"></el-table-column>
-        <el-table-column prop="type" label="规则类型" width="100"></el-table-column>
-        <el-table-column prop="name" label="规则名称" width="200"></el-table-column>
-        <el-table-column prop="startdate" label="有效起期" width="150"></el-table-column>
-        <el-table-column prop="enddate" label="有效止期" width="150"></el-table-column>
-        <el-table-column prop="state" label="状态" width="100"></el-table-column>
+        <el-table-column type="selection" width="45"> </el-table-column>
+        <el-table-column prop="code" label="规则编码" width="90"></el-table-column>
+        <el-table-column prop="name" label="规则名称" width="130"></el-table-column>
+        <el-table-column prop="type" label="规则类型" ></el-table-column>
+        <el-table-column prop="VERSION" label="当前版本号" ></el-table-column>
+        <el-table-column prop="startdate" label="有效起期"></el-table-column>
+        <el-table-column prop="enddate" label="有效止期"></el-table-column>
+        <el-table-column prop="state" label="规则状态" width="90"></el-table-column>
+        <el-table-column prop="Current" label="当前版本状态"></el-table-column>
         <el-table-column label="操作" >
           <template slot-scope="scope">
             <el-button @click="details(scope.row)" type="text" size="small">详情</el-button>
-            <el-button @click="(scope.row)" type="text" size="small">编辑</el-button>
+            <el-button @click="edit(scope.row)" type="text" size="small">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -219,27 +221,33 @@ export default {
           code: "R0000001",
           type: "渠道",
           name: "佣金费用规则001",
+          VERSION:"V02",
           startdate: "2020-01-29",
           enddate: "2020-02-20",
-          state: "有效"
+          state: "有效",
+          Current:"配置中"
         },
         {
           id:2,
           code: "R0000002",
           type: "计价",
           name: "计价规则002",
+          VERSION:"V03",
           startdate: "2020-02-22",
           enddate: "2020-03-29",
-          state: "草稿"
+          state: "草稿",
+          Current:"开发中"
         },
         {
           id : 3,
           code: "R0000003",
           type: "核保",
           name: "核保规则003",
+          VERSION:"V01",
           startdate: "2020-01-29",
           enddate: "2024-02-19",
-          state: "无效"
+          state: "无效",
+          Current:"已生效"
         }
       ],
       opt: [{ // 下一步操作数据
@@ -454,7 +462,10 @@ export default {
       }
     },
     details(row){//详情
-      this.$router.push({name:'customs' ,query:{id:row.id}})
+      this.$router.push({name:'customs' ,query:{id:row.id,modify:1,row:row}})
+    },
+    edit(row){
+      this.$router.push({name:'customs' ,query:{id:row.id,modify:2,row:row}})
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);

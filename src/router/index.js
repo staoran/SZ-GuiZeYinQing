@@ -96,7 +96,7 @@ export default new Router({
           path: 'costPZ',
           name : "costPZ",
           component: CostPZ,
-          meta: { keepAlive: true } //缓存当前页面信息
+          // meta: { keepAlive: true } //缓存当前页面信息
         },
         {//角色权限
           path: 'role',
@@ -150,7 +150,7 @@ export default new Router({
           path: 'customs',
           name : "customs",
           component: Customs,
-          meta: { keepAlive: true } //缓存当前页面信息
+          // meta: { keepAlive: true } //缓存当前页面信息
         },
       ]
     }
