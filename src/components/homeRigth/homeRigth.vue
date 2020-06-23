@@ -475,9 +475,6 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
-    // handleClick(row) {
-    //   console.log(row);
-    // }
   }
 };
 </script>

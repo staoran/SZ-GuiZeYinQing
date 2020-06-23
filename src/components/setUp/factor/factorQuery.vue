@@ -177,11 +177,9 @@ export default {
       this.factorlist=false
     },
     addFactor(){//新增因子跳转页面
-      // alert('新增因子跳转页面')
       this.$router.push({name:"factorEdit"})
     },
     edit(row){
-      // alert('编辑也跳转页面'+row.id)
       this.$router.push({name:"factorEdit",query:{id:row.id}})
     },
     handleSizeChange(val) {

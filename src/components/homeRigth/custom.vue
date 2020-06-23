@@ -458,9 +458,6 @@ export default {
     };
     
   },
-  // created(){
-  //   console.log(this.$route.query.row)
-  // },
   created(){
     // modify 1详情 2修改
     if(this.$route.query.modify == 2){

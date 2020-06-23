@@ -458,7 +458,6 @@ export default {
       this.addFactor=true
     },
     ent(){ //添加因子确认
-      // console.log(this.$refs['teer']);
       if(!this.addName){
         this.$message({
           message: "请输入因子名称",
@@ -489,7 +488,6 @@ export default {
       this.rows = row
     },
     addData(){//添加数据
-      // console.log(this.Operator,this.inputValue)
       // 先判断是否有数据
       if(this.configure.length !== 0){
         if(!this.Operator && !this.inputValue){
@@ -519,7 +517,6 @@ export default {
           duration: 2000
         });
       }
-      console.log(this.configure)
     },
     deleData(row){ //删除因子
       this.tableData.forEach((item,k) => {

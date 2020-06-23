@@ -34,7 +34,6 @@
     
     methods:{
       logins(){
-        // console.log(this.userName,this.password)
         if(!this.userName){
           this.$message({
             message: '请输入用户名',

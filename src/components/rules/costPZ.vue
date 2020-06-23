@@ -301,7 +301,6 @@ export default {
       this.startDate = row.startDate
       this.endDate = row.endDate
       this.ruleState = row.state
-      console.log(this.$route.query.row)
     }
   },
   methods: {

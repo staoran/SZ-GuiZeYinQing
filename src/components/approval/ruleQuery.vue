@@ -299,7 +299,6 @@ export default {
           this.releaselist = true
         }
       }else{
-        console.log(this.publishData)
         this.published.push(this.publishData)
         this.publishData={}
         this.addFactor = false
@@ -331,7 +330,6 @@ export default {
       console.log(`当前页: ${val}`);
     },
     handleClick(row){//已发布详情
-      console.log(row)
     }
   }
 };

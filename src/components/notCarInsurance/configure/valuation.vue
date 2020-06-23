@@ -491,7 +491,6 @@ export default {
       this.$router.push({name:'approval'})
     },
     Search(){//查询
-      alert(this.search)
     },
     influence(){//配置影响因子按钮
       if(this.factorData.length !==0){
@@ -674,7 +673,6 @@ export default {
       this.adjustFactor=true
     },
     adjustTable(){//调整系数创建表格
-      // alert("调整系数创建表格")
       if(this.addAdjustData.length > 1){
         let addAdjustDataT = this.addAdjustData.slice(-1)//最后一项
         let addAdjustDataO = [this.addAdjustData[0]]//第一项

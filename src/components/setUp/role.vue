@@ -151,7 +151,6 @@
         this.factorData.push(arr)
       },
       empower(){
-        console.log(this.Select)
         if(!this.Select.length == 0){
           this.$message({
             message: '该角色授权成功',

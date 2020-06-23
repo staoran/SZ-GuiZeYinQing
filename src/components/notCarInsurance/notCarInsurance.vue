@@ -245,7 +245,6 @@ export default {
       this.recordList = false
     },
     // product(row){//产品
-    //   console.log(row)
     // },
     details(row){//核保规则
       this.$router.push({name:'underwriting',query:{id:row.id}})
