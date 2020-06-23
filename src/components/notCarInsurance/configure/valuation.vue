@@ -89,6 +89,9 @@
                     :prop="item.dataItem"
                     :label="item.name.slice(-1).toString()"
                     :key="item.id">
+                     <template slot-scope="scope">
+                      <span>{{scope.row[scope.column.property]}}</span>
+                    </template>
                   </el-table-column>
                 </template>
                 <el-table-column label="基础费率" v-if="rates">
@@ -554,7 +557,7 @@ export default {
         id: this.gridData.length+1,
         name: "",
         type:"",
-        dataItem:"limitValue",
+        dataItem:"",
         limitValue:"",
         // limit:"",
       }
@@ -595,7 +598,9 @@ export default {
         let gridDataT = this.gridData.slice(-1)//最后一项
         let gridDataO = [this.gridData[0]]//第一项
         gridDataO.forEach((item,k) => {
+          item.dataItem="limitValue"
           gridDataT.forEach(items => {
+            items.dataItem="limit"
             this.limitValues = items.limitValue.split(";")//限定值字符转数组 split
           })
           let limitValue = item.limitValue.split(";")//限定值字符转数组 split
@@ -615,8 +620,9 @@ export default {
         })
       }else{
         this.gridData.forEach(item => {
-        let limitValue = item.limitValue.split(";")//限定值字符转数组 split
-        limitValue.forEach( items => {
+          item.dataItem="limitValue"
+          let limitValue = item.limitValue.split(";")//限定值字符转数组 split
+          limitValue.forEach( items => {
             let apl = {
               id : this.factorData.length+1,
               name : item.name.slice(-1).toString(),//只要数组的最后一项slice
