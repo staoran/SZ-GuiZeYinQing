@@ -471,6 +471,21 @@ export default {
       this.ruleState = row.state
       this.editionState = row.Current
       this.Custom = "编辑"
+      this.tableData=[{
+        id:1,
+        name:'核赔单/自动理赔单/是否水淹车',
+        Valuetype : '文本值',
+        checked:true
+      }]
+      this.dynamicValidateForm= {//动态添加
+        domains: [{}],
+      }
+      this.factor = [{label:"是否水淹车"}]
+      this.resultFactor = [{label:"是否水淹车"}]
+      this.fixeds = [{label:"是"}]
+      this.fixed = [{label:"是"}]
+      this.textarea="(出险原因 = 火灾或自燃）"
+      this.result="事故类型=成立"
     }
     // if(this.$route.query.modify)
     // this.$route.query.modify == 1 ? this.disabled=true :this.disabled=false

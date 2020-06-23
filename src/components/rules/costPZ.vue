@@ -350,6 +350,7 @@ export default {
   created(){
     // modify 1详情 2修改
     if(this.$route.query.modify){
+      // 详情、修改数据
       let row = this.$route.query.row
       this.ruleCode = row.code
       this.ruleName = row.name
@@ -359,9 +360,6 @@ export default {
       this.endDate = row.endDate
       this.ruleState = row.state
       this.editionState = row.status
-    }
-    if(this.$route.query.modify == 1){
-      this.disabled = true
       this.RuleTable=true
       this.Factor = true
       this.ruleTable=[{
@@ -374,6 +372,9 @@ export default {
         name :"被保人年龄",
         type:"文本枚举值"
       }]
+    }
+    if(this.$route.query.modify == 1){
+      this.disabled = true
     }
   },
   methods: {
