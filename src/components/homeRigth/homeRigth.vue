@@ -433,7 +433,9 @@ export default {
                 name: item.name,
                 startdate: item.startdate,
                 enddate: item.enddate,
-                state: item.state
+                state: item.state,
+                Current: item.Current,
+                VERSION: item.VERSION
               }
               this.tableData.push(copy)
             }
