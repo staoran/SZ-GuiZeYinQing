@@ -107,7 +107,12 @@
               <span style="font-size:14px" >满足条件</span>
               <div class="Btngroup" >
                 <el-button @click.prevent="removeDomain(domain)" size="mini" type="primary" plain>删除公式</el-button>
-                <el-select v-model="symbolValue" class="Symbol" size="mini" placeholder="选择符号">
+                <el-select 
+                  v-model="symbolValue" 
+                  class="Symbol" 
+                  clearable 
+                  size="mini" 
+                  placeholder="选择符号">
                   <el-option
                     v-for="item in symbol"
                     :key="item.value"
@@ -115,7 +120,12 @@
                     :value="item.label">
                   </el-option>
                 </el-select>
-                <el-select v-model="factorValue" class="Symbol" size="mini" placeholder="选择因子">
+                <el-select 
+                  v-model="factorValue" 
+                  class="Symbol" 
+                  clearable 
+                  size="mini" 
+                  placeholder="选择因子">
                   <el-option
                     v-for="item in factor"
                     :key="item.value"
@@ -123,7 +133,13 @@
                     :value="item.label">
                   </el-option>
                 </el-select>
-                <el-select v-model="fixedValue" style="width:120px" size="mini" placeholder="选择固定值">
+                <el-select 
+                  v-model="fixedValue" 
+                  @visible-change="FixedValue"
+                  style="width:120px" 
+                  clearable 
+                  size="mini" 
+                  placeholder="选择固定值">
                   <el-option
                     v-for="item in fixed"
                     :key="item.value"
@@ -145,7 +161,12 @@
               </div>
               <span class="result">核赔结果</span>
               <div class="Btngroup" style="margin-top: 5px;">
-                <el-select v-model="getValue" class="Symbol" clearable  size="mini" placeholder="选择因子">
+                <el-select 
+                  v-model="getValue" 
+                  class="Symbol" 
+                  clearable  
+                  size="mini" 
+                  placeholder="选择因子">
                   <el-option
                     v-for="item in factor"
                     :key="item.value"
@@ -153,9 +174,15 @@
                     :value="item.label">
                   </el-option>
                 </el-select>
-                <el-select v-model="getFixed" @visible-change="resultFixed" clearable style="width:120px" size="mini" placeholder="选择固定值">
+                <el-select 
+                  v-model="getFixed" 
+                  @visible-change="resultFixed" 
+                  clearable 
+                  style="width:120px" 
+                  size="mini" 
+                  placeholder="选择固定值">
                   <el-option
-                    v-for="item in fixed"
+                    v-for="item in resultfixed"
                     :key="item.value"
                     :label="item.label"
                     :value="item.label">
@@ -253,21 +280,45 @@ export default {
       factor: [{// 因子
         label: '事故类型'
         }, {
-        label: '出险原因'
+        label: '出险时间'
         }, {
-        label: '案件属性'
+        label: '新车购置价'
         }, {
-        label: '事故责任'
+        label: '是否现场报案'
       }],
-      fixed:[{ //固定值
-        label: '2020-01-27'
+      fixeds:[{ //固定值
+        label: '2020-01-27',
+        fatherName:'出险时间'
         }, {
-        label: '火灾或自燃'
+        label: '2020-03-20',
+        fatherName:'出险时间'
+        },{
+        label: '2020-05-27',
+        fatherName:'出险时间'
+        },{
+        label: '火灾或自燃',
+        fatherName:'事故类型'
         }, {
-        label: '否'
+        label: '盗抢',
+        fatherName:'事故类型'
+        },{
+        label: '倾覆或水淹',
+        fatherName:'事故类型'
+        },{
+        label: '否',
+        fatherName:'是否现场报案'
         }, {
-        label: '10万'
+        label: '是',
+        fatherName:'是否现场报案'
+        },{
+        label: '≤10万',
+        fatherName:'新车购置价'
+        },{
+        label: '＞10万',
+        fatherName:'新车购置价'
       }],
+      fixed:[],//添加条件固定值
+      resultfixed:[],//获取结果固定值
       symbolValue: '', //逻辑
       factorValue: '', //因子
       fixedValue:"", //固定值
@@ -288,6 +339,19 @@ export default {
       var index = this.dynamicValidateForm.domains.indexOf(item)
       if (index !== -1) {
         this.dynamicValidateForm.domains.splice(index, 1)
+      }
+    },
+    FixedValue(){//选择固定值数据
+      console.log(this.factorValue)
+      if(!this.factorValue){
+        this.fixed = this.fixeds
+      }else{
+        this.fixed=[]
+        this.fixeds.forEach(item => {
+          if(this.factorValue == item.fatherName){
+            this.fixed.push(item)
+          }
+        })
       }
     },
     addCondition(){ // 添加条件
