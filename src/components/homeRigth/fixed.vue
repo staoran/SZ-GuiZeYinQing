@@ -342,7 +342,6 @@ export default {
       }
     },
     FixedValue(){//选择固定值数据
-      console.log(this.factorValue)
       if(!this.factorValue){
         this.fixed = this.fixeds
       }else{
