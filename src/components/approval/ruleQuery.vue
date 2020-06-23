@@ -70,13 +70,13 @@
     <div class="list" v-show="ruleList">
       <p class="basic">列表</p>
       <el-table :data="queryList" size="mini" border stripe>
-        <el-table-column fixed prop="code" label="规则编码" width="150"></el-table-column>
+        <el-table-column  label="规则编码" width="150"></el-table-column>
         <el-table-column prop="type" label="规则类型" width="100"></el-table-column>
         <el-table-column prop="name" label="规则名称" width="200"></el-table-column>
         <el-table-column prop="startdate" label="有效起期" width="150"></el-table-column>
         <el-table-column prop="enddate" label="有效止期" width="150"></el-table-column>
         <el-table-column prop="state" label="状态" width="100"></el-table-column>
-        <el-table-column fixed="right" label="操作" >
+        <el-table-column  label="操作" >
         <template slot-scope="scope">
           <el-button @click="approval(scope.row)" type="text" size="small">审批</el-button>
           <el-button @click="test(scope.row)" type="text" size="small">测试</el-button>

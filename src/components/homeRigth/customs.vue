@@ -17,15 +17,28 @@
         <ul class="condition">
           <li>
             <p>规则编码</p>
-            <el-input :disabled="disabled" size="small" v-model="ruleCode" placeholder="请输入规则编码"></el-input>
+            <el-input 
+              :disabled="disabled" 
+              size="small" 
+              v-model="ruleCode" 
+              placeholder="请输入规则编码"></el-input>
           </li>
           <li>
             <p>规则名称</p>
-            <el-input :disabled="disabled" size="small" v-model="ruleName" placeholder="请输入规则名称"></el-input>
+            <el-input 
+              :disabled="disabled" 
+              size="small" 
+              v-model="ruleName" 
+              placeholder="请输入规则名称"></el-input>
           </li>
           <li>
             <p>规则类型</p>
-            <el-select :disabled="disabled" size="small" style="width:100%" v-model="ruleType" placeholder="请选择规则类型">
+            <el-select 
+              :disabled="disabled" 
+              size="small" 
+              style="width:100%" 
+              v-model="ruleType" 
+              placeholder="请选择规则类型">
               <el-option
                 v-for="item in Type"
                 :key="item.value"
@@ -36,7 +49,11 @@
           </li>
           <li>
             <p>当前版本号</p>
-            <el-input :disabled="disabled" size="small" v-model="edition" placeholder="请输入当前版本号"></el-input>
+            <el-input 
+              :disabled="disabled" 
+              size="small" 
+              v-model="edition" 
+              placeholder="请输入当前版本号"></el-input>
           </li>
           <li>
             <p>规则有效起期</p>
@@ -64,7 +81,12 @@
           </li>
           <li>
             <p>规则状态</p>
-            <el-select :disabled="disabled" size="small" style="width:100%" v-model="ruleState" placeholder="请选择规则状态">
+            <el-select 
+              :disabled="disabled" 
+              size="small" 
+              style="width:100%" 
+              v-model="ruleState" 
+              placeholder="请选择规则状态">
               <el-option
                 v-for="item in rule"
                 :key="item.value"
@@ -75,7 +97,12 @@
           </li>
           <li>
             <p>当前版本状态</p>
-            <el-select :disabled="disabled" size="small" style="width:100%" v-model="editionState" placeholder="请选择版本状态">
+            <el-select 
+              :disabled="disabled" 
+              size="small" 
+              style="width:100%" 
+              v-model="editionState" 
+              placeholder="请选择版本状态">
               <el-option
                 v-for="item in State"
                 :key="item.value"
@@ -98,28 +125,45 @@
           <el-table-column label="是否输出"  width="180">
             <el-checkbox :disabled="disabled" label="输出值" name="type"></el-checkbox>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" >
+          <el-table-column label="操作" >
             <!-- <template> -->
             <template slot-scope="scope">
-              <el-button :disabled="disabled" @click="handleClick(scope.row)" type="text" size="small">配置限定值</el-button>
-              <el-button :disabled="disabled" @click="deleData(scope.row)" type="text" size="small">删除</el-button>
+              <el-button 
+                :disabled="disabled" 
+                @click="handleClick(scope.row)" 
+                type="text" size="small">配置限定值</el-button>
+              <el-button 
+                :disabled="disabled" 
+                @click="deleData(scope.row)" 
+                type="text" size="small">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-button :disabled="disabled" style="float: right;" @click="addfactor()" size="mini" type="primary">添加因子</el-button> 
+        <el-button 
+          :disabled="disabled" 
+          style="float: right;" 
+          @click="addfactor()" 
+          size="mini" type="primary">添加因子</el-button> 
       </div>
     </div>
     <!-- 规则配置表 -->
     <div>
       <p class="basic">规则配置表
         <span class="addFormula"> 
-          <el-button :disabled="disabled" @click="addformula()" size="mini" type="primary">添加公式</el-button> 
+          <el-button 
+            :disabled="disabled" 
+            @click="addformula()" 
+            size="mini" 
+            type="primary">添加公式</el-button> 
         </span> 
         </p>
         <!-- 条件div -->
       <div class="factorTable" style="padding: 30px 30px 0 0;">
         <!-- 公式 -->
-        <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="70px" class="demo-dynamic">
+        <el-form 
+          :model="dynamicValidateForm" 
+          ref="dynamicValidateForm" 
+          label-width="70px" class="demo-dynamic">
           <el-form-item
             v-for="(domain, index) in dynamicValidateForm.domains"
             :key="domain.key"
@@ -129,8 +173,17 @@
         <div class="satisfy" >
           <span style="font-size:14px" >满足条件</span>
           <div class="Btngroup" >
-            <el-button :disabled="disabled" @click.prevent="removeDomain(domain)" size="mini" type="primary" plain>删除公式</el-button>
-            <el-select :disabled="disabled" v-model="symbolValue" class="Symbol" size="mini" placeholder="选择符号">
+            <el-button 
+              :disabled="disabled" 
+              @click.prevent="removeDomain(domain)" 
+              size="mini" 
+              type="primary" 
+              plain>删除公式</el-button>
+            <el-select 
+              :disabled="disabled" 
+              v-model="symbolValue" 
+              class="Symbol" 
+              size="mini" placeholder="选择符号">
               <el-option
                 v-for="item in symbol"
                 :key="item.value"
@@ -138,7 +191,12 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-select :disabled="disabled" v-model="factorValue" class="Symbol" size="mini" placeholder="选择因子">
+            <el-select 
+              :disabled="disabled" 
+              v-model="factorValue" 
+              class="Symbol" 
+              size="mini" 
+              placeholder="选择因子">
               <el-option
                 v-for="item in factor"
                 :key="item.value"
@@ -146,7 +204,12 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-select :disabled="disabled" v-model="fixedValue" style="width:120px" size="mini" placeholder="选择固定值">
+            <el-select 
+              :disabled="disabled" 
+              v-model="fixedValue" 
+              style="width:120px" 
+              size="mini" 
+              placeholder="选择固定值">
               <el-option
                 v-for="item in fixed"
                 :key="item.value"
@@ -154,8 +217,16 @@
                 :value="item.label">
               </el-option>
             </el-select>
-            <el-button :disabled="disabled" @click="addCondition()" size="mini" type="primary">添加</el-button>
-            <el-button :disabled="disabled" @click="deleteADD()" size="mini" type="primary">删除上一次添加</el-button>
+            <el-button 
+              :disabled="disabled" 
+              @click="addCondition()" 
+              size="mini" 
+              type="primary">添加</el-button>
+            <el-button 
+              :disabled="disabled" 
+              @click="deleteADD()" 
+              size="mini" 
+              type="primary">删除上一次添加</el-button>
           </div>
           <div class="formula" >
             <el-input
@@ -168,7 +239,12 @@
           </div>
           <span class="result">核赔结果</span>
           <div class="Btngroup" style="margin-top: 5px;">
-            <el-select :disabled="disabled" v-model="getValue" class="Symbol" size="mini" placeholder="选择因子">
+            <el-select 
+              :disabled="disabled" 
+              v-model="getValue" 
+              class="Symbol" 
+              size="mini"
+              placeholder="选择因子">
               <el-option
                 v-for="item in factor"
                 :key="item.value"

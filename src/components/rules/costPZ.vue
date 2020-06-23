@@ -5,9 +5,9 @@
       费用规则配置
       <div class="floatRight">
         <el-button size="mini" @click="retu()" >返回</el-button>
-        <el-button size="mini" @click="storage()" type="primary">暂存</el-button>
-        <el-button size="mini" @click="Submit()" type="primary">提交</el-button>
-        <el-button size="mini" @click="details()" type="primary">审批详情</el-button>
+        <el-button size="mini" :disabled="disabled" @click="storage()" type="primary">暂存</el-button>
+        <el-button size="mini" :disabled="disabled" @click="Submit()" type="primary">提交</el-button>
+        <el-button size="mini" :disabled="disabled" @click="details()" type="primary">审批详情</el-button>
       </div>
     </div>
     <!-- 基础信息 -->
@@ -18,15 +18,28 @@
         <ul class="condition">
           <li>
             <p>规则编码</p>
-            <el-input size="small" :disabled="bianma" v-model="ruleCode" placeholder="请输入规则编码"></el-input>
+            <el-input 
+              size="small" 
+              :disabled="disabled" 
+              v-model="ruleCode" 
+              placeholder="请输入规则编码"></el-input>
           </li>
           <li>
             <p>规则名称</p>
-            <el-input size="small" v-model="ruleName" placeholder="请输入规则名称"></el-input>
+            <el-input 
+              size="small" 
+              :disabled="disabled"
+              v-model="ruleName" 
+              placeholder="请输入规则名称"></el-input>
           </li>
           <li>
             <p>规则类型</p>
-            <el-select size="small" style="width:100%" v-model="ruleType" placeholder="请选择规则类型">
+            <el-select 
+              :disabled="disabled" 
+              size="small" 
+              style="width:100%" 
+              v-model="ruleType" 
+              placeholder="请选择规则类型">
               <el-option
                 v-for="item in Type"
                 :key="item.value"
@@ -37,11 +50,16 @@
           </li>
           <li>
             <p>当前版本号</p>
-            <el-input size="small" v-model="edition" placeholder="请输入当前版本号"></el-input>
+            <el-input
+             :disabled="disabled" 
+             size="small" 
+             v-model="edition" 
+             placeholder="请输入当前版本号"></el-input>
           </li>
           <li>
             <p>规则有效起期</p>
             <el-date-picker 
+              :disabled="disabled"
               size="small" 
               format="yyyy 年 MM 月 dd 日" 
               value-format="yyyy-MM-dd" 
@@ -54,6 +72,7 @@
           <li>
             <p>规则有效止期</p>
             <el-date-picker 
+              :disabled="disabled"
               size="small" 
               format="yyyy 年 MM 月 dd 日" 
               value-format="yyyy-MM-dd" 
@@ -65,23 +84,33 @@
           </li>
           <li>
             <p>规则状态</p>
-            <el-select size="small" style="width:100%" v-model="ruleState" placeholder="请选择规则状态">
+            <el-select
+              :disabled="disabled" 
+              size="small" 
+              style="width:100%" 
+              v-model="ruleState" 
+              placeholder="请选择规则状态">
               <el-option
                 v-for="item in rule"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value">
+                :value="item.label">
               </el-option>
             </el-select>
           </li>
           <li>
             <p>当前版本状态</p>
-            <el-select size="small" style="width:100%" v-model="editionState" placeholder="请选择版本状态">
+            <el-select
+             :disabled="disabled" 
+             size="small" 
+             style="width:100%" 
+             v-model="editionState" 
+             placeholder="请选择版本状态">
               <el-option
                 v-for="item in State"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value">
+                :value="item.label">
               </el-option>
             </el-select>
           </li>
@@ -93,15 +122,18 @@
       <p class="basic">配置影响因子 </p>
       <div class="factorTable">
         <span class="Btngroup">
-          <el-button @click="addFactord" size="mini" type="primary">添加因子</el-button>
-          <el-button size="mini" type="primary">创建配置表</el-button>
+          <el-button :disabled="disabled" @click="addFactord" size="mini" type="primary">添加因子</el-button>
+          <el-button :disabled="disabled" size="mini" type="primary">创建配置表</el-button>
         </span>
         <div v-show="Factor">
           <el-table size="mini" :data="FactorTable" border  stripe >
             <el-table-column prop="id"  label="序号" width="100"> </el-table-column>
             <el-table-column label="因子名称"> 
               <template slot-scope="scope">
-                <el-select size='mini' v-model="scope.row.name" placeholder="请选择因子名称">
+                <el-select size='mini' 
+                  :disabled="disabled" 
+                  v-model="scope.row.name" 
+                  placeholder="请选择因子名称">
                   <el-option
                     v-for="item in factorname"
                     :key="item.value"
@@ -113,7 +145,10 @@
             </el-table-column>
             <el-table-column prop="type" label="取值类型"> 
               <template slot-scope="scope">
-                <el-select size='mini' v-model="scope.row.type" placeholder="请选择取值类型">
+                <el-select size='mini' 
+                  :disabled="disabled"
+                  v-model="scope.row.type" 
+                  placeholder="请选择取值类型">
                   <el-option
                     v-for="item in typeVale"
                     :key="item.value"
@@ -124,11 +159,9 @@
               </template>
             </el-table-column>
             <el-table-column label="是否输出值"> 
-              <!-- <template slot-scope="scope">
-                <el-input size="mini" v-model="scope.row.rate" > </el-input>
-              </template> -->
               <template slot-scope="scope">
                 <el-checkbox 
+                  :disabled="disabled"
                   v-model="scope.row.checked" 
                   @change="onchange(scope.row)" 
                   label="输出值" 
@@ -136,10 +169,18 @@
                 </el-checkbox>
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作">
+            <el-table-column  label="操作">
               <template slot-scope="scope">
-                <el-button @click="(scope.row)" type="text" size="small">配置限定值</el-button>
-                <el-button @click="deleFactor(scope.row)" type="text" size="small">删除</el-button>
+                <el-button 
+                  :disabled="disabled" 
+                  @click="(scope.row)" 
+                  type="text" 
+                  size="small">配置限定值</el-button>
+                <el-button 
+                  :disabled="disabled" 
+                  @click="deleFactor(scope.row)" 
+                  type="text" 
+                  size="small">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -151,14 +192,18 @@
       <p class="basic">规则配置表 </p>
       <div class="factorTable">
         <span class="Btngroup">
-          <el-button @click="addLine" size="mini" type="primary">添加行</el-button>
+          <el-button :disabled="disabled" @click="addLine" size="mini" type="primary">添加行</el-button>
         </span>
         <div v-show="RuleTable">
           <el-table size="mini" :data="ruleTable" border  stripe >
             <!-- <el-table-column prop="id"  label="ID" width="100"> </el-table-column> -->
             <el-table-column label="被保人职业类别"> 
               <template slot-scope="scope">
-                <el-select size='mini' v-model="scope.row.careers" placeholder="请选择被保人职业类别">
+                <el-select 
+                  :disabled="disabled" 
+                  size='mini' 
+                  v-model="scope.row.careers" 
+                  placeholder="请选择被保人职业类别">
                   <el-option
                     v-for="item in careersType"
                     :key="item.value"
@@ -170,7 +215,11 @@
             </el-table-column>
             <el-table-column prop="type" label="被保人年龄"> 
               <template slot-scope="scope">
-                <el-select size='mini' v-model="scope.row.age" placeholder="请选择被保人年龄">
+                <el-select 
+                  :disabled="disabled" 
+                  size='mini' 
+                  v-model="scope.row.age" 
+                  placeholder="请选择被保人年龄">
                   <el-option
                     v-for="item in insuredAge"
                     :key="item.value"
@@ -182,13 +231,25 @@
             </el-table-column>
             <el-table-column label="佣金率"> 
               <template slot-scope="scope">
-                <el-input size="mini" v-model="scope.row.rate" > </el-input>
+                <el-input 
+                  :disabled="disabled" 
+                  size="mini" 
+                  v-model="scope.row.rate" 
+                  placeholder="请输入佣金率"> </el-input>
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作">
+            <el-table-column label="操作">
               <template slot-scope="scope">
-                <el-button @click="deleData(scope.row)" type="text" size="small">删除</el-button>
-                <el-button @click="copyLine(scope.row)" type="text" size="small">复制</el-button>
+                <el-button 
+                  :disabled="disabled"  
+                  @click="deleData(scope.row)" 
+                  type="text" 
+                  size="small">删除</el-button>
+                <el-button 
+                  :disabled="disabled"  
+                  @click="copyLine(scope.row)" 
+                  type="text" 
+                  size="small">复制</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -203,50 +264,43 @@ export default {
   name: "costPZ",
   data() {
     return {
-      ruleCode:"", //适用渠道
-      editionState:"", //费用类型
-      startDate:"", //日期起
-      endDate:"", // 日期止
-      ruleState:"", //规则状态
+      disabled:false,//详情不可输入
       edition:"", //规则编码
       ruleName:"",//规则名称
       ruleType:"", //规则类型
-      bianma:false,
+      ruleCode:"", //适用渠道
+      startDate:"", //日期起
+      endDate:"", // 日期止
+      ruleState:"", //规则状态
+      editionState:"", //版本状态
       rule:[{ // 规则状态数据
-        value: '0',
         label: '草稿'
-        },{ // 规则状态数据
-        value: '1',
+        },{ 
         label: '生效'
         }, {
-        value: '2',
         label: '无效'
         }, {
-        value: '3',
         label: '审核中'
         }, {
-        value: '4',
         label: '测试中'
         }, {
-        value: '5',
         label: '发布中'
       }],
       State:[{ // 版本状态数据
-        value: 'kaifa',
         label: '开发中'
         }, {
-        value: 'shengxiao',
         label: '已生效'
         }, {
-        value: 'shixiao',
         label: '已失效'
-      }],
+      }], 
       Type:[{ // 规则类型数据
-        value: 'zdy',
-        label: '自定义'
+        label: '渠道规则'
         }, {
-        value: 'gd',
-        label: '固定'
+        label: '费用规则'
+        }, {
+        label: '计价规则'
+        }, {
+        label: '核保规则'
       }],
       Factor:false,//配置影响因子 列表隐藏
       FactorTable:[],//配置影响因子数据
@@ -298,9 +352,28 @@ export default {
     if(this.$route.query.modify){
       let row = this.$route.query.row
       this.ruleCode = row.code
+      this.ruleName = row.name
+      this.ruleType= row.ruleType
+      this.edition = row.Version
       this.startDate = row.startDate
       this.endDate = row.endDate
       this.ruleState = row.state
+      this.editionState = row.status
+    }
+    if(this.$route.query.modify == 1){
+      this.disabled = true
+      this.RuleTable=true
+      this.Factor = true
+      this.ruleTable=[{
+        careers:"二类或者三类",
+        age:"≤35",
+        rate:"30%"
+      }]
+      this.FactorTable=[{
+        id:1,
+        name :"被保人年龄",
+        type:"文本枚举值"
+      }]
     }
   },
   methods: {
@@ -308,14 +381,14 @@ export default {
        this.$router.go(-1)
     },
     reset(){//重置
-      this.ruleCode="", //适用渠道
-      this.editionState="", //费用类型
-      this.startDate="", //日期起
-      this.endDate="", // 日期止
-      this.ruleState="", //规则状态
       this.edition="", //规则编码
       this.ruleName="",//规则名称
-      this.ruleType="" //规则类型
+      this.ruleType="", //规则类型
+      this.ruleCode="", //版本号
+      this.editionState="", //版本状态
+      this.startDate="", //日期起
+      this.endDate="", // 日期止
+      this.ruleState=""//规则状态
     },
     addFactord(){//配置影响因子 添加因子
       let factor = {

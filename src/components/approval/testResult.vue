@@ -117,6 +117,12 @@
             }
           });
         })
+        this.$message({
+          message: '执行测试完成',
+          type: 'success',
+          center: true,
+          duration: 2000
+        });
       }else{
         this.$message({
           message: "请选择需要执行的数据",
