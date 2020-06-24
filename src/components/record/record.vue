@@ -32,7 +32,12 @@
           </li>
           <li>
             <p>规则执行时间</p>
-            <el-date-picker size="small" style="width:100%" v-model="ruleDate" type="date" placeholder="请选择规则执行时间"> </el-date-picker>
+            <el-date-picker 
+              size="small" 
+              style="width:100%" 
+              v-model="ruleDate" 
+              type="date" 
+              placeholder="请选择规则执行时间"> </el-date-picker>
           </li>
           <li>
             <p>选择机构</p>
@@ -183,10 +188,10 @@ export default {
       this.recordList = false
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
     },
   }
 };

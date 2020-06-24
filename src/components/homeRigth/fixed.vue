@@ -96,7 +96,11 @@
       </p>
       <div class="factorTable" v-show="formulas">
         <!-- 公式 -->
-        <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="70px" class="demo-dynamic">
+        <el-form 
+          :model="dynamicValidateForm" 
+          ref="dynamicValidateForm" 
+          label-width="70px" 
+          class="demo-dynamic">
           <el-form-item
             v-for="(domain, index) in dynamicValidateForm.domains"
             :key="domain.key"

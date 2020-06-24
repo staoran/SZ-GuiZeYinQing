@@ -39,11 +39,21 @@
           </li>
           <li>
             <p>规则有效起期</p>
-            <el-date-picker size="small" style="width:100%" v-model="startDate" type="date" placeholder="请选择生效日期"> </el-date-picker>
+            <el-date-picker 
+              size="small" 
+              style="width:100%" 
+              v-model="startDate" 
+              type="date" 
+              placeholder="请选择生效日期"> </el-date-picker>
           </li>
           <li>
             <p>规则有效止期</p>
-            <el-date-picker size="small" style="width:100%" v-model="endDate" type="date" placeholder="请选择失效日期"> </el-date-picker>
+            <el-date-picker 
+              size="small" 
+              style="width:100%" 
+              v-model="endDate" 
+              type="date" 
+              placeholder="请选择失效日期"> </el-date-picker>
           </li>
           <li>
             <p>规则状态</p>
@@ -244,10 +254,10 @@ export default {
       }
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
     },
   },
   created(){

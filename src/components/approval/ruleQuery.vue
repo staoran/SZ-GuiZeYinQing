@@ -36,11 +36,25 @@
           </li>
           <li>
             <p>规则有效起期</p>
-            <el-date-picker size="small " format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" style="width:100%" v-model="startDate" type="date" placeholder="请选择生效日期"> </el-date-picker>
+            <el-date-picker 
+              size="small" 
+              format="yyyy 年 MM 月 dd 日" 
+              value-format="yyyy-MM-dd" 
+              style="width:100%" 
+              v-model="startDate" 
+              type="date" 
+              placeholder="请选择生效日期"> </el-date-picker>
           </li>
           <li>
             <p>规则有效止期</p>
-            <el-date-picker size="small " format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" style="width:100%" v-model="endDate" type="date" placeholder="请选择失效日期"> </el-date-picker>
+            <el-date-picker 
+              size="small" 
+              format="yyyy 年 MM 月 dd 日" 
+              value-format="yyyy-MM-dd" 
+              style="width:100%" 
+              v-model="endDate" 
+              type="date" 
+              placeholder="请选择失效日期"> </el-date-picker>
           </li>
           <li>
             <p>规则状态</p>
@@ -119,7 +133,15 @@
         <el-radio v-model="radio" @change="change" label="1">实时发布</el-radio>
         <el-radio v-model="radio" @change="change" label="2">
           定时发布
-          <el-date-picker :disabled="disabled" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" size="mini" style="width:100%" v-model="timing" type="date" placeholder="请选择定时发布日期"> </el-date-picker>
+          <el-date-picker 
+            :disabled="disabled" 
+            format="yyyy 年 MM 月 dd 日" 
+            value-format="yyyy-MM-dd" 
+            size="mini" 
+            style="width:100%" 
+            v-model="timing" 
+            type="date" 
+            placeholder="请选择定时发布日期"> </el-date-picker>
         </el-radio>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -324,10 +346,10 @@ export default {
       this.$router.push({name:'customs',query:{id:row.id}})
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
     },
     handleClick(row){//已发布详情
     }
