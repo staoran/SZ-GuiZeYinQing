@@ -125,7 +125,7 @@
           <el-table-column label="是否输出"  width="180">
             <el-checkbox :disabled="disabled" label="输出值" name="type"></el-checkbox>
           </el-table-column>
-          <el-table-column label="操作" >
+          <el-table-column label="操作" width="212">
             <!-- <template> -->
             <template slot-scope="scope">
               <el-button 

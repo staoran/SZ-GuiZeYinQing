@@ -105,7 +105,7 @@
               </el-checkbox>
             </template>
           </el-table-column>
-          <el-table-column  label="操作" >
+          <el-table-column  label="操作" width="212">
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.row)" type="text" size="small">配置限定值</el-button>
               <el-button @click="deleData(scope.row)" type="text" size="small">删除</el-button>

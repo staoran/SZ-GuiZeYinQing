@@ -388,6 +388,7 @@
     </el-dialog>
   </div>
 </template>
+<script type="text/javascript" src ="https://cdn.polyfill.io/v2/polyfill.min.js?features=es6"></script>
 <script>
 export default {
   name: "valuation",
@@ -558,7 +559,6 @@ export default {
         type:"",
         dataItem:"",
         limitValue:"",
-        // limit:"",
       }
       if(this.gridData.length >= 5){
         this.$message({

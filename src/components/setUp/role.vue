@@ -7,8 +7,8 @@
       </div>
     </div>
     <div>
-      <p class="basic"></p> 
-      <ul class="condition">
+      <!-- <p class="basic"></p>  -->
+      <ul class="condition" style="margin:0">
         <li>
           <p>ID</p>
           <el-input size='mini' placeholder="请输入ID" v-model="ID" clearable></el-input>
@@ -36,8 +36,8 @@
       </span> 
       <el-table size="mini" :data="factorData" border  stripe  @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="id"  label="ID" width="100"> </el-table-column>
-        <el-table-column label="姓名"> 
+        <el-table-column prop="id"  label="ID" width="84"> </el-table-column>
+        <el-table-column label="姓名" width="170"> 
           <template slot-scope="scope">
             <el-select size='mini' v-model="scope.row.name" placeholder="请选择姓名">
               <el-option
@@ -49,7 +49,7 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column prop="type" label="机构"> 
+        <el-table-column prop="type" label="机构"  width="170"> 
           <template slot-scope="scope">
             <el-select size='mini' v-model="scope.row.company" placeholder="请选择机构">
               <el-option
@@ -61,7 +61,7 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column label="角色类型">
+        <el-table-column label="角色类型"  width="170">
           <template slot-scope="scope">
             <el-select size='mini' v-model="scope.row.roleType" placeholder="请选择角色类型">
               <el-option
@@ -73,7 +73,7 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column prop="type" label="角色期限"> 
+        <el-table-column prop="type" label="角色期限"  width="170"> 
           <template slot-scope="scope">
             <el-date-picker 
               size="mini" 
@@ -86,7 +86,7 @@
             </el-date-picker>
           </template>
         </el-table-column>
-        <el-table-column label="备注"> 
+        <el-table-column label="备注"  width="170"> 
           <template slot-scope="scope">
             <el-input size="mini" v-model="scope.row.remark" > </el-input>
           </template>
