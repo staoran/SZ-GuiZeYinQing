@@ -84,7 +84,7 @@
     <div class="list" v-show="ruleList">
       <p class="basic">列表</p>
       <el-table :data="queryList" size="mini" border stripe>
-        <el-table-column  label="规则编码" width="150"></el-table-column>
+        <el-table-column prop="code" label="规则编码" width="150"></el-table-column>
         <el-table-column prop="type" label="规则类型" width="100"></el-table-column>
         <el-table-column prop="name" label="规则名称" width="200"></el-table-column>
         <el-table-column prop="startdate" label="有效起期" width="150"></el-table-column>

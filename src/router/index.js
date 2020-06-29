@@ -129,7 +129,8 @@ export default new Router({
           meta: { keepAlive: true } //缓存当前页面信息
         },
         { //核保规则配置
-          path: 'underwriting',
+          path: 'underwriting/:id/:name',
+          // path: 'underwriting',
           name : "underwriting",
           component: Underwriting,
           meta: { keepAlive: true } //缓存当前页面信息

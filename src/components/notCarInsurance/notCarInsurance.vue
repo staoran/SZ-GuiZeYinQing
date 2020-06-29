@@ -247,7 +247,10 @@ export default {
     // product(row){//产品
     // },
     details(row){//核保规则
-      this.$router.push({name:'underwriting',query:{id:row.id}})
+      // 问号传参
+      // this.$router.push({name:'underwriting',query:{id:row.id}})
+      // 动态路由传参
+      this.$router.push({path:`underwriting/${row.id}/${row.productName}`})
     },
     custom(row){//核赔规则
       this.$router.push({name:'customs',query:{id:row.id}})
