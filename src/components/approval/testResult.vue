@@ -20,22 +20,22 @@
           ref="multipleTable"
           style="width: 100%">
           <el-table-column prop="id" type="selection" width="55"> </el-table-column>
-          <el-table-column label="出险时间">
+          <el-table-column label="出险时间" width="154">
             <template slot-scope="scope">
               <el-input size="mini" v-model="scope.row.time" > </el-input>
             </template>
           </el-table-column>
-          <el-table-column label="是否现场报案">
+          <el-table-column label="是否现场报案" width="154">
             <template slot-scope="scope">
               <el-input size="mini" v-model="scope.row.scene" > </el-input>
             </template>
           </el-table-column>
-          <el-table-column label="出险原因" >
+          <el-table-column label="出险原因" width="154">
             <template slot-scope="scope">
               <el-input size="mini" v-model="scope.row.reason" > </el-input>
             </template>
           </el-table-column>
-          <el-table-column label="有无人伤" >
+          <el-table-column label="有无人伤" width="154">
             <template slot-scope="scope">
               <el-input size="mini" v-model="scope.row.injured" > </el-input>
             </template>
@@ -46,8 +46,8 @@
               <el-input size="mini" v-model="scope.row.test" > </el-input>
             </template>
           </el-table-column> -->
-          <el-table-column prop="test" label="自动核赔"></el-table-column>
-          <el-table-column prop="result" label="测试结果"  > </el-table-column>
+          <el-table-column prop="test" width="154" label="自动核赔"></el-table-column>
+          <el-table-column prop="result" width="154" label="测试结果"  > </el-table-column>
         </el-table>
       </div>
       <el-pagination

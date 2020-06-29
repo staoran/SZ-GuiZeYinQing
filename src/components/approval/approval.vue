@@ -56,11 +56,11 @@
       <p class="basic">历史审核意见</p>
       <div class="condition" style=" padding: 15px 15px 15px 30px;">
         <el-table :data="tableData" border :stripe="true" size="mini" style="width: 100%">
-          <el-table-column prop="date" label="日期"> </el-table-column>
-          <el-table-column prop="name" label="姓名" > </el-table-column>
-          <el-table-column prop="result" label="审核结论" > </el-table-column>
-          <el-table-column prop="opinion" label="审核意见" > </el-table-column>
-          <el-table-column prop="state" label="审核后状态"  > </el-table-column>
+          <el-table-column prop="date" label="日期" width="198"> </el-table-column>
+          <el-table-column prop="name" label="姓名" width="195"> </el-table-column>
+          <el-table-column prop="result" label="审核结论" width="200"> </el-table-column>
+          <el-table-column prop="opinion" label="审核意见" width="195"> </el-table-column>
+          <el-table-column prop="state" label="审核后状态"  width="195"> </el-table-column>
         </el-table>
       </div>
     </div>

@@ -54,19 +54,19 @@
         <el-button type="primary" @click="addFactor()" size="mini">新增因子</el-button> 
       </span> 
       <el-table size="mini" :data="factorData" border  stripe>
-          <el-table-column prop="id" label="序号"> </el-table-column>
-          <el-table-column label="枚举名称"> 
-            <template slot-scope="scope">
+          <el-table-column prop="id" label="序号" width="195"> </el-table-column>
+          <el-table-column label="枚举名称" width="200"> 
+            <template slot-scope="scope" >
               <el-input size="mini" v-model="scope.row.name" > </el-input>
             </template>
           </el-table-column>
-          <el-table-column prop="type" label="枚举值类型"> </el-table-column>
-          <el-table-column label="枚举值">
+          <el-table-column prop="type" label="枚举值类型" width="195"> </el-table-column>
+          <el-table-column label="枚举值" width="200">
             <template slot-scope="scope">
               <el-input size="mini" v-model="scope.row.value" > </el-input>
             </template>
           </el-table-column>
-        <el-table-column label="操作" >
+        <el-table-column label="操作" width="195">
           <template slot-scope="scope">
             <el-button @click="edit(scope.row)" type="text" size="small">删除</el-button>
           </template>
