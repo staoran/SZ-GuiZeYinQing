@@ -44,44 +44,44 @@ export default {
   methods: {
     createNewDiagram() {
       const bpmnXmlStr = `<?xml version="1.0" encoding="UTF-8"?>
-      <bpmn2:definitions 
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-        xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" 
-        xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
-        xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
-        xmlns:di="http://www.omg.org/spec/DD/20100524/DI" 
-        id="sample-diagram" 
-        targetNamespace="http://bpmn.io/schema/bpmn" 
-        xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
-        <bpmn2:process id="Process_1" isExecutable="false">
-          <bpmn2:startEvent id="StartEvent_1" name="">
-            <bpmn2:outgoing>SequenceFlow_0z01mg5</bpmn2:outgoing>
-            <bpmn2:outgoing>SequenceFlow_1i99umy</bpmn2:outgoing>
-          </bpmn2:startEvent>
-        </bpmn2:process>
-        <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-          <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
-            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-              <dc:Bounds x="212" y="302" width="36" height="36" />
-              <bpmndi:BPMNLabel>
-                <dc:Bounds x="219" y="345" width="22" height="14" />
-              </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-          <bpmndi:BPMNEdge id="SequenceFlow_0z01mg5_di" bpmnElement="SequenceFlow_0z01mg5">
-            <di:waypoint x="248" y="320" />
-            <di:waypoint x="330" y="320" />
-          </bpmndi:BPMNEdge>
-          <bpmndi:BPMNEdge id="SequenceFlow_1i99umy_di" bpmnElement="SequenceFlow_1i99umy">
-            <di:waypoint x="430" y="320" />
-            <di:waypoint x="495" y="320" />
-          </bpmndi:BPMNEdge>
-        </bpmndi:BPMNPlane>
-      </bpmndi:BPMNDiagram>
-    </bpmn2:definitions>`;
+        <bpmn2:definitions 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+          xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+          xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
+          xmlns:di="http://www.omg.org/spec/DD/20100524/DI" 
+          id="sample-diagram" 
+          targetNamespace="http://bpmn.io/schema/bpmn" 
+          xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+          <bpmn2:process id="Process_1" isExecutable="false">
+            <bpmn2:startEvent id="StartEvent_1" name="">
+              <bpmn2:outgoing>SequenceFlow_0z01mg5</bpmn2:outgoing>
+              <bpmn2:outgoing>SequenceFlow_1i99umy</bpmn2:outgoing>
+            </bpmn2:startEvent>
+          </bpmn2:process>
+          <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+            <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+              <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+                <dc:Bounds x="212" y="302" width="36" height="36" />
+                <bpmndi:BPMNLabel>
+                  <dc:Bounds x="219" y="345" width="22" height="14" />
+                </bpmndi:BPMNLabel>
+              </bpmndi:BPMNShape>
+              <bpmndi:BPMNEdge id="SequenceFlow_0z01mg5_di" bpmnElement="SequenceFlow_0z01mg5">
+                <di:waypoint x="248" y="320" />
+                <di:waypoint x="330" y="320" />
+              </bpmndi:BPMNEdge>
+              <bpmndi:BPMNEdge id="SequenceFlow_1i99umy_di" bpmnElement="SequenceFlow_1i99umy">
+                <di:waypoint x="430" y="320" />
+                <di:waypoint x="495" y="320" />
+              </bpmndi:BPMNEdge>
+            </bpmndi:BPMNPlane>
+          </bpmndi:BPMNDiagram>
+        </bpmn2:definitions>`;
       // 将字符串转换成图显示出来
       this.bpmnModeler.importXML(bpmnXmlStr, function(err) {
         if (err) {
-          console.error(err);
+          // console.error(err);
         }
       });
     },
@@ -112,7 +112,7 @@ export default {
     },
     //保存整个XML文件
     saveXmlFile() {
-      console.log(this.xmlStr);
+      // console.log(this.xmlStr);
     },
     //弹窗保存
     dialogSave() {

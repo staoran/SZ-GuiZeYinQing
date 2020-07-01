@@ -129,34 +129,26 @@ export default {
         }, {
         label: '名称4'
       }],
-      users: [
-        {
-          value: "zhangsan",
-          label: "张三"
-        },
-        {
-          value: "lisi",
-          label: "李四"
-        },
-        {
-          value: "wangwu",
-          label: "王五"
-        }
-      ],
-      roles: [
-        {
-          value: "manager",
-          label: "经理"
-        },
-        {
-          value: "personnel",
-          label: "人事"
-        },
-        {
-          value: "charge",
-          label: "主管"
-        }
-      ]
+      users: [{
+        value: "zhangsan",
+        label: "张三"
+        },{
+        value: "lisi",
+        label: "李四"
+        },{
+        value: "wangwu",
+        label: "王五"
+      }],
+      roles: [{
+        value: "manager",
+        label: "经理"
+        },{
+        value: "personnel",
+        label: "人事"
+        },{
+        value: "charge",
+        label: "主管"
+      }]
     };
   },
   mounted() {
@@ -168,7 +160,7 @@ export default {
       this.modeler.on("selection.changed", e => {
         const element = e.newSelection[0];
         this.element = element;
-        console.log(this.element);
+        // console.log(this.element);
         if (!element) return;
         // this.$message({
         //   message:"出发点击事件",
@@ -182,7 +174,7 @@ export default {
           this.form["candidateUsers"] =
             this.form["candidateUsers"].split(",") || [];
         }
-        console.log(this.form)
+        // console.log(this.form)
       });
 
       //  监听节点属性变化
@@ -198,7 +190,7 @@ export default {
     },
     // 属性面板名称，更新回流程节点
     nameChange(name) {
-      console.log(name)
+      // console.log(name)
       const modeling = this.modeler.get("modeling");
       modeling.updateLabel(this.element, name);
     },
