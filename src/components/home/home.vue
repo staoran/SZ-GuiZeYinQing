@@ -18,7 +18,7 @@
               :unique-opened="true"
               router
             >
-              <!-- <el-submenu index="3">
+              <el-submenu index="3">
                 <template slot="title">
                   <i class="el-icon-truck"></i>
                   <span>车险规则管理</span>
@@ -28,11 +28,11 @@
                   :key="k"
                   :index="item.index"
                 >{{item.name}}</el-menu-item>
-              </el-submenu> -->
-              <el-menu-item index="homeRigth">
+              </el-submenu>
+              <!-- <el-menu-item index="homeRigth">
                 <i class="el-icon-truck"></i>
                 <span slot="title">车险规则管理</span>
-              </el-menu-item>
+              </el-menu-item> -->
               <el-menu-item index="notCarInsurance">
                 <i class="el-icon-s-management"></i>
                 <span slot="title">非车险规则管理</span>
@@ -88,40 +88,37 @@ export default {
   data() {
     return {
       Step: "",
-      // CarInsurance: [{
-      //   name:'报案',
-      //   index:'homeRigth'
-      //   },{
-      //   name:'调度',
-      //   index:'homeRigth'
-      //   },{
-      //   name:'查勘',
-      //   index:'homeRigth'
-      //   },{
-      //   name:'车易赔',
-      //   index:'homeRigth'
-      //   },{
-      //   name:'定损',
-      //   index:'homeRigth'
-      //   },{
-      //   name:'人伤',
-      //   index:'homeRigth'
-      //   },{
-      //   name:'修理厂',
-      //   index:'homeRigth'
-      //   },{
-      //   name:'核价',
-      //   index:'homeRigth'
-      //   },{
-      //   name:'核算',
-      //   index:'homeRigth'
-      //   },{
-      //   name:'理算',
-      //   index:'homeRigth'
-      //   },{
-      //   name:'核赔',
-      //   index:'homeRigth'
-      // }],
+      CarInsurance: [{
+        name:'报案',
+        index:'homeRigth'
+        },{
+        name:'调度',
+        index:'dispatch'
+        },{
+        name:'车易赔',
+        index:'carCompensation'
+        },{
+        name:'查勘',
+        index:'Survey'
+        },{
+        name:'定损',
+        index:'lossDetermination'
+        },{
+        name:'核价',
+        index:'pricing'
+        },{
+        name:'核损',
+        index:'lossAssessment'
+        },{
+        name:'单证',
+        index:'Documents'
+        },{
+        name:'理算',
+        index:'adjustment'
+        },{
+        name:'核赔',
+        index:'claimVerification'
+      }],
       NoCarInsurance: [{
         name:'核保规则',
         index : "valuation",
