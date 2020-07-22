@@ -18,7 +18,7 @@
               :unique-opened="true"
               router
             >
-              <el-submenu index="3">
+              <el-submenu >
                 <template slot="title">
                   <i class="el-icon-truck"></i>
                   <span>车险规则管理</span>
@@ -27,7 +27,9 @@
                   v-for="(item,k) in CarInsurance"
                   :key="k"
                   :index="item.index"
-                >{{item.name}}</el-menu-item>
+                >
+                <i></i>
+                {{item.name}}</el-menu-item>
               </el-submenu>
               <!-- <el-menu-item index="homeRigth">
                 <i class="el-icon-truck"></i>
